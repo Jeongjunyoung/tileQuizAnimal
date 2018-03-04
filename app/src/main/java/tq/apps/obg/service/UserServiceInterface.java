@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.IBinder;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -160,5 +161,10 @@ public class UserServiceInterface {
             return mService.getIsPlayerQuiz();
         }
         return false;
+    }
+    public void applyRotationHint(float start, float mid, float end, float depth, FrameLayout frameLayout) {
+        if (mService != null) {
+            mService.applyRotationHint(start, mid, end, depth, frameLayout);
+        }
     }
 }

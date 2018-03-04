@@ -69,8 +69,10 @@ public class Level0Fragment extends Fragment implements View.OnTouchListener{
         mBinding.testBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               //applyRotation(0f,90f,180f,0f);
-                viewHintTile1();
+                userServiceInterface.applyRotationHint(0f,90f,180f,0f, mBinding.tile11);
+                userServiceInterface.applyRotationHint(0f,90f,180f,0f, mBinding.tile12);
+                userServiceInterface.applyRotationHint(0f,90f,180f,0f, mBinding.tile21);
+                userServiceInterface.applyRotationHint(0f,90f,180f,0f, mBinding.tile22);
             }
         });
     }
@@ -93,7 +95,7 @@ public class Level0Fragment extends Fragment implements View.OnTouchListener{
         }
         return false;
     }
-    public void applyRotation(float start, float mid, float end, float depth, FrameLayout frameLayout) {
+    /*public void applyRotation(float start, float mid, float end, float depth, FrameLayout frameLayout) {
         centerX = frameLayout.getWidth() / 2.0f;
         centerY = frameLayout.getHeight() / 2.0f;
         Rotate3DAnimation rot = new Rotate3DAnimation(start, mid, centerX, centerY, depth, true);
@@ -149,11 +151,11 @@ public class Level0Fragment extends Fragment implements View.OnTouchListener{
                             } else if (isEnd == 1) {
                                 isEnd = 0;
                                 isEndIndex++;
-                                if (isEndIndex < 5) {
+                                *//*if (isEndIndex < 5) {
                                     viewHindTile(isEndIndex);
                                 } else {
                                     isEndIndex = 1;
-                                }
+                                }*//*
 
                             }
                         }
@@ -168,8 +170,8 @@ public class Level0Fragment extends Fragment implements View.OnTouchListener{
         public void onAnimationRepeat(Animation animation) {
 
         }
-    }
-    private void viewHindTile(int i) {
+    }*/
+    /*private void viewHindTile(int i) {
         if (i == 2) {
             viewHintTile2();
         } else if (i == 3) {
@@ -189,5 +191,5 @@ public class Level0Fragment extends Fragment implements View.OnTouchListener{
     }
     private void viewHintTile4() {
         applyRotation(0f,90f,180f,0f, mBinding.tile22);
-    }
+    }*/
 }

@@ -11,7 +11,6 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.widget.FrameLayout;
@@ -28,13 +27,12 @@ import tq.apps.obg.db.DBHelper;
 import tq.apps.obg.domain.EmblemVO;
 import tq.apps.obg.domain.PersonVO;
 import tq.apps.obg.domain.TileVO;
-import tq.apps.obg.fragment.Level0Fragment;
 
 /**
  * Created by d1jun on 2018-02-23.
  */
 
-public class UserService extends Service{
+public class UserService extends Service {
     private final IBinder mBinder = new UserServiceBinder();
     private static final int[] levelArr = {0, 1, 1, 2, 2, 2};
     private int clickedNum = 0;
@@ -58,6 +56,7 @@ public class UserService extends Service{
     private int quizButtonLevel, quizButtonLevelIndex;
     private boolean isPlayerQuiz;
     Handler mHandler = new Handler();
+
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
@@ -65,7 +64,7 @@ public class UserService extends Service{
     }
 
     public class UserServiceBinder extends Binder {
-        public UserService getService(){
+        public UserService getService() {
             return UserService.this;
         }
     }
@@ -77,6 +76,7 @@ public class UserService extends Service{
         System.out.println("UserService");
         setData();
     }
+
     private void setData() {
         mTileImageList = dbHelper.selectTielData();
         mPersonImageList = dbHelper.selectPersonData();
@@ -85,12 +85,14 @@ public class UserService extends Service{
         setmPersonImageList();
         setmEmblemImageList();
     }
+
     public List<TileVO> getTileImages() {
         List<TileVO> list = dbHelper.selectTielData();
         long seed = System.nanoTime();
         Collections.shuffle(list, new Random(seed));
         return list;
     }
+
     public void checkedSameImage(LinearLayout view, Bitmap resId) {
         clickedNum++;
         if (clickedNum == 1) {
@@ -104,8 +106,7 @@ public class UserService extends Service{
                 public void run() {
                     if (isSameResId(firstResId, secondResId)) {
                         System.out.println("같음");
-                        quizButtonLevelIndex+=1;
-                        System.out.println(quizButtonLevelIndex+"asgj0sad0g089asgd90");
+                        quizButtonLevelIndex += 1;
                         firstView.setBackgroundColor(Color.parseColor("#00000000"));
                         firstView.setEnabled(false);
                         secondView.setBackgroundColor(Color.parseColor("#00000000"));
@@ -113,7 +114,6 @@ public class UserService extends Service{
                         firstView.getChildAt(0).setVisibility(View.GONE);
                         secondView.getChildAt(0).setVisibility(View.GONE);
                         if (quizButtonLevelIndex == quizButtonLevel) {
-                            System.out.println("quiqui"+quizButtonLevelIndex+"::::"+quizButtonLevel);
                             sendBroadcast(new Intent(BroadcastActions.BUTTON_VISIABLE));
                         }
                     } else {
@@ -123,22 +123,25 @@ public class UserService extends Service{
                     }
 
                 }
-            },290);
+            }, 290);
             clickedNum = 0;
 
         }
 
     }
+
     public boolean isSameResId(Bitmap num1, Bitmap num2) {
         if (num1.equals(num2)) {
             return true;
         }
         return false;
     }
+
     public Bitmap getBitMap(ImageView iv) {
         Drawable drawable = iv.getDrawable();
-        return  ((BitmapDrawable)drawable).getBitmap();
+        return ((BitmapDrawable) drawable).getBitmap();
     }
+
     public void applyRotation(float start, float mid, float end, float depth, LinearLayout layout, boolean isFront) {
         FrameLayout frameLayout = (FrameLayout) layout.getChildAt(0);
         centerX = frameLayout.getWidth() / 2.0f;
@@ -148,7 +151,8 @@ public class UserService extends Service{
         rot.setAnimationListener(new UserService.DisplayNextView(mid, end, depth, layout, isFront));
         frameLayout.startAnimation(rot);
     }
-    public class DisplayNextView implements Animation.AnimationListener{
+
+    public class DisplayNextView implements Animation.AnimationListener {
         private float mid;
         private float end;
         private float depth;
@@ -198,6 +202,7 @@ public class UserService extends Service{
 
         }
     }
+
     public List<String> getEmblemContentsArr() {
         List<String> strArr = new ArrayList<>();
         setmEmblemVO();
@@ -207,10 +212,10 @@ public class UserService extends Service{
         boolean isOverlap;
         int voIndex = 0;
         EmblemVO pVo = null;
-        for(int i=1;i<4;i++) {
+        for (int i = 1; i < 4; i++) {
             pVo = vo.get(voIndex++);
             isOverlap = false;
-            for(int j=0;j<strArr.size();j++) {
+            for (int j = 0; j < strArr.size(); j++) {
                 if (strArr.get(j).trim().equals(pVo.getE_name().trim())) {
                     i--;
                     isOverlap = true;
@@ -223,6 +228,7 @@ public class UserService extends Service{
         Collections.shuffle(strArr, new Random(getSeed()));
         return strArr;
     }
+
     public List<String> getContentsArr() {
         List<String> strArr = new ArrayList<>();
         setmPersonVO();
@@ -232,10 +238,10 @@ public class UserService extends Service{
         boolean isOverlap;
         int voIndex = 0;
         PersonVO pVo = null;
-        for(int i=1;i<4;i++) {
+        for (int i = 1; i < 4; i++) {
             pVo = vo.get(voIndex++);
             isOverlap = false;
-            for(int j=0;j<strArr.size();j++) {
+            for (int j = 0; j < strArr.size(); j++) {
                 if (strArr.get(j).trim().equals(pVo.getP_name().trim())) {
                     i--;
                     isOverlap = true;
@@ -248,21 +254,25 @@ public class UserService extends Service{
         Collections.shuffle(strArr, new Random(getSeed()));
         return strArr;
     }
+
     public void setmTileImageList() {
         Collections.shuffle(mTileImageList, new Random(getSeed()));
     }
+
     public void setmPersonImageList() {
         Collections.shuffle(mPersonImageList, new Random(getSeed()));
     }
+
     public void setmEmblemImageList() {
         Collections.shuffle(mEmblemImageList, new Random(getSeed()));
     }
+
     public List<Integer> getmTileImageList(int level) {
-        quizButtonLevel = level/2;
-        System.out.println(quizButtonLevel+"::AA:");
+        quizButtonLevel = level / 2;
+        System.out.println(quizButtonLevel + "::AA:");
         quizButtonLevelIndex = 0;
         List<Integer> list = new ArrayList<>();
-        for(int i=0; i<level; i++) {
+        for (int i = 0; i < level; i++) {
             list.add(mTileImageList.get(i).gettile_res_id());
             list.add(mTileImageList.get(i).gettile_res_id());
         }
@@ -271,32 +281,41 @@ public class UserService extends Service{
         setQuizLevel();
         return list;
     }
+
     public void setmPersonVO() {
         mAnswerVO = mPersonImageList.get(quizIndex);
     }
+
     public void setmEmblemVO() {
         mAnswerMVO = mEmblemImageList.get(quizIndex);
     }
+
     public PersonVO getmPersonVO() {
         return mAnswerVO;
     }
+
     public PersonVO getmPersonImageList() {
         quizIndex++;
         return mAnswerVO;
     }
+
     public EmblemVO getmEmblemImageList() {
         quizIndex++;
         return mAnswerMVO;
     }
+
     public int getQiuzIndex() {
         return quizIndex;
     }
+
     public long getSeed() {
         return System.nanoTime();
     }
+
     public int getQuizLevel() {
         return quizLevel;
     }
+
     public void setQuizLevel() {
         if (arrIndex < levelArr.length) {
             quizLevel = levelArr[arrIndex++];
@@ -307,7 +326,7 @@ public class UserService extends Service{
                 quizLevel++;
                 levelCount = 0;
             }
-            System.out.println("quizLevel : "+quizLevel);
+            System.out.println("quizLevel : " + quizLevel);
             System.out.println("Level 3!!!!!!!!!!!");
         }
     }
@@ -334,6 +353,7 @@ public class UserService extends Service{
     public int getQuizScore() {
         return quizScore;
     }
+
     public void setIsPlayerQuiz(boolean quiz) {
         if (quiz) {
             isPlayerQuiz = true;
@@ -341,7 +361,119 @@ public class UserService extends Service{
             isPlayerQuiz = false;
         }
     }
+
     public boolean getIsPlayerQuiz() {
         return isPlayerQuiz;
+    }
+
+
+    //Tile Hint
+    public void applyRotationHint(float start, float mid, float end, float depth, FrameLayout frameLayout) {
+        centerX = frameLayout.getWidth() / 2.0f;
+        centerY = frameLayout.getHeight() / 2.0f;
+        Rotate3DAnimation rot = new Rotate3DAnimation(start, mid, centerX, centerY, depth, true);
+        rot.setDuration(DURATION);
+        rot.setAnimationListener(new DisplayNextViewHint(mid, end, depth, frameLayout));
+        frameLayout.startAnimation(rot);
+    }
+
+    public class DisplayNextViewHint implements Animation.AnimationListener {
+        private float mid;
+        private float end;
+        private float depth;
+        private FrameLayout mFrameLayout;
+        private boolean isFrontHint;
+        private int isEnd;
+
+        public DisplayNextViewHint(float mid, float end, float depth, FrameLayout frameLayout) {
+            this.mid = mid;
+            this.end = end;
+            this.depth = depth;
+            this.mFrameLayout = frameLayout;
+            this.isFrontHint = true;
+            this.isEnd = 0;
+        }
+
+        @Override
+        public void onAnimationStart(Animation animation) {
+
+        }
+
+        @Override
+        public void onAnimationEnd(Animation animation) {
+            mFrameLayout.post(new Runnable() {
+                @Override
+                public void run() {
+                    mFrameLayout.getChildAt(0).setVisibility(View.GONE);
+                    mFrameLayout.getChildAt(1).setVisibility(View.VISIBLE);
+                    mFrameLayout.setEnabled(false);
+                    Rotate3DAnimation rot = new Rotate3DAnimation(mid, end, centerX, centerY, depth, false);
+                    rot.setDuration(DURATION);
+                    rot.setInterpolator(new AccelerateInterpolator());
+                    mFrameLayout.startAnimation(rot);
+                    mHandler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            applyRotationHintBack(180f, 270f, 360f, 0f, mFrameLayout);
+                        }
+                    }, 170);
+                }
+            });
+
+        }
+
+        @Override
+        public void onAnimationRepeat(Animation animation) {
+
+        }
+    }
+    public void applyRotationHintBack(float start, float mid, float end, float depth, FrameLayout frameLayout) {
+        centerX = frameLayout.getWidth() / 2.0f;
+        centerY = frameLayout.getHeight() / 2.0f;
+        Rotate3DAnimation rot = new Rotate3DAnimation(start, mid, centerX, centerY, depth, true);
+        rot.setDuration(DURATION);
+        rot.setAnimationListener(new DisplayNextViewHintBack(mid, end, depth, frameLayout));
+        frameLayout.startAnimation(rot);
+    }
+
+    public class DisplayNextViewHintBack implements Animation.AnimationListener {
+        private float mid;
+        private float end;
+        private float depth;
+        private FrameLayout mFrameLayout;
+
+        public DisplayNextViewHintBack(float mid, float end, float depth, FrameLayout frameLayout) {
+            this.mid = mid;
+            this.end = end;
+            this.depth = depth;
+            this.mFrameLayout = frameLayout;
+        }
+
+        @Override
+        public void onAnimationStart(Animation animation) {
+
+        }
+
+        @Override
+        public void onAnimationEnd(Animation animation) {
+            mFrameLayout.post(new Runnable() {
+                @Override
+                public void run() {
+                    mFrameLayout.getChildAt(0).setVisibility(View.VISIBLE);
+                    mFrameLayout.getChildAt(1).setVisibility(View.GONE);
+                    mFrameLayout.setEnabled(true);
+                    Rotate3DAnimation rot = new Rotate3DAnimation(mid, end, centerX, centerY, depth, false);
+                    rot.setDuration(DURATION);
+                    rot.setInterpolator(new AccelerateInterpolator());
+                    mFrameLayout.startAnimation(rot);
+                }
+            });
+
+        }
+
+        @Override
+        public void onAnimationRepeat(Animation animation) {
+
+        }
     }
 }
