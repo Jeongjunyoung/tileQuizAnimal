@@ -19,6 +19,7 @@ import android.widget.LinearLayout;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
@@ -46,6 +47,7 @@ public class UserService extends Service {
     private List<TileVO> mTileImageList;
     private List<PersonVO> mPersonImageList;
     private List<EmblemVO> mEmblemImageList;
+    private List<FrameLayout> mFindLayout = new ArrayList<>();
     private PersonVO mAnswerVO;
     private EmblemVO mAnswerMVO;
     private int quizIndex = 0;
@@ -113,6 +115,9 @@ public class UserService extends Service {
                         secondView.setEnabled(false);
                         firstView.getChildAt(0).setVisibility(View.GONE);
                         secondView.getChildAt(0).setVisibility(View.GONE);
+                        mFindLayout.add((FrameLayout) firstView.getChildAt(0));
+                        mFindLayout.add((FrameLayout) secondView.getChildAt(0));
+                        System.out.println(mFindLayout.get(0).getId() + " ::::: " + mFindLayout.get(1).getId());
                         if (quizButtonLevelIndex == quizButtonLevel) {
                             sendBroadcast(new Intent(BroadcastActions.BUTTON_VISIABLE));
                         }
@@ -267,8 +272,22 @@ public class UserService extends Service {
         Collections.shuffle(mEmblemImageList, new Random(getSeed()));
     }
 
+    public List<FrameLayout> getmFindLayout(List<FrameLayout> list) {
+        List<FrameLayout> getList = list;
+        for(Iterator<FrameLayout> it = getList.iterator(); it.hasNext();) {
+            FrameLayout fl = it.next();
+            for(int i=0; i<mFindLayout.size(); i++) {
+                if (fl.getId() == mFindLayout.get(i).getId()) {
+                    it.remove();
+                }
+            }
+        }
+        return getList;
+    }
+    //Quiz 첫 시작
     public List<Integer> getmTileImageList(int level) {
         quizButtonLevel = level / 2;
+        mFindLayout.clear();
         System.out.println(quizButtonLevel + "::AA:");
         quizButtonLevelIndex = 0;
         List<Integer> list = new ArrayList<>();
@@ -416,7 +435,7 @@ public class UserService extends Service {
                         public void run() {
                             applyRotationHintBack(180f, 270f, 360f, 0f, mFrameLayout);
                         }
-                    }, 170);
+                    }, 250);
                 }
             });
 
@@ -475,5 +494,31 @@ public class UserService extends Service {
         public void onAnimationRepeat(Animation animation) {
 
         }
+    }
+
+    public void viewHindListener(List<FrameLayout> frameLayouts) {
+        List<FrameLayout> list = getmFindLayout(frameLayouts);
+        for (FrameLayout fl : list) {
+            if (fl != null) {
+                applyRotationHint(0f, 90f, 180f, 0f, fl);
+            }
+        }
+    }
+    public void viewHindBackListener(List<FrameLayout> frameLayouts) {
+        List<FrameLayout> list = getmFindLayout(frameLayouts);
+        for (FrameLayout fl : list) {
+            if (fl != null) {
+                applyRotationHintBack(180f, 270f, 360f, 0f, fl);
+            }
+        }
+    }
+
+    public void startQuizGoneHint(final List<FrameLayout> frameLayouts) {
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                viewHindBackListener(frameLayouts);
+            }
+        }, 300);
     }
 }

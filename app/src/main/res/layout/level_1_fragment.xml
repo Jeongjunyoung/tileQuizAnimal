@@ -6,7 +6,13 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center">
+            android:gravity="center"
+            android:orientation="vertical">
+            <Button
+                android:id="@+id/test_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="TEST"/>
             <LinearLayout
                 android:id="@+id/back_quiz_image"
                 style="@style/TileLinearLayout">
@@ -29,13 +35,9 @@
                             android:background="@drawable/ztile_layout">
                         <ImageView
                             android:id="@+id/image_front_11"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:src="@drawable/tile_back"
-                            android:visibility="visible"/>
+                            style="@style/TileFrontImageView"/>
                         <ImageView
                             style="@style/TileBackImageView"
-                            android:visibility="visible"
                             android:id="@+id/image_back_11"/>
                         </FrameLayout>
                     </LinearLayout>
@@ -53,10 +55,7 @@
                             android:background="@drawable/ztile_layout">
                         <ImageView
                             android:id="@+id/image_front_12"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:src="@drawable/tile_back"
-                            android:visibility="visible"/>
+                            style="@style/TileFrontImageView"/>
                         <ImageView
                             style="@style/TileBackImageView"
                             android:id="@+id/image_back_12"/>
@@ -81,10 +80,7 @@
                             android:background="@drawable/ztile_layout">
                         <ImageView
                             android:id="@+id/image_front_21"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:src="@drawable/tile_back"
-                            android:visibility="visible"/>
+                            style="@style/TileFrontImageView"/>
                         <ImageView
                             style="@style/TileBackImageView"
                             android:id="@+id/image_back_21"/>
@@ -104,10 +100,7 @@
                             android:background="@drawable/ztile_layout">
                         <ImageView
                             android:id="@+id/image_front_22"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:src="@drawable/tile_back"
-                            android:visibility="visible"/>
+                            style="@style/TileFrontImageView"/>
                         <ImageView
                             style="@style/TileBackImageView"
                             android:id="@+id/image_back_22"/>
@@ -132,10 +125,7 @@
                             android:background="@drawable/ztile_layout">
                         <ImageView
                             android:id="@+id/image_front_31"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:src="@drawable/tile_back"
-                            android:visibility="visible"/>
+                            style="@style/TileFrontImageView"/>
                         <ImageView
                             style="@style/TileBackImageView"
                             android:id="@+id/image_back_31"/>
@@ -155,10 +145,7 @@
                             android:background="@drawable/ztile_layout">
                         <ImageView
                             android:id="@+id/image_front_32"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:src="@drawable/tile_back"
-                            android:visibility="visible"/>
+                            style="@style/TileFrontImageView"/>
                         <ImageView
                             style="@style/TileBackImageView"
                             android:id="@+id/image_back_32"/>

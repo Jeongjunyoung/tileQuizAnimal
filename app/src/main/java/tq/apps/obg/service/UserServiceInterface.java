@@ -162,9 +162,31 @@ public class UserServiceInterface {
         }
         return false;
     }
+    public List<FrameLayout> getmFindLayout(List<FrameLayout> list) {
+        if (mService != null) {
+            return mService.getmFindLayout(list);
+        }
+        return null;
+    }
     public void applyRotationHint(float start, float mid, float end, float depth, FrameLayout frameLayout) {
         if (mService != null) {
             mService.applyRotationHint(start, mid, end, depth, frameLayout);
+        }
+    }
+    public void viewHindListener(List<FrameLayout> frameLayouts) {
+        if (mService != null) {
+            mService.viewHindListener(frameLayouts);
+        }
+    }
+    public void viewHindBackListener(List<FrameLayout> frameLayouts) {
+        if (mService != null) {
+            mService.viewHindBackListener(frameLayouts);
+        }
+    }
+
+    public void startQuizGoneHint(List<FrameLayout> frameLayouts) {
+        if (mService != null) {
+            mService.startQuizGoneHint(frameLayouts);
         }
     }
 }

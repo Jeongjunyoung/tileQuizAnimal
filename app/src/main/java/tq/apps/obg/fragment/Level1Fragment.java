@@ -13,9 +13,11 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import tq.apps.obg.R;
@@ -28,6 +30,7 @@ import tq.apps.obg.service.UserServiceInterface;
 
 public class Level1Fragment extends Fragment implements View.OnTouchListener{
     private Level1FragmentBinding mBinding;
+    private List<FrameLayout> frameLayoutList = new ArrayList<>();
     private UserServiceInterface userServiceInterface = UserApplication.getInstance().getServiceInterface();
     public Level1Fragment() {
     }
@@ -48,18 +51,24 @@ public class Level1Fragment extends Fragment implements View.OnTouchListener{
             EmblemVO vo = userServiceInterface.getmEmblemImageList();
             mBinding.backQuizImage.setBackgroundResource(vo.getE_res_id());
         }
-        mBinding.imageBack11.setImageResource(list.get(0));
-        mBinding.imageBack12.setImageResource(list.get(1));
-        mBinding.imageBack21.setImageResource(list.get(2));
-        mBinding.imageBack22.setImageResource(list.get(3));
-        mBinding.imageBack31.setImageResource(list.get(4));
-        mBinding.imageBack32.setImageResource(list.get(5));
-        mBinding.tile11.setOnTouchListener(this);
-        mBinding.tile12.setOnTouchListener(this);
-        mBinding.tile21.setOnTouchListener(this);
-        mBinding.tile22.setOnTouchListener(this);
-        mBinding.tile31.setOnTouchListener(this);
-        mBinding.tile32.setOnTouchListener(this);
+        frameLayoutList.add(mBinding.tile11);
+        frameLayoutList.add(mBinding.tile12);
+        frameLayoutList.add(mBinding.tile21);
+        frameLayoutList.add(mBinding.tile22);
+        frameLayoutList.add(mBinding.tile31);
+        frameLayoutList.add(mBinding.tile32);
+        for(int i=0; i<frameLayoutList.size();i++) {
+            ImageView iv = (ImageView) frameLayoutList.get(i).getChildAt(1);
+            frameLayoutList.get(i).setOnTouchListener(this);
+            iv.setImageResource(list.get(i));
+        }
+        mBinding.testBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                userServiceInterface.viewHindListener(frameLayoutList);
+            }
+        });
+        userServiceInterface.startQuizGoneHint(frameLayoutList);
     }
 
     @Override

@@ -1,7 +1,6 @@
 <resources>
-
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
@@ -15,14 +14,14 @@
         <item name="android:paddingRight">11dp</item>
         <item name="android:paddingLeft">11dp</item>
         <item name="android:src">@drawable/tile_back</item>
-        <item name="android:visibility">visible</item>
+        <item name="android:visibility">gone</item>
     </style>
     <style name="TileBackImageView">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:paddingRight">11dp</item>
         <item name="android:paddingLeft">11dp</item>
-        <item name="android:visibility">gone</item>
+        <item name="android:visibility">visible</item>
     </style>
     <style name="TileLinearLayout">
         <item name="android:layout_width">320dp</item>

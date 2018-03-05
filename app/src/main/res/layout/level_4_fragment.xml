@@ -6,7 +6,14 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center">
+            android:gravity="center"
+            android:orientation="vertical">
+            <Button
+                android:id="@+id/test_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="TEST"/>
+
             <LinearLayout
                 android:id="@+id/back_quiz_image"
                 style="@style/TileLinearLayout">
@@ -29,10 +36,7 @@
                             android:background="@drawable/ztile_layout">
                         <ImageView
                             android:id="@+id/image_front_11"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:src="@drawable/tile_back"
-                            android:visibility="visible"/>
+                            style="@style/TileFrontImageView" />
                         <ImageView
                             android:id="@+id/image_back_11"
                             style="@style/TileBackImageView"/>
@@ -52,10 +56,7 @@
                             android:background="@drawable/ztile_layout">
                         <ImageView
                             android:id="@+id/image_front_12"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:src="@drawable/tile_back"
-                            android:visibility="visible"/>
+                            style="@style/TileFrontImageView" />
                         <ImageView
                             android:id="@+id/image_back_12"
                             style="@style/TileBackImageView"/>
@@ -75,10 +76,7 @@
                             android:background="@drawable/ztile_layout">
                         <ImageView
                             android:id="@+id/image_front_13"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:src="@drawable/tile_back"
-                            android:visibility="visible"/>
+                            style="@style/TileFrontImageView" />
                         <ImageView
                             android:id="@+id/image_back_13"
                             style="@style/TileBackImageView"/>
@@ -98,10 +96,7 @@
                             android:background="@drawable/ztile_layout">
                         <ImageView
                             android:id="@+id/image_front_14"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:src="@drawable/tile_back"
-                            android:visibility="visible"/>
+                            style="@style/TileFrontImageView" />
                         <ImageView
                             android:id="@+id/image_back_14"
                             style="@style/TileBackImageView"/>
@@ -121,10 +116,7 @@
                             android:background="@drawable/ztile_layout">
                             <ImageView
                                 android:id="@+id/image_front_15"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:src="@drawable/tile_back"
-                                android:visibility="visible"/>
+                                style="@style/TileFrontImageView" />
                             <ImageView
                                 android:id="@+id/image_back_15"
                                 style="@style/TileBackImageView"/>
@@ -149,10 +141,7 @@
                             android:background="@drawable/ztile_layout">
                         <ImageView
                             android:id="@+id/image_front_21"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:src="@drawable/tile_back"
-                            android:visibility="visible"/>
+                            style="@style/TileFrontImageView" />
                         <ImageView
                             android:id="@+id/image_back_21"
                             style="@style/TileBackImageView"/>
@@ -172,10 +161,7 @@
                             android:background="@drawable/ztile_layout">
                         <ImageView
                             android:id="@+id/image_front_22"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:src="@drawable/tile_back"
-                            android:visibility="visible"/>
+                            style="@style/TileFrontImageView" />
                         <ImageView
                             android:id="@+id/image_back_22"
                             style="@style/TileBackImageView"/>
@@ -195,10 +181,7 @@
                             android:background="@drawable/ztile_layout">
                         <ImageView
                             android:id="@+id/image_front_23"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:src="@drawable/tile_back"
-                            android:visibility="visible"/>
+                            style="@style/TileFrontImageView" />
                         <ImageView
                             android:id="@+id/image_back_23"
                             style="@style/TileBackImageView"/>
@@ -218,10 +201,7 @@
                             android:background="@drawable/ztile_layout">
                         <ImageView
                             android:id="@+id/image_front_24"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:src="@drawable/tile_back"
-                            android:visibility="visible"/>
+                            style="@style/TileFrontImageView" />
                         <ImageView
                             android:id="@+id/image_back_24"
                             style="@style/TileBackImageView"/>
@@ -241,10 +221,7 @@
                             android:background="@drawable/ztile_layout">
                             <ImageView
                                 android:id="@+id/image_front_25"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:src="@drawable/tile_back"
-                                android:visibility="visible"/>
+                                style="@style/TileFrontImageView" />
                             <ImageView
                                 android:id="@+id/image_back_25"
                                 style="@style/TileBackImageView"/>
@@ -269,10 +246,7 @@
                             android:background="@drawable/ztile_layout">
                         <ImageView
                             android:id="@+id/image_front_31"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:src="@drawable/tile_back"
-                            android:visibility="visible"/>
+                            style="@style/TileFrontImageView" />
                         <ImageView
                             android:id="@+id/image_back_31"
                             style="@style/TileBackImageView"/>
@@ -292,10 +266,7 @@
                             android:background="@drawable/ztile_layout">
                         <ImageView
                             android:id="@+id/image_front_32"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:src="@drawable/tile_back"
-                            android:visibility="visible"/>
+                            style="@style/TileFrontImageView" />
                         <ImageView
                             android:id="@+id/image_back_32"
                             style="@style/TileBackImageView"/>
@@ -315,10 +286,7 @@
                             android:background="@drawable/ztile_layout">
                         <ImageView
                             android:id="@+id/image_front_33"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:src="@drawable/tile_back"
-                            android:visibility="visible"/>
+                            style="@style/TileFrontImageView" />
                         <ImageView
                             android:id="@+id/image_back_33"
                             style="@style/TileBackImageView"/>
@@ -338,10 +306,7 @@
                             android:background="@drawable/ztile_layout">
                         <ImageView
                             android:id="@+id/image_front_34"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:src="@drawable/tile_back"
-                            android:visibility="visible"/>
+                            style="@style/TileFrontImageView" />
                         <ImageView
                             android:id="@+id/image_back_34"
                             style="@style/TileBackImageView"/>
@@ -361,10 +326,7 @@
                             android:background="@drawable/ztile_layout">
                             <ImageView
                                 android:id="@+id/image_front_35"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:src="@drawable/tile_back"
-                                android:visibility="visible"/>
+                                style="@style/TileFrontImageView" />
                             <ImageView
                                 android:id="@+id/image_back_35"
                                 style="@style/TileBackImageView"/>
@@ -389,10 +351,7 @@
                             android:background="@drawable/ztile_layout">
                         <ImageView
                             android:id="@+id/image_front_41"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:src="@drawable/tile_back"
-                            android:visibility="visible"/>
+                            style="@style/TileFrontImageView" />
                         <ImageView
                             android:id="@+id/image_back_41"
                             style="@style/TileBackImageView"/>
@@ -412,10 +371,7 @@
                             android:background="@drawable/ztile_layout">
                         <ImageView
                             android:id="@+id/image_front_42"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:src="@drawable/tile_back"
-                            android:visibility="visible"/>
+                            style="@style/TileFrontImageView" />
                         <ImageView
                             android:id="@+id/image_back_42"
                             style="@style/TileBackImageView"/>
@@ -435,10 +391,7 @@
                             android:background="@drawable/ztile_layout">
                         <ImageView
                             android:id="@+id/image_front_43"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:src="@drawable/tile_back"
-                            android:visibility="visible"/>
+                            style="@style/TileFrontImageView" />
                         <ImageView
                             android:id="@+id/image_back_43"
                             style="@style/TileBackImageView"/>
@@ -458,10 +411,7 @@
                             android:background="@drawable/ztile_layout">
                         <ImageView
                             android:id="@+id/image_front_44"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:src="@drawable/tile_back"
-                            android:visibility="visible"/>
+                            style="@style/TileFrontImageView" />
                         <ImageView
                             android:id="@+id/image_back_44"
                             style="@style/TileBackImageView"/>
@@ -481,10 +431,7 @@
                             android:background="@drawable/ztile_layout">
                             <ImageView
                                 android:id="@+id/image_front_45"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:src="@drawable/tile_back"
-                                android:visibility="visible"/>
+                                style="@style/TileFrontImageView" />
                             <ImageView
                                 android:id="@+id/image_back_45"
                                 style="@style/TileBackImageView"/>

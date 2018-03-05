@@ -32,14 +32,9 @@ import tq.apps.obg.service.UserServiceInterface;
 
 public class Level0Fragment extends Fragment implements View.OnTouchListener{
     private Level0FragmentBinding mBinding;
-    private UserServiceInterface userServiceInterface = UserApplication.getInstance().getServiceInterface();
-    private boolean isFront = true;
-    private int isEnd = 0;
-    private int isEndIndex = 1;
-    private int DURATION = 130;
-    private float centerX;
-    private float centerY;
+    private List<FrameLayout> frameLayoutList = new ArrayList<>();
     Handler mHandler = new Handler();
+    private UserServiceInterface userServiceInterface = UserApplication.getInstance().getServiceInterface();
     public Level0Fragment() {}
 
     @Override
@@ -50,7 +45,7 @@ public class Level0Fragment extends Fragment implements View.OnTouchListener{
     }
 
     private void setViewData() {
-        List<Integer> list = userServiceInterface.getTileImageList(2);
+        final List<Integer> list = userServiceInterface.getTileImageList(2);
         if (userServiceInterface.getIsPlayerQuiz()) {
             PersonVO vo = userServiceInterface.getPersonList();
             mBinding.backQuizImage.setBackgroundResource(vo.getP_res_id());
@@ -58,23 +53,22 @@ public class Level0Fragment extends Fragment implements View.OnTouchListener{
             EmblemVO vo = userServiceInterface.getmEmblemImageList();
             mBinding.backQuizImage.setBackgroundResource(vo.getE_res_id());
         }
-        mBinding.imageBack11.setImageResource(list.get(0));
-        mBinding.imageBack12.setImageResource(list.get(1));
-        mBinding.imageBack21.setImageResource(list.get(2));
-        mBinding.imageBack22.setImageResource(list.get(3));
-        mBinding.tile11.setOnTouchListener(this);
-        mBinding.tile12.setOnTouchListener(this);
-        mBinding.tile21.setOnTouchListener(this);
-        mBinding.tile22.setOnTouchListener(this);
+        frameLayoutList.add(mBinding.tile11);
+        frameLayoutList.add(mBinding.tile12);
+        frameLayoutList.add(mBinding.tile21);
+        frameLayoutList.add(mBinding.tile22);
+        for(int i=0; i<frameLayoutList.size();i++) {
+            ImageView iv = (ImageView) frameLayoutList.get(i).getChildAt(1);
+            frameLayoutList.get(i).setOnTouchListener(this);
+            iv.setImageResource(list.get(i));
+        }
         mBinding.testBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                userServiceInterface.applyRotationHint(0f,90f,180f,0f, mBinding.tile11);
-                userServiceInterface.applyRotationHint(0f,90f,180f,0f, mBinding.tile12);
-                userServiceInterface.applyRotationHint(0f,90f,180f,0f, mBinding.tile21);
-                userServiceInterface.applyRotationHint(0f,90f,180f,0f, mBinding.tile22);
+                userServiceInterface.viewHindListener(frameLayoutList);
             }
         });
+        userServiceInterface.startQuizGoneHint(frameLayoutList);
     }
 
     @Override
@@ -95,101 +89,4 @@ public class Level0Fragment extends Fragment implements View.OnTouchListener{
         }
         return false;
     }
-    /*public void applyRotation(float start, float mid, float end, float depth, FrameLayout frameLayout) {
-        centerX = frameLayout.getWidth() / 2.0f;
-        centerY = frameLayout.getHeight() / 2.0f;
-        Rotate3DAnimation rot = new Rotate3DAnimation(start, mid, centerX, centerY, depth, true);
-        rot.setDuration(DURATION);
-        rot.setAnimationListener(new DisplayNextView(mid, end, depth, frameLayout));
-        frameLayout.startAnimation(rot);
-    }
-    public class DisplayNextView implements Animation.AnimationListener{
-        private float mid;
-        private float end;
-        private float depth;
-        private FrameLayout mFrameLayout;
-
-        public DisplayNextView(float mid, float end, float depth, FrameLayout frameLayout) {
-            this.mid = mid;
-            this.end = end;
-            this.depth = depth;
-            this.mFrameLayout = frameLayout;
-        }
-
-        @Override
-        public void onAnimationStart(Animation animation) {
-
-        }
-
-        @Override
-        public void onAnimationEnd(Animation animation) {
-            mFrameLayout.post(new Runnable() {
-                @Override
-                public void run() {
-                    if (isFront) {
-                        mFrameLayout.getChildAt(0).setVisibility(View.GONE);
-                        mFrameLayout.getChildAt(1).setVisibility(View.VISIBLE);
-                        mFrameLayout.setEnabled(false);
-                        isFront = false;
-                    } else {
-                        mFrameLayout.setEnabled(true);
-                        mFrameLayout.getChildAt(0).setVisibility(View.VISIBLE);
-                        mFrameLayout.getChildAt(1).setVisibility(View.GONE);
-                        isFront = true;
-                    }
-                    Rotate3DAnimation rot = new Rotate3DAnimation(mid, end, centerX, centerY, depth, false);
-                    rot.setDuration(DURATION);
-                    rot.setInterpolator(new AccelerateInterpolator());
-                    mFrameLayout.startAnimation(rot);
-                    mHandler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            if (isEnd == 0) {
-                                applyRotation(180f,270f,360f,0f, mFrameLayout);
-                                System.out.println("isEnddddd");
-                                isEnd++;
-                            } else if (isEnd == 1) {
-                                isEnd = 0;
-                                isEndIndex++;
-                                *//*if (isEndIndex < 5) {
-                                    viewHindTile(isEndIndex);
-                                } else {
-                                    isEndIndex = 1;
-                                }*//*
-
-                            }
-                        }
-                    },170);
-                    //isEnd++;
-                }
-            });
-
-        }
-
-        @Override
-        public void onAnimationRepeat(Animation animation) {
-
-        }
-    }*/
-    /*private void viewHindTile(int i) {
-        if (i == 2) {
-            viewHintTile2();
-        } else if (i == 3) {
-            viewHintTile3();
-        } else if (i == 4) {
-            viewHintTile4();
-        }
-    }
-    private void viewHintTile1() {
-        applyRotation(0f,90f,180f,0f, mBinding.tile11);
-    }
-    private void viewHintTile2() {
-        applyRotation(0f,90f,180f,0f, mBinding.tile12);
-    }
-    private void viewHintTile3() {
-        applyRotation(0f,90f,180f,0f, mBinding.tile21);
-    }
-    private void viewHintTile4() {
-        applyRotation(0f,90f,180f,0f, mBinding.tile22);
-    }*/
 }

@@ -8,7 +8,10 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import tq.apps.obg.R;
@@ -25,6 +28,7 @@ import tq.apps.obg.service.UserServiceInterface;
 
 public class Level4Fragment extends Fragment implements View.OnTouchListener{
     private Level4FragmentBinding mBinding;
+    private List<FrameLayout> frameLayoutList = new ArrayList<>();
     private UserServiceInterface userServiceInterface = UserApplication.getInstance().getServiceInterface();
     @Nullable
     @Override
@@ -42,46 +46,38 @@ public class Level4Fragment extends Fragment implements View.OnTouchListener{
             EmblemVO vo = userServiceInterface.getmEmblemImageList();
             mBinding.backQuizImage.setBackgroundResource(vo.getE_res_id());
         }
-        mBinding.imageBack11.setImageResource(list.get(0));
-        mBinding.imageBack12.setImageResource(list.get(1));
-        mBinding.imageBack13.setImageResource(list.get(2));
-        mBinding.imageBack14.setImageResource(list.get(3));
-        mBinding.imageBack15.setImageResource(list.get(4));
-        mBinding.imageBack21.setImageResource(list.get(5));
-        mBinding.imageBack22.setImageResource(list.get(6));
-        mBinding.imageBack23.setImageResource(list.get(7));
-        mBinding.imageBack24.setImageResource(list.get(8));
-        mBinding.imageBack25.setImageResource(list.get(9));
-        mBinding.imageBack31.setImageResource(list.get(10));
-        mBinding.imageBack32.setImageResource(list.get(11));
-        mBinding.imageBack33.setImageResource(list.get(12));
-        mBinding.imageBack34.setImageResource(list.get(13));
-        mBinding.imageBack35.setImageResource(list.get(14));
-        mBinding.imageBack41.setImageResource(list.get(15));
-        mBinding.imageBack42.setImageResource(list.get(16));
-        mBinding.imageBack43.setImageResource(list.get(17));
-        mBinding.imageBack44.setImageResource(list.get(18));
-        mBinding.imageBack45.setImageResource(list.get(19));
-        mBinding.tile11.setOnTouchListener(this);
-        mBinding.tile12.setOnTouchListener(this);
-        mBinding.tile13.setOnTouchListener(this);
-        mBinding.tile14.setOnTouchListener(this);
-        mBinding.tile15.setOnTouchListener(this);
-        mBinding.tile21.setOnTouchListener(this);
-        mBinding.tile22.setOnTouchListener(this);
-        mBinding.tile23.setOnTouchListener(this);
-        mBinding.tile24.setOnTouchListener(this);
-        mBinding.tile25.setOnTouchListener(this);
-        mBinding.tile31.setOnTouchListener(this);
-        mBinding.tile32.setOnTouchListener(this);
-        mBinding.tile33.setOnTouchListener(this);
-        mBinding.tile34.setOnTouchListener(this);
-        mBinding.tile35.setOnTouchListener(this);
-        mBinding.tile41.setOnTouchListener(this);
-        mBinding.tile42.setOnTouchListener(this);
-        mBinding.tile43.setOnTouchListener(this);
-        mBinding.tile44.setOnTouchListener(this);
-        mBinding.tile45.setOnTouchListener(this);
+        frameLayoutList.add(mBinding.tile11);
+        frameLayoutList.add(mBinding.tile12);
+        frameLayoutList.add(mBinding.tile13);
+        frameLayoutList.add(mBinding.tile14);
+        frameLayoutList.add(mBinding.tile15);
+        frameLayoutList.add(mBinding.tile21);
+        frameLayoutList.add(mBinding.tile22);
+        frameLayoutList.add(mBinding.tile23);
+        frameLayoutList.add(mBinding.tile24);
+        frameLayoutList.add(mBinding.tile25);
+        frameLayoutList.add(mBinding.tile31);
+        frameLayoutList.add(mBinding.tile32);
+        frameLayoutList.add(mBinding.tile33);
+        frameLayoutList.add(mBinding.tile34);
+        frameLayoutList.add(mBinding.tile35);
+        frameLayoutList.add(mBinding.tile41);
+        frameLayoutList.add(mBinding.tile42);
+        frameLayoutList.add(mBinding.tile43);
+        frameLayoutList.add(mBinding.tile44);
+        frameLayoutList.add(mBinding.tile45);
+        for(int i=0; i<frameLayoutList.size();i++) {
+            ImageView iv = (ImageView) frameLayoutList.get(i).getChildAt(1);
+            frameLayoutList.get(i).setOnTouchListener(this);
+            iv.setImageResource(list.get(i));
+        }
+        mBinding.testBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                userServiceInterface.viewHindListener(frameLayoutList);
+            }
+        });
+        userServiceInterface.startQuizGoneHint(frameLayoutList);
     }
 
     @Override
