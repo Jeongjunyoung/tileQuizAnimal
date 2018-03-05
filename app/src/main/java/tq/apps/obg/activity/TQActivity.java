@@ -46,7 +46,6 @@ import tq.apps.obg.service.UserServiceInterface;
 public class TQActivity extends AppCompatActivity implements View.OnClickListener{
     ActivityTqBinding mBinding;
     private int levelNum;
-    //public static Context mContext;
     private DBHelper dbHelper;
     private int quizLife = 3;
     private UserServiceInterface mServiceInterface;
@@ -67,9 +66,7 @@ public class TQActivity extends AppCompatActivity implements View.OnClickListene
 
     private void initView() {
         mServiceInterface = UserApplication.getInstance().getServiceInterface();
-        //mContext = this;
         dbHelper = DBHelper.getInstance(this);
-        //dbHelper.open();
         Intent intent = getIntent();
         String str = intent.getStringExtra("quizKinds");
         if (str.equals("player")) {
@@ -126,7 +123,6 @@ public class TQActivity extends AppCompatActivity implements View.OnClickListene
                 break;
             case R.id.test_gogo:
                 setNextLevelFragment();
-                //UserApplication.getInstance().getServiceInterface().setmPersonVO();
                 break;
         }
     }

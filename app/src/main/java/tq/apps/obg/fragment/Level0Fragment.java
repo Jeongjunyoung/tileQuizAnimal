@@ -33,7 +33,6 @@ import tq.apps.obg.service.UserServiceInterface;
 public class Level0Fragment extends Fragment implements View.OnTouchListener{
     private Level0FragmentBinding mBinding;
     private List<FrameLayout> frameLayoutList = new ArrayList<>();
-    Handler mHandler = new Handler();
     private UserServiceInterface userServiceInterface = UserApplication.getInstance().getServiceInterface();
     public Level0Fragment() {}
 
