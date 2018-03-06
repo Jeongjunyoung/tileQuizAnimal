@@ -1,5 +1,6 @@
 package tq.apps.obg.activity;
 
+import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -12,7 +13,9 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.CountDownTimer;
 import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MotionEvent;
@@ -54,6 +57,8 @@ public class TQActivity extends AppCompatActivity implements View.OnClickListene
     private int quizLife = 3;
     private UserServiceInterface mServiceInterface;
     private boolean isPlayerQuiz;
+    CountDownTimer mCountDown;
+    Handler mProgressHandler;
     int quizCount;
     ProgressBar quizProg= null;
     Timer timer = null;
@@ -72,6 +77,7 @@ public class TQActivity extends AppCompatActivity implements View.OnClickListene
         initView();
     }
 
+    @SuppressLint("HandlerLeak")
     private void initView() {
         mServiceInterface = UserApplication.getInstance().getServiceInterface();
         dbHelper = DBHelper.getInstance(this);
@@ -82,9 +88,9 @@ public class TQActivity extends AppCompatActivity implements View.OnClickListene
         } else {
             isPlayerQuiz = false;
         }
-        quizCount = 30;
+        quizCount = 200;
         quizProg = mBinding.quizTimer;
-        quizProg.setMax(quizCount);
+        quizProg.setMax(100);
         quizProg.setProgress(quizCount);
         mServiceInterface.setTileImageList();
         mServiceInterface.setIsPlayerQuiz(isPlayerQuiz);
@@ -94,6 +100,18 @@ public class TQActivity extends AppCompatActivity implements View.OnClickListene
         mBinding.contents4.setOnClickListener(this);
         mBinding.testGogo.setOnClickListener(this);
         registerBroadcast();
+        mProgressHandler = new Handler(){
+            public void handleMessage(Message msg) {
+                super.handleMessage(msg);
+                if (quizCount <= 0) {
+                    quizGameOverListener();
+                } else {
+                    quizCount--;
+                    quizProg.incrementProgressBy(-1);
+                    mProgressHandler.sendEmptyMessageDelayed(0, 100);
+                }
+            }
+        };
     }
 
 
@@ -172,7 +190,7 @@ public class TQActivity extends AppCompatActivity implements View.OnClickListene
             mBinding.quizLife2.setVisibility(View.GONE);
         } else {
             mBinding.quizLife3.setVisibility(View.GONE);
-            System.out.println("[[[[[겜끝]]]]]");
+            quizGameOverListener();
         }
     }
     public void registerBroadcast(){
@@ -193,14 +211,30 @@ public class TQActivity extends AppCompatActivity implements View.OnClickListene
     }
 
     private void startTimerThread() {
-        timerTask = new TimerTask() {
+        /*timerTask = new TimerTask() {
             @Override
             public void run() {
                 decreaseBar();
             }
         };
         timer = new Timer();
-        timer.schedule(timerTask, 0 ,1000);
+        timer.schedule(timerTask, 0 ,1000);*/
+        /*mCountDown = new CountDownTimer(5000, 1000) {
+            @Override
+            public void onTick(long l) {
+                quizCount++;
+                quizProg.setProgress((int)quizCount*100/(5000/1000));
+            }
+
+            @Override
+            public void onFinish() {
+                quizCount++;
+                quizProg.setProgress(100);
+            }
+        };
+        mCountDown.start();*/
+        mProgressHandler.sendEmptyMessage(0);
+
     }
 
     private void decreaseBar() {
@@ -222,5 +256,9 @@ public class TQActivity extends AppCompatActivity implements View.OnClickListene
     private void quizTimeOut() {
         Toast.makeText(this, "Time Out", Toast.LENGTH_SHORT).show();
         System.out.println("Time Out");
+    }
+
+    private void quizGameOverListener() {
+        System.out.println("Game Over");
     }
 }
