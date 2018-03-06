@@ -35,12 +35,12 @@ import tq.apps.obg.domain.TileVO;
 
 public class UserService extends Service {
     private final IBinder mBinder = new UserServiceBinder();
-    private static final int[] levelArr = {0, 1, 1, 1, 2, 2, 2, 2};
+    private List<FrameLayout> quizFrameLayouts;
     private int clickedNum = 0;
     //private boolean isFront = true;
     private LinearLayout firstView, secondView;
     private Bitmap firstResId, secondResId;
-    private int DURATION = 220;
+    private int DURATION = 120;
     private float centerX;
     private float centerY;
     private DBHelper dbHelper;
@@ -126,11 +126,12 @@ public class UserService extends Service {
                         applyRotation(0f, 90f, 180f, 0f, firstView, false);
                         applyRotation(0f, 90f, 180f, 0f, secondView, false);
                     }
-
+                    //setFrameLayoutsEnable(true);
+                    //setFrameLayoutsEnable(true);
                 }
             }, 290);
             clickedNum = 0;
-
+            //setFrameLayoutsEnable(true);
         }
 
     }
@@ -185,10 +186,14 @@ public class UserService extends Service {
                 @Override
                 public void run() {
                     if (isFront) {
+                        /*clickedNum++;
+                        if (clickedNum == 2) {
+                            setFrameLayoutsEnable(false);
+                        }*/
+                        checkedSameImage(mLayout, getBitMap((ImageView) mFrameLayout.getChildAt(1)));
                         mFrameLayout.getChildAt(0).setVisibility(View.GONE);
                         mFrameLayout.getChildAt(1).setVisibility(View.VISIBLE);
                         mFrameLayout.setEnabled(false);
-                        checkedSameImage(mLayout, getBitMap((ImageView) mFrameLayout.getChildAt(1)));
                     } else {
                         mFrameLayout.setEnabled(true);
                         mFrameLayout.getChildAt(0).setVisibility(View.VISIBLE);
@@ -336,20 +341,29 @@ public class UserService extends Service {
     }
 
     public void setQuizLevel() {
-        if (arrIndex < levelArr.length) {
-            quizLevel = levelArr[arrIndex++];
+        if (levelCount == 0) {
+            quizLevel++;
+            setLevelCount();
+        } else if (levelCount == 8) {
+            quizLevel = 5;
         } else {
-            if (levelCount < 5) {
-                levelCount++;
-            } else if(quizLevel < 5 && levelCount == 5){
-                quizLevel++;
-                levelCount = 0;
-            } else if (quizLevel == 5 && levelCount == 5) {
-                quizLevel = 5;
-                levelCount = 5;
-            }
-            System.out.println("quizLevel : " + quizLevel);
-            System.out.println("Level 3!!!!!!!!!!!");
+            levelCount--;
+        }
+        System.out.println("[QuizLevel :: "+quizLevel+"], [levelCount :: "+levelCount+"]");
+    }
+    public void setLevelCount() {
+        if (quizLevel == 0) {
+            levelCount = 2;
+        } else if (quizLevel == 1) {
+            levelCount = 3;
+        } else if (quizLevel == 2) {
+            levelCount = 4;
+        } else if (quizLevel == 3) {
+            levelCount = 5;
+        } else if (quizLevel == 4) {
+            levelCount = 7;
+        } else if (quizLevel == 5) {
+            levelCount = 8;
         }
     }
 
@@ -369,7 +383,13 @@ public class UserService extends Service {
     }
 
     public void setQuizScore(int score) {
-        quizScore += score;
+        int quizLevelScore = 0;
+        if (quizLevel == 0) {
+            quizLevelScore = 1;
+        } else {
+            quizLevelScore = quizLevel;
+        }
+        quizScore += (score * quizLevelScore) ;
     }
 
     public int getQuizScore() {
@@ -382,6 +402,8 @@ public class UserService extends Service {
         } else {
             isPlayerQuiz = false;
         }
+        quizLevel = 0;
+        levelCount = 1;
     }
 
     public boolean getIsPlayerQuiz() {
@@ -517,11 +539,18 @@ public class UserService extends Service {
     }
 
     public void startQuizGoneHint(final List<FrameLayout> frameLayouts) {
+        quizFrameLayouts = frameLayouts;
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 viewHindBackListener(frameLayouts);
             }
         }, 300);
+    }
+
+    public void setFrameLayoutsEnable(boolean isTrue) {
+        for (FrameLayout fl : quizFrameLayouts) {
+            fl.setEnabled(isTrue);
+        }
     }
 }

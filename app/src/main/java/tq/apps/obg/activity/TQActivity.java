@@ -20,10 +20,13 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import tq.apps.obg.R;
 import tq.apps.obg.databinding.ActivityTqBinding;
@@ -51,6 +54,10 @@ public class TQActivity extends AppCompatActivity implements View.OnClickListene
     private int quizLife = 3;
     private UserServiceInterface mServiceInterface;
     private boolean isPlayerQuiz;
+    int quizCount;
+    ProgressBar quizProg= null;
+    Timer timer = null;
+    TimerTask timerTask = null;
     private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -75,6 +82,10 @@ public class TQActivity extends AppCompatActivity implements View.OnClickListene
         } else {
             isPlayerQuiz = false;
         }
+        quizCount = 30;
+        quizProg = mBinding.quizTimer;
+        quizProg.setMax(quizCount);
+        quizProg.setProgress(quizCount);
         mServiceInterface.setTileImageList();
         mServiceInterface.setIsPlayerQuiz(isPlayerQuiz);
         mBinding.contents1.setOnClickListener(this);
@@ -87,6 +98,7 @@ public class TQActivity extends AppCompatActivity implements View.OnClickListene
 
 
     private void setNextLevelFragment() {
+        startTimerThread();
         levelNum = mServiceInterface.getQuizLevel();
         mBinding.buttonLayout.setVisibility(View.GONE);
         Fragment fragment = null;
@@ -178,5 +190,37 @@ public class TQActivity extends AppCompatActivity implements View.OnClickListene
     }
     private void buttonVisible() {
         mBinding.buttonLayout.setVisibility(View.VISIBLE);
+    }
+
+    private void startTimerThread() {
+        timerTask = new TimerTask() {
+            @Override
+            public void run() {
+                decreaseBar();
+            }
+        };
+        timer = new Timer();
+        timer.schedule(timerTask, 0 ,1000);
+    }
+
+    private void decreaseBar() {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                quizCount = quizProg.getProgress();
+                if (quizCount > 0) {
+                    quizCount-=1;
+                } else if (quizCount == 0) {
+                    timer.cancel();
+                    Thread.interrupted();
+                    quizTimeOut();
+                }
+                quizProg.setProgress(quizCount);
+            }
+        });
+    }
+    private void quizTimeOut() {
+        Toast.makeText(this, "Time Out", Toast.LENGTH_SHORT).show();
+        System.out.println("Time Out");
     }
 }
