@@ -39,6 +39,7 @@ import tq.apps.obg.fragment.Level1Fragment;
 import tq.apps.obg.fragment.Level2Fragment;
 import tq.apps.obg.fragment.Level3Fragment;
 import tq.apps.obg.fragment.Level4Fragment;
+import tq.apps.obg.fragment.Level5Fragment;
 import tq.apps.obg.service.BroadcastActions;
 import tq.apps.obg.service.UserApplication;
 import tq.apps.obg.service.UserServiceInterface;
@@ -99,6 +100,8 @@ public class TQActivity extends AppCompatActivity implements View.OnClickListene
             fragment = new Level0Fragment();
         } else if (levelNum == 4) {
             fragment = new Level4Fragment();
+        } else if (levelNum == 5) {
+            fragment = new Level5Fragment();
         }
         FragmentManager fm = getFragmentManager();
         FragmentTransaction fragmentTransaction = fm.beginTransaction();

@@ -35,7 +35,7 @@ import tq.apps.obg.domain.TileVO;
 
 public class UserService extends Service {
     private final IBinder mBinder = new UserServiceBinder();
-    private static final int[] levelArr = {0, 1, 1, 2, 2, 2};
+    private static final int[] levelArr = {0, 1, 1, 1, 2, 2, 2, 2};
     private int clickedNum = 0;
     //private boolean isFront = true;
     private LinearLayout firstView, secondView;
@@ -341,9 +341,12 @@ public class UserService extends Service {
         } else {
             if (levelCount < 5) {
                 levelCount++;
-            } else {
+            } else if(quizLevel < 5 && levelCount == 5){
                 quizLevel++;
                 levelCount = 0;
+            } else if (quizLevel == 5 && levelCount == 5) {
+                quizLevel = 5;
+                levelCount = 5;
             }
             System.out.println("quizLevel : " + quizLevel);
             System.out.println("Level 3!!!!!!!!!!!");
