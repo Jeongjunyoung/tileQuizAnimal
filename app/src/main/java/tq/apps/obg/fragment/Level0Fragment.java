@@ -45,13 +45,7 @@ public class Level0Fragment extends Fragment implements View.OnTouchListener{
 
     private void setViewData() {
         final List<Integer> list = userServiceInterface.getTileImageList(2);
-        if (userServiceInterface.getIsPlayerQuiz()) {
-            PersonVO vo = userServiceInterface.getPersonList();
-            mBinding.backQuizImage.setBackgroundResource(vo.getP_res_id());
-        } else {
-            EmblemVO vo = userServiceInterface.getmEmblemImageList();
-            mBinding.backQuizImage.setBackgroundResource(vo.getE_res_id());
-        }
+        setBackQuizImages(userServiceInterface.getIsPlayerQuiz());
         frameLayoutList.add(mBinding.tile11);
         frameLayoutList.add(mBinding.tile12);
         frameLayoutList.add(mBinding.tile21);
@@ -87,5 +81,15 @@ public class Level0Fragment extends Fragment implements View.OnTouchListener{
                 break;
         }
         return false;
+    }
+
+    private void setBackQuizImages(boolean isPlayerQuiz) {
+        if (userServiceInterface.getIsPlayerQuiz()) {
+            PersonVO vo = userServiceInterface.getPersonList();
+            mBinding.backQuizImage.setBackgroundResource(vo.getP_res_id());
+        } else {
+            EmblemVO vo = userServiceInterface.getmEmblemImageList();
+            mBinding.backQuizImage.setBackgroundResource(vo.getE_res_id());
+        }
     }
 }

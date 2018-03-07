@@ -562,4 +562,14 @@ public class UserService extends Service {
             fl.setEnabled(isTrue);
         }
     }
+
+    public void setBackQuizImages(ImageView imageView) {
+        if (getIsPlayerQuiz()) {
+            PersonVO vo = getmPersonImageList();
+            imageView.setBackgroundResource(vo.getP_res_id());
+        } else {
+            EmblemVO vo = getmEmblemImageList();
+            imageView.setBackgroundResource(vo.getE_res_id());
+        }
+    }
 }
