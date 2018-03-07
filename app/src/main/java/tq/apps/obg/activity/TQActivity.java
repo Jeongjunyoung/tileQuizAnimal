@@ -119,8 +119,8 @@ public class TQActivity extends AppCompatActivity implements View.OnClickListene
 
 
     private void setNextLevelFragment() {
-        startTimerThread();
         if (levelNum != 9) {
+            startTimerThread();
             levelNum = mServiceInterface.getQuizLevel();
         }
         mBinding.buttonLayout.setVisibility(View.GONE);
@@ -206,6 +206,7 @@ public class TQActivity extends AppCompatActivity implements View.OnClickListene
     public void registerBroadcast(){
         IntentFilter filter = new IntentFilter();
         filter.addAction(BroadcastActions.BUTTON_VISIABLE);
+        filter.addAction(BroadcastActions.QUIZ_RESTART);
         registerReceiver(mBroadcastReceiver, filter);
     }
     public void unregisterBroadcast(){
@@ -271,6 +272,7 @@ public class TQActivity extends AppCompatActivity implements View.OnClickListene
     }
     private void quizGameOverListener() {
         System.out.println("Game Over");
+        mProgressHandler.removeMessages(0);
         levelNum = 9;
         setNextLevelFragment();
         mBinding.tqTopLayout.setVisibility(View.GONE);
@@ -279,10 +281,18 @@ public class TQActivity extends AppCompatActivity implements View.OnClickListene
 
     private void quizReadyListener() {
         levelNum = 0;
+        quizCount = 150;
+        quizLife = 3;
+        quizProg.setProgress(quizCount);
+        mBinding.quizLife1.setVisibility(View.VISIBLE);
+        mBinding.quizLife2.setVisibility(View.VISIBLE);
+        mBinding.quizLife3.setVisibility(View.VISIBLE);
+        mServiceInterface.setQuizScore(0);
+        mBinding.quizScoreText.setText("0");
         mBinding.tqTopLayout.setVisibility(View.VISIBLE);
         mBinding.tqBottomLayout.setVisibility(View.VISIBLE);
         mServiceInterface.setTileImageList();
         mServiceInterface.setIsPlayerQuiz(isPlayerQuiz);
-        setNextLevelFragment();
+        //setNextLevelFragment();
     }
 }

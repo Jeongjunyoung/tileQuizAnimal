@@ -394,7 +394,11 @@ public class UserService extends Service {
         } else {
             quizLevelScore = quizLevel;
         }
-        quizScore += (score * quizLevelScore) ;
+        if (score == 0) {
+            quizScore = 0;
+        } else {
+            quizScore += (score * quizLevelScore);
+        }
     }
 
     public int getQuizScore() {

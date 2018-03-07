@@ -138,6 +138,12 @@ public class UserServiceInterface {
         }
         return 0;
     }
+
+    public void setQuizScore(int score) {
+        if (mService != null) {
+            mService.setQuizScore(score);
+        }
+    }
     public List<String> getEmblemContentsArr() {
         if (mService != null) {
             return mService.getEmblemContentsArr();
