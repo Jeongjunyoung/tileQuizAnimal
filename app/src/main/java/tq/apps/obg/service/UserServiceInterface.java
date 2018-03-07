@@ -189,4 +189,10 @@ public class UserServiceInterface {
             mService.startQuizGoneHint(frameLayouts);
         }
     }
+
+    public void quizRestart() {
+        if (mService != null) {
+            mService.quizRestart();
+        }
+    }
 }

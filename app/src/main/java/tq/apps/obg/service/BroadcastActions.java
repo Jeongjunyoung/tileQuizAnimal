@@ -6,4 +6,5 @@ package tq.apps.obg.service;
 
 public class BroadcastActions {
     public final static String BUTTON_VISIABLE = "BUTTON_VISIABLE";
+    public final static String QUIZ_RESTART = "QUIZ_RESTART";
 }

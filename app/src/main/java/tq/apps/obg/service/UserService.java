@@ -306,6 +306,11 @@ public class UserService extends Service {
         return list;
     }
 
+    public void quizRestart() {
+        Intent intent = new Intent(BroadcastActions.QUIZ_RESTART);
+        intent.putExtra("quizRe","quizRe");
+        sendBroadcast(intent);
+    }
     public void setmPersonVO() {
         mAnswerVO = mPersonImageList.get(quizIndex);
     }
@@ -460,7 +465,7 @@ public class UserService extends Service {
                         public void run() {
                             applyRotationHintBack(180f, 270f, 360f, 0f, mFrameLayout);
                         }
-                    }, 250);
+                    }, 350);
                 }
             });
 

@@ -25,7 +25,7 @@
     </style>
     <style name="TileLinearLayout">
         <item name="android:layout_width">320dp</item>
-        <item name="android:layout_height">430dp</item>
+        <item name="android:layout_height">370dp</item>
         <item name="android:orientation">vertical</item>
     </style>
 </resources>

@@ -7,10 +7,12 @@
     tools:context="tq.apps.obg.activity.TQActivity"
     android:orientation="vertical">
     <LinearLayout
+        android:id="@+id/tq_top_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#353535"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:visibility="visible">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -71,72 +73,78 @@
                     android:src="@drawable/icon_life"/>
             </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <ProgressBar
-            android:id="@+id/quiz_timer"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="20dp"
-            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-            />
+            android:layout_height="wrap_content">
+            <ProgressBar
+                android:id="@+id/quiz_timer"
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                style="@style/Widget.AppCompat.ProgressBar.Horizontal"/>
+        </LinearLayout>
     </LinearLayout>
+
     <FrameLayout
+        android:background="#804141"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/level_fragment"
-        android:layout_weight="6">
+        android:layout_weight="5">
 
     </FrameLayout>
     <LinearLayout
-        android:id="@+id/button_layout"
+        android:id="@+id/tq_bottom_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:visibility="gone"
         android:layout_weight="1">
         <LinearLayout
+            android:id="@+id/button_layout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:layout_weight="1"
-            android:gravity="center">
-            <Button
-                android:id="@+id/contents1"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
                 android:layout_weight="1"
-                android:textAllCaps="false"
-                android:text="contents"/>
-            <Button
-                android:id="@+id/contents2"
+                android:gravity="center">
+                <Button
+                    android:id="@+id/contents1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textAllCaps="false"
+                    android:text="contents"/>
+                <Button
+                    android:id="@+id/contents2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textAllCaps="false"
+                    android:text="contents"/>
+            </LinearLayout>
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
                 android:layout_weight="1"
-                android:textAllCaps="false"
-                android:text="contents"/>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:layout_weight="1"
-            android:gravity="center">
-            <Button
-                android:id="@+id/contents3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textAllCaps="false"
-                android:text="contents"/>
-            <Button
-                android:id="@+id/contents4"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textAllCaps="false"
-                android:text="contents"/>
+                android:gravity="center">
+                <Button
+                    android:id="@+id/contents3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textAllCaps="false"
+                    android:text="contents"/>
+                <Button
+                    android:id="@+id/contents4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textAllCaps="false"
+                    android:text="contents"/>
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

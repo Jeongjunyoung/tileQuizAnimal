@@ -40,6 +40,7 @@ import tq.apps.obg.domain.PersonDBList;
 import tq.apps.obg.domain.PersonVO;
 import tq.apps.obg.domain.TileDBList;
 import tq.apps.obg.domain.TileVO;
+import tq.apps.obg.fragment.GameOverFragment;
 import tq.apps.obg.fragment.Level0Fragment;
 import tq.apps.obg.fragment.Level1Fragment;
 import tq.apps.obg.fragment.Level2Fragment;
@@ -66,7 +67,11 @@ public class TQActivity extends AppCompatActivity implements View.OnClickListene
     private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            buttonVisible();
+            if (intent.getStringExtra("quizRe") != null) {
+                quizReadyListener();
+            } else {
+                buttonVisible();
+            }
         }
     };
     @Override
@@ -88,17 +93,14 @@ public class TQActivity extends AppCompatActivity implements View.OnClickListene
         } else {
             isPlayerQuiz = false;
         }
-        quizCount = 200;
+        quizCount = 150;
         quizProg = mBinding.quizTimer;
-        quizProg.setMax(100);
-        quizProg.setProgress(quizCount);
-        mServiceInterface.setTileImageList();
-        mServiceInterface.setIsPlayerQuiz(isPlayerQuiz);
         mBinding.contents1.setOnClickListener(this);
         mBinding.contents2.setOnClickListener(this);
         mBinding.contents3.setOnClickListener(this);
         mBinding.contents4.setOnClickListener(this);
         mBinding.testGogo.setOnClickListener(this);
+        quizReadyListener();
         registerBroadcast();
         mProgressHandler = new Handler(){
             public void handleMessage(Message msg) {
@@ -106,6 +108,7 @@ public class TQActivity extends AppCompatActivity implements View.OnClickListene
                 if (quizCount <= 0) {
                     quizGameOverListener();
                 } else {
+                    System.out.println("quizCount :: "+quizCount);
                     quizCount--;
                     quizProg.incrementProgressBy(-1);
                     mProgressHandler.sendEmptyMessageDelayed(0, 100);
@@ -117,7 +120,9 @@ public class TQActivity extends AppCompatActivity implements View.OnClickListene
 
     private void setNextLevelFragment() {
         startTimerThread();
-        levelNum = mServiceInterface.getQuizLevel();
+        if (levelNum != 9) {
+            levelNum = mServiceInterface.getQuizLevel();
+        }
         mBinding.buttonLayout.setVisibility(View.GONE);
         Fragment fragment = null;
         if (levelNum == 1) {
@@ -132,6 +137,8 @@ public class TQActivity extends AppCompatActivity implements View.OnClickListene
             fragment = new Level4Fragment();
         } else if (levelNum == 5) {
             fragment = new Level5Fragment();
+        } else if (levelNum == 9) {
+            fragment = new GameOverFragment();
         }
         FragmentManager fm = getFragmentManager();
         FragmentTransaction fragmentTransaction = fm.beginTransaction();
@@ -179,6 +186,7 @@ public class TQActivity extends AppCompatActivity implements View.OnClickListene
         } else {
             Toast.makeText(getApplicationContext(), "땡!!!!!!!!!", Toast.LENGTH_SHORT).show();
             setQuizLife();
+
         }
         mBinding.quizScoreText.setText(String.valueOf(mServiceInterface.getQuizScore()));
     }
@@ -186,8 +194,10 @@ public class TQActivity extends AppCompatActivity implements View.OnClickListene
         quizLife--;
         if (quizLife == 2) {
             mBinding.quizLife1.setVisibility(View.GONE);
+            setNextLevelFragment();
         } else if (quizLife == 1) {
             mBinding.quizLife2.setVisibility(View.GONE);
+            setNextLevelFragment();
         } else {
             mBinding.quizLife3.setVisibility(View.GONE);
             quizGameOverListener();
@@ -204,10 +214,13 @@ public class TQActivity extends AppCompatActivity implements View.OnClickListene
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        mProgressHandler.removeMessages(0);
         unregisterBroadcast();
     }
     private void buttonVisible() {
+
         mBinding.buttonLayout.setVisibility(View.VISIBLE);
+
     }
 
     private void startTimerThread() {
@@ -233,6 +246,10 @@ public class TQActivity extends AppCompatActivity implements View.OnClickListene
             }
         };
         mCountDown.start();*/
+        mProgressHandler.removeMessages(0);
+        quizCount = 150;
+        quizProg.setMax(quizCount);
+        quizProg.setProgress(quizCount);
         mProgressHandler.sendEmptyMessage(0);
 
     }
@@ -247,18 +264,25 @@ public class TQActivity extends AppCompatActivity implements View.OnClickListene
                 } else if (quizCount == 0) {
                     timer.cancel();
                     Thread.interrupted();
-                    quizTimeOut();
                 }
                 quizProg.setProgress(quizCount);
             }
         });
     }
-    private void quizTimeOut() {
-        Toast.makeText(this, "Time Out", Toast.LENGTH_SHORT).show();
-        System.out.println("Time Out");
-    }
-
     private void quizGameOverListener() {
         System.out.println("Game Over");
+        levelNum = 9;
+        setNextLevelFragment();
+        mBinding.tqTopLayout.setVisibility(View.GONE);
+        mBinding.tqBottomLayout.setVisibility(View.GONE);
+    }
+
+    private void quizReadyListener() {
+        levelNum = 0;
+        mBinding.tqTopLayout.setVisibility(View.VISIBLE);
+        mBinding.tqBottomLayout.setVisibility(View.VISIBLE);
+        mServiceInterface.setTileImageList();
+        mServiceInterface.setIsPlayerQuiz(isPlayerQuiz);
+        setNextLevelFragment();
     }
 }
