@@ -12,6 +12,8 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.google.android.gms.common.api.GoogleApiClient;
+
 import java.util.List;
 
 import tq.apps.obg.domain.EmblemVO;
@@ -43,7 +45,7 @@ public class UserServiceInterface {
                 .setPackage(context.getPackageName()), mServiceConnection, Context.BIND_AUTO_CREATE);
     }
 
-    public void checkedSameImage(LinearLayout layout, Bitmap resId) {
+    /*public void checkedSameImage(LinearLayout layout, Bitmap resId) {
         if (mService != null) {
             mService.checkedSameImage(layout, resId);
         }
@@ -60,19 +62,19 @@ public class UserServiceInterface {
         }
         return null;
     }
-
+*/
     public void applyRotation(float start, float mid, float end, float depth, LinearLayout layout, boolean b) {
         if (mService != null) {
             mService.applyRotation(start, mid, end, depth, layout, b);
         }
     }
 
-    public List<TileVO> getTileImages() {
+    /*public List<TileVO> getTileImages() {
         if (mService != null) {
             return mService.getTileImages();
         }
         return null;
-    }
+    }*/
     public void setTileImageList() {
         if (mService != null) {
             mService.setmTileImageList();
@@ -91,12 +93,12 @@ public class UserServiceInterface {
         }
         return null;
     }
-    public int getQuizIndex() {
+    /*public int getQuizIndex() {
         if (mService != null) {
             return mService.getQiuzIndex();
         }
         return 0;
-    }
+    }*/
 
     public List<String> getContentsArr() {
         if (mService != null) {
@@ -105,7 +107,7 @@ public class UserServiceInterface {
         return null;
     }
 
-    public void setmPersonVO() {
+    /*public void setmPersonVO() {
         if (mService != null) {
             mService.setmPersonVO();
         }
@@ -117,7 +119,7 @@ public class UserServiceInterface {
         }
         return null;
     }
-
+*/
     public int getQuizLevel() {
         if (mService != null) {
             return mService.getQuizLevel();
@@ -168,27 +170,27 @@ public class UserServiceInterface {
         }
         return false;
     }
-    public List<FrameLayout> getmFindLayout(List<FrameLayout> list) {
+    /*public List<FrameLayout> getmFindLayout(List<FrameLayout> list) {
         if (mService != null) {
             return mService.getmFindLayout(list);
         }
         return null;
-    }
-    public void applyRotationHint(float start, float mid, float end, float depth, FrameLayout frameLayout) {
+    }*/
+    /*public void applyRotationHint(float start, float mid, float end, float depth, FrameLayout frameLayout) {
         if (mService != null) {
             mService.applyRotationHint(start, mid, end, depth, frameLayout);
         }
-    }
+    }*/
     public void viewHindListener(List<FrameLayout> frameLayouts) {
         if (mService != null) {
             mService.viewHindListener(frameLayouts);
         }
     }
-    public void viewHindBackListener(List<FrameLayout> frameLayouts) {
+    /*public void viewHindBackListener(List<FrameLayout> frameLayouts) {
         if (mService != null) {
             mService.viewHindBackListener(frameLayouts);
         }
-    }
+    }*/
 
     public void startQuizGoneHint(List<FrameLayout> frameLayouts) {
         if (mService != null) {
@@ -200,5 +202,24 @@ public class UserServiceInterface {
         if (mService != null) {
             mService.quizRestart();
         }
+    }
+
+    /*public void updateScore(long score) {
+        if (mService != null) {
+            mService.updateScore(score);
+        }
+    }
+
+    public void viewLeaderBoardScore() {
+        if (mService != null) {
+            mService.viewLeaderBoardScore();
+        }
+    }*/
+
+    public GoogleApiClient getApiClient() {
+        if (mService != null) {
+            return mService.getApiClient();
+        }
+        return null;
     }
 }

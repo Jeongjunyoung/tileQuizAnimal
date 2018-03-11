@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "498065915498",
+    "firebase_url": "https://tilequiz.firebaseio.com",
+    "project_id": "tilequiz",
+    "storage_bucket": "tilequiz.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:498065915498:android:74fa936a0ce04a03",
+        "android_client_info": {
+          "package_name": "tq.apps.obg"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "498065915498-amnm9ue3dgev4k39qkr8chl69po27qep.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "tq.apps.obg",
+            "certificate_hash": "e9c58a969d74ed13ffbebfc756d5920faf88298c"
+          }
+        },
+        {
+          "client_id": "498065915498-pvr82g70mk0ik3m5300ng7dais9i942d.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB4hze68l2R9gedCWyRrh320_KQUknwDlc"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "498065915498-pvr82g70mk0ik3m5300ng7dais9i942d.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -16,6 +16,7 @@ import android.graphics.drawable.Drawable;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MotionEvent;
@@ -25,6 +26,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
+
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.games.Games;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,18 +57,21 @@ import tq.apps.obg.service.UserApplication;
 import tq.apps.obg.service.UserServiceInterface;
 
 public class TQActivity extends AppCompatActivity implements View.OnClickListener{
-    ActivityTqBinding mBinding;
+    private ActivityTqBinding mBinding;
     private int levelNum;
     private DBHelper dbHelper;
     private int quizLife = 3;
     private UserServiceInterface mServiceInterface;
     private boolean isPlayerQuiz;
-    CountDownTimer mCountDown;
-    Handler mProgressHandler;
-    int quizCount;
-    ProgressBar quizProg= null;
-    Timer timer = null;
-    TimerTask timerTask = null;
+    private CountDownTimer mCountDown;
+    private Handler mProgressHandler;
+    private int quizCount;
+    private ProgressBar quizProg= null;
+    private Fragment fragment = null;
+    private Timer timer = null;
+    private TimerTask timerTask = null;
+    private long mQuizScore;
+    private GoogleApiClient apiClient;
     private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -80,11 +88,22 @@ public class TQActivity extends AppCompatActivity implements View.OnClickListene
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_tq);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         initView();
+
     }
 
     @SuppressLint("HandlerLeak")
     private void initView() {
         mServiceInterface = UserApplication.getInstance().getServiceInterface();
+        apiClient = mServiceInterface.getApiClient();
+        apiClient = new GoogleApiClient.Builder(this)
+                .addApi(Games.API)
+                .addScope(Games.SCOPE_GAMES)
+                .enableAutoManage(this, new GoogleApiClient.OnConnectionFailedListener() {
+                    @Override
+                    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+                        System.out.println("failll");
+                    }
+                }).build();
         dbHelper = DBHelper.getInstance(this);
         Intent intent = getIntent();
         String str = intent.getStringExtra("quizKinds");
@@ -108,7 +127,6 @@ public class TQActivity extends AppCompatActivity implements View.OnClickListene
                 if (quizCount <= 0) {
                     quizGameOverListener();
                 } else {
-                    System.out.println("quizCount :: "+quizCount);
                     quizCount--;
                     quizProg.incrementProgressBy(-1);
                     mProgressHandler.sendEmptyMessageDelayed(0, 100);
@@ -124,7 +142,6 @@ public class TQActivity extends AppCompatActivity implements View.OnClickListene
             levelNum = mServiceInterface.getQuizLevel();
         }
         mBinding.buttonLayout.setVisibility(View.GONE);
-        Fragment fragment = null;
         if (levelNum == 1) {
             fragment = new Level1Fragment();
         } else if (levelNum ==2) {
@@ -142,8 +159,7 @@ public class TQActivity extends AppCompatActivity implements View.OnClickListene
         }
         FragmentManager fm = getFragmentManager();
         FragmentTransaction fragmentTransaction = fm.beginTransaction();
-        fragmentTransaction.replace(R.id.level_fragment, fragment);
-        fragmentTransaction.commit();
+        fragmentTransaction.replace(R.id.level_fragment, fragment).commit();
         setBtnContents();
     }
     @Override
@@ -188,7 +204,8 @@ public class TQActivity extends AppCompatActivity implements View.OnClickListene
             setQuizLife();
 
         }
-        mBinding.quizScoreText.setText(String.valueOf(mServiceInterface.getQuizScore()));
+        mQuizScore = (long) mServiceInterface.getQuizScore();
+        mBinding.quizScoreText.setText(String.valueOf(mQuizScore));
     }
     public void setQuizLife() {
         quizLife--;
@@ -225,28 +242,6 @@ public class TQActivity extends AppCompatActivity implements View.OnClickListene
     }
 
     private void startTimerThread() {
-        /*timerTask = new TimerTask() {
-            @Override
-            public void run() {
-                decreaseBar();
-            }
-        };
-        timer = new Timer();
-        timer.schedule(timerTask, 0 ,1000);*/
-        /*mCountDown = new CountDownTimer(5000, 1000) {
-            @Override
-            public void onTick(long l) {
-                quizCount++;
-                quizProg.setProgress((int)quizCount*100/(5000/1000));
-            }
-
-            @Override
-            public void onFinish() {
-                quizCount++;
-                quizProg.setProgress(100);
-            }
-        };
-        mCountDown.start();*/
         mProgressHandler.removeMessages(0);
         quizCount = 150;
         quizProg.setMax(quizCount);
@@ -277,6 +272,9 @@ public class TQActivity extends AppCompatActivity implements View.OnClickListene
         setNextLevelFragment();
         mBinding.tqTopLayout.setVisibility(View.GONE);
         mBinding.tqBottomLayout.setVisibility(View.GONE);
+        Games.Leaderboards.submitScore(apiClient, getString(R.string.leaderboard_score), mQuizScore);
+        startActivityForResult(Games.Leaderboards.getLeaderboardIntent(apiClient,
+                getString(R.string.leaderboard_score)),0);
     }
 
     private void quizReadyListener() {
@@ -293,6 +291,11 @@ public class TQActivity extends AppCompatActivity implements View.OnClickListene
         mBinding.tqBottomLayout.setVisibility(View.VISIBLE);
         mServiceInterface.setTileImageList();
         mServiceInterface.setIsPlayerQuiz(isPlayerQuiz);
+        FragmentManager fm = getFragmentManager();
+        FragmentTransaction fragmentTransaction = fm.beginTransaction();
+        if (fragment != null) {
+            fragmentTransaction.remove(fragment).commit();
+        }
         //setNextLevelFragment();
     }
 }

@@ -1,6 +1,7 @@
 package tq.apps.obg.service;
 
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -9,7 +10,9 @@ import android.graphics.drawable.Drawable;
 import android.os.Binder;
 import android.os.Handler;
 import android.os.IBinder;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
@@ -17,12 +20,18 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.games.Games;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
+import tq.apps.obg.R;
+import tq.apps.obg.activity.FrontActivity;
 import tq.apps.obg.animation.Rotate3DAnimation;
 import tq.apps.obg.db.DBHelper;
 import tq.apps.obg.domain.EmblemVO;
@@ -57,6 +66,7 @@ public class UserService extends Service {
     private int levelCount = 0;
     private int quizButtonLevel, quizButtonLevelIndex;
     private boolean isPlayerQuiz;
+    private static GoogleApiClient apiClient;
     Handler mHandler = new Handler();
 
     @Nullable
@@ -80,6 +90,15 @@ public class UserService extends Service {
     }
 
     private void setData() {
+        apiClient = new GoogleApiClient.Builder(this)
+                .addApi(Games.API)
+                .addScope(Games.SCOPE_GAMES)
+                .enableAutoManage((FragmentActivity) FrontActivity.mContext, new GoogleApiClient.OnConnectionFailedListener() {
+                    @Override
+                    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+                        System.out.println("Failllllllllll");
+                    }
+                }).build();
         mTileImageList = dbHelper.selectTielData();
         mPersonImageList = dbHelper.selectPersonData();
         mEmblemImageList = dbHelper.selectEmblemData();
@@ -88,6 +107,17 @@ public class UserService extends Service {
         setmEmblemImageList();
     }
 
+    public void updateScore(long score) {
+       // Games.Leaderboards.submitScore(apiClient, getString(R.string.leaderboard_score), score);
+    }
+
+    public void viewLeaderBoardScore() {
+        //(Games.Leaderboards.getLeaderboardIntent(apiClient, getString(R.string.leaderboard_score)));
+    }
+
+    public GoogleApiClient getApiClient() {
+        return apiClient;
+    }
     public List<TileVO> getTileImages() {
         List<TileVO> list = dbHelper.selectTielData();
         long seed = System.nanoTime();
