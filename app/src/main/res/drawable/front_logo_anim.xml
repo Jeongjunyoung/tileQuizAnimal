@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animation-list xmlns:android="http://schemas.android.com/apk/res/android"
+    android:oneshot="false" >
+    <item android:drawable="@drawable/front_logo01" android:duration="40" />
+    <item android:drawable="@drawable/front_logo02" android:duration="40" />
+    <item android:drawable="@drawable/front_logo03" android:duration="40" />
+    <item android:drawable="@drawable/front_logo04" android:duration="40" />
+    <item android:drawable="@drawable/front_logo05" android:duration="40" />
+    <item android:drawable="@drawable/front_logo06" android:duration="40" />
+    <item android:drawable="@drawable/front_logo07" android:duration="40" />
+    <item android:drawable="@drawable/front_logo08" android:duration="40" />
+</animation-list>

@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.databinding.DataBindingUtil;
+import android.graphics.drawable.AnimationDrawable;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
@@ -43,6 +44,7 @@ import tq.apps.obg.service.UserServiceInterface;
 public class FrontActivity extends AppCompatActivity implements View.OnClickListener{
     ActivityFrontBinding mBinding;
     public static Context mContext;
+    private AnimationDrawable drawable;
     private UserServiceInterface mUserService = UserApplication.getInstance().getServiceInterface();
     private DBHelper dbHelper;
     //private GoogleApiClient apiClient;
@@ -59,6 +61,8 @@ public class FrontActivity extends AppCompatActivity implements View.OnClickList
         dbHelper.open();
         mBinding.playerQuiz.setOnClickListener(this);
         mBinding.teamQuiz.setOnClickListener(this);
+        mBinding.frontLogo.setBackgroundResource(R.drawable.front_logo_anim);
+        drawable = (AnimationDrawable) mBinding.frontLogo.getBackground();
     }
     @Override
     public void onClick(View view) {
@@ -74,6 +78,17 @@ public class FrontActivity extends AppCompatActivity implements View.OnClickList
                 break;
         }
     }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        if (hasFocus) {
+            drawable.start();
+        } else {
+            drawable.stop();
+        }
+    }
+
     public List<TileVO> getTileList() {
         TileDBList tileDBList = new TileDBList();
         return tileDBList.getDBTileList();

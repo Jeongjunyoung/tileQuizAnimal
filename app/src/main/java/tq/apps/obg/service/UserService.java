@@ -90,7 +90,7 @@ public class UserService extends Service {
     }
 
     private void setData() {
-        apiClient = new GoogleApiClient.Builder(this)
+        /*apiClient = new GoogleApiClient.Builder(this)
                 .addApi(Games.API)
                 .addScope(Games.SCOPE_GAMES)
                 .enableAutoManage((FragmentActivity) FrontActivity.mContext, new GoogleApiClient.OnConnectionFailedListener() {
@@ -98,7 +98,7 @@ public class UserService extends Service {
                     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
                         System.out.println("Failllllllllll");
                     }
-                }).build();
+                }).build();*/
         mTileImageList = dbHelper.selectTielData();
         mPersonImageList = dbHelper.selectPersonData();
         mEmblemImageList = dbHelper.selectEmblemData();
