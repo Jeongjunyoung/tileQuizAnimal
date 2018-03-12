@@ -35,16 +35,30 @@
         android:layout_gravity="center"
         android:gravity="center"
         android:layout_weight="1">
-        <Button
-            android:id="@+id/player_quiz"
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="선수 맞추기"/>
-        <Button
-            android:id="@+id/team_quiz"
-            android:layout_width="match_parent"
+            android:layout_gravity="right">
+            <ImageButton
+                android:id="@+id/player_quiz"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:background="@android:color/transparent"
+                android:src="@drawable/player_btn_3"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="팀명 맞추기"/>
+            android:layout_gravity="right">
+            <ImageButton
+                android:id="@+id/team_quiz"
+                android:layout_marginTop="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:src="@drawable/emblem_btn_4"/>
+        </LinearLayout>
     </LinearLayout>
 </LinearLayout>
 </layout>
