@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#61b66c">
+        style="@style/QuizBackgroundLayout">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -47,8 +45,8 @@
                                 style="@style/TileFrontImageView" />
 
                             <ImageView
-                                style="@style/TileBackImageView"
-                                android:id="@+id/image_back_11"/>
+                                android:id="@+id/image_back_11"
+                                style="@style/TileBackImageView" />
                         </FrameLayout>
                     </LinearLayout>
 

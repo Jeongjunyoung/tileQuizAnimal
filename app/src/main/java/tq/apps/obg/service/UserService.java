@@ -90,7 +90,7 @@ public class UserService extends Service {
     }
 
     private void setData() {
-        apiClient = new GoogleApiClient.Builder(this)
+        /*apiClient = new GoogleApiClient.Builder(this)
                 .addApi(Games.API)
                 .addScope(Games.SCOPE_GAMES)
                 .enableAutoManage((FragmentActivity) FrontActivity.mContext, new GoogleApiClient.OnConnectionFailedListener() {
@@ -98,7 +98,7 @@ public class UserService extends Service {
                     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
                         System.out.println("Failllllllllll");
                     }
-                }).build();
+                }).build();*/
         mTileImageList = dbHelper.selectTielData();
         mPersonImageList = dbHelper.selectPersonData();
         mEmblemImageList = dbHelper.selectEmblemData();
@@ -163,7 +163,6 @@ public class UserService extends Service {
             clickedNum = 0;
             //setFrameLayoutsEnable(true);
         }
-
     }
 
     public boolean isSameResId(Bitmap num1, Bitmap num2) {
@@ -207,7 +206,9 @@ public class UserService extends Service {
 
         @Override
         public void onAnimationStart(Animation animation) {
-
+            if (isFront) {
+                //setFrameLayoutsEnable(false);
+            }
         }
 
         @Override
@@ -220,10 +221,11 @@ public class UserService extends Service {
                         if (clickedNum == 2) {
                             setFrameLayoutsEnable(false);
                         }*/
+                        //setFrameLayoutsEnable(true);
                         checkedSameImage(mLayout, getBitMap((ImageView) mFrameLayout.getChildAt(1)));
+                        mFrameLayout.setEnabled(false);
                         mFrameLayout.getChildAt(0).setVisibility(View.GONE);
                         mFrameLayout.getChildAt(1).setVisibility(View.VISIBLE);
-                        mFrameLayout.setEnabled(false);
                     } else {
                         mFrameLayout.setEnabled(true);
                         mFrameLayout.getChildAt(0).setVisibility(View.VISIBLE);
@@ -499,7 +501,7 @@ public class UserService extends Service {
                         public void run() {
                             applyRotationHintBack(180f, 270f, 360f, 0f, mFrameLayout);
                         }
-                    }, 350);
+                    }, 750);
                 }
             });
 
@@ -584,7 +586,7 @@ public class UserService extends Service {
             public void run() {
                 viewHindBackListener(frameLayouts);
             }
-        }, 300);
+        }, 700);
     }
 
     public void setFrameLayoutsEnable(boolean isTrue) {

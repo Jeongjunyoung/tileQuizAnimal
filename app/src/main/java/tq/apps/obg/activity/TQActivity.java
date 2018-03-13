@@ -11,6 +11,7 @@ import android.content.IntentFilter;
 import android.databinding.DataBindingUtil;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.CountDownTimer;
@@ -27,6 +28,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.games.Games;
@@ -65,13 +67,14 @@ public class TQActivity extends AppCompatActivity implements View.OnClickListene
     private boolean isPlayerQuiz;
     private CountDownTimer mCountDown;
     private Handler mProgressHandler;
-    private int quizCount;
-    private ProgressBar quizProg= null;
+    private float quizCount;
+    private RoundCornerProgressBar quizProg;
     private Fragment fragment = null;
     private Timer timer = null;
     private TimerTask timerTask = null;
     private long mQuizScore;
     private GoogleApiClient apiClient;
+    private AnimationDrawable aDrawable;
     private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -95,7 +98,7 @@ public class TQActivity extends AppCompatActivity implements View.OnClickListene
     private void initView() {
         mServiceInterface = UserApplication.getInstance().getServiceInterface();
         apiClient = mServiceInterface.getApiClient();
-        apiClient = new GoogleApiClient.Builder(this)
+        /*apiClient = new GoogleApiClient.Builder(this)
                 .addApi(Games.API)
                 .addScope(Games.SCOPE_GAMES)
                 .enableAutoManage(this, new GoogleApiClient.OnConnectionFailedListener() {
@@ -103,7 +106,9 @@ public class TQActivity extends AppCompatActivity implements View.OnClickListene
                     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
                         System.out.println("failll");
                     }
-                }).build();
+                }).build();*/
+        mBinding.startBtn.setBackgroundResource(R.drawable.start_btn_anim);
+        aDrawable = (AnimationDrawable) mBinding.startBtn.getBackground();
         dbHelper = DBHelper.getInstance(this);
         Intent intent = getIntent();
         String str = intent.getStringExtra("quizKinds");
@@ -114,11 +119,13 @@ public class TQActivity extends AppCompatActivity implements View.OnClickListene
         }
         quizCount = 150;
         quizProg = mBinding.quizTimer;
+        quizProg.setProgressColor(Color.parseColor("#b7e4b6"));
+        quizProg.setProgressBackgroundColor(Color.parseColor("#3e483d"));
         mBinding.contents1.setOnClickListener(this);
         mBinding.contents2.setOnClickListener(this);
         mBinding.contents3.setOnClickListener(this);
         mBinding.contents4.setOnClickListener(this);
-        mBinding.testGogo.setOnClickListener(this);
+        mBinding.startBtn.setOnClickListener(this);
         quizReadyListener();
         registerBroadcast();
         mProgressHandler = new Handler(){
@@ -127,8 +134,9 @@ public class TQActivity extends AppCompatActivity implements View.OnClickListene
                 if (quizCount <= 0) {
                     quizGameOverListener();
                 } else {
-                    quizCount--;
-                    quizProg.incrementProgressBy(-1);
+                    quizCount -= 0.5;
+                    //quizProg.incrementProgressBy(-1);
+                    quizProg.setProgress(quizCount);
                     mProgressHandler.sendEmptyMessageDelayed(0, 100);
                 }
             }
@@ -177,8 +185,10 @@ public class TQActivity extends AppCompatActivity implements View.OnClickListene
             case R.id.contents4:
                 checkAnswer(mBinding.contents4.getText().toString());
                 break;
-            case R.id.test_gogo:
+            case R.id.start_btn:
                 setNextLevelFragment();
+                mBinding.levelFragment.setVisibility(View.VISIBLE);
+                mBinding.startBtnLayout.setVisibility(View.GONE);
                 break;
         }
     }
@@ -226,15 +236,7 @@ public class TQActivity extends AppCompatActivity implements View.OnClickListene
         filter.addAction(BroadcastActions.QUIZ_RESTART);
         registerReceiver(mBroadcastReceiver, filter);
     }
-    public void unregisterBroadcast(){
-        unregisterReceiver(mBroadcastReceiver);
-    }
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        mProgressHandler.removeMessages(0);
-        unregisterBroadcast();
-    }
+
     private void buttonVisible() {
 
         mBinding.buttonLayout.setVisibility(View.VISIBLE);
@@ -250,11 +252,11 @@ public class TQActivity extends AppCompatActivity implements View.OnClickListene
 
     }
 
-    private void decreaseBar() {
+    /*private void decreaseBar() {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                quizCount = quizProg.getProgress();
+                quizCount = (int) quizProg.getProgress();
                 if (quizCount > 0) {
                     quizCount-=1;
                 } else if (quizCount == 0) {
@@ -264,7 +266,7 @@ public class TQActivity extends AppCompatActivity implements View.OnClickListene
                 quizProg.setProgress(quizCount);
             }
         });
-    }
+    }*/
     private void quizGameOverListener() {
         System.out.println("Game Over");
         mProgressHandler.removeMessages(0);
@@ -297,5 +299,23 @@ public class TQActivity extends AppCompatActivity implements View.OnClickListene
             fragmentTransaction.remove(fragment).commit();
         }
         //setNextLevelFragment();
+    }
+    public void unregisterBroadcast(){
+        unregisterReceiver(mBroadcastReceiver);
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mProgressHandler.removeMessages(0);
+        unregisterBroadcast();
+    }
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        if (hasFocus) {
+            aDrawable.start();
+        } else {
+            aDrawable.stop();
+        }
     }
 }

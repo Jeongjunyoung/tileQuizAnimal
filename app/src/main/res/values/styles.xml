@@ -13,7 +13,7 @@
         <item name="android:layout_height">match_parent</item>
         <item name="android:paddingRight">11dp</item>
         <item name="android:paddingLeft">11dp</item>
-        <item name="android:src">@drawable/tile_back</item>
+        <item name="android:background">@drawable/tile_green2</item>
         <item name="android:visibility">gone</item>
     </style>
     <style name="TileBackImageView">
@@ -27,5 +27,15 @@
         <item name="android:layout_width">320dp</item>
         <item name="android:layout_height">370dp</item>
         <item name="android:orientation">vertical</item>
+    </style>
+    <style name="QuizBackgroundLayout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:background">#b9d7b0</item>
+    </style>
+    <style name="LifeImageView">
+        <item name="android:layout_width">45dp</item>
+        <item name="android:layout_height">45dp</item>
+        <item name="android:src">@drawable/icon_life</item>
     </style>
 </resources>
