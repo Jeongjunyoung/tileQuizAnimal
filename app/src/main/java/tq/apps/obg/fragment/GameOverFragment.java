@@ -31,6 +31,7 @@ public class GameOverFragment extends Fragment implements View.OnClickListener{
     private void setViewData() {
         mBinding.text3.setText("Game Over");
         mBinding.quizReStart.setOnClickListener(this);
+        mBinding.quizOut.setOnClickListener(this);
     }
 
     @Override
@@ -38,6 +39,9 @@ public class GameOverFragment extends Fragment implements View.OnClickListener{
         switch (view.getId()) {
             case R.id.quiz_re_start:
                 userServiceInterface.quizRestart();
+                break;
+            case R.id.quiz_out:
+                getActivity().finish();
                 break;
         }
     }

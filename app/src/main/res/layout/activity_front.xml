@@ -7,10 +7,11 @@
     android:layout_height="match_parent"
     tools:context="tq.apps.obg.activity.FrontActivity"
     android:orientation="vertical"
-    android:background="#68ae94">
+    android:background="@drawable/background2">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="200dp"
+        android:layout_marginLeft="8dp"
         android:layout_weight="1">
         <!--<TextView
             android:layout_width="match_parent"
@@ -45,7 +46,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
                 android:background="@android:color/transparent"
-                android:src="@drawable/player_btn_3"/>
+                android:src="@drawable/pbtn_states"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="wrap_content"
@@ -53,11 +54,11 @@
             android:layout_gravity="right">
             <ImageButton
                 android:id="@+id/team_quiz"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="15dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
-                android:src="@drawable/emblem_btn_4"/>
+                android:src="@drawable/ebtn_states"/>
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>
