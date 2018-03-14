@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import tq.apps.obg.activity.FrontActivity;
+import tq.apps.obg.activity.LoadingActivity;
 import tq.apps.obg.activity.TQActivity;
 
 /**
@@ -15,7 +16,7 @@ import tq.apps.obg.activity.TQActivity;
 public class TileDBList extends Activity{
     public List<TileVO> getDBTileList() {
         List<TileVO> list = new ArrayList<>();
-        FrontActivity tq = ((FrontActivity) FrontActivity.mContext);
+        LoadingActivity tq = ((LoadingActivity) LoadingActivity.mContext);
         list.add(new TileVO("cluber", tq.getId("tile_cluber")));
         list.add(new TileVO("flower", tq.getId("tile_flower")));
         list.add(new TileVO("panda", tq.getId("tile_panda")));

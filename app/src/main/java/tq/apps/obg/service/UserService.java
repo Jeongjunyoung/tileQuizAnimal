@@ -46,10 +46,9 @@ public class UserService extends Service {
     private final IBinder mBinder = new UserServiceBinder();
     private List<FrameLayout> quizFrameLayouts;
     private int clickedNum = 0;
-    //private boolean isFront = true;
     private LinearLayout firstView, secondView;
     private Bitmap firstResId, secondResId;
-    private int DURATION = 120;
+    private int DURATION = 100;
     private float centerX;
     private float centerY;
     private DBHelper dbHelper;
@@ -61,7 +60,6 @@ public class UserService extends Service {
     private EmblemVO mAnswerMVO;
     private int quizIndex = 0;
     private int quizLevel = 0;
-    private int arrIndex = 0;
     private int quizScore = 0;
     private int levelCount = 0;
     private int quizButtonLevel, quizButtonLevelIndex;
@@ -131,13 +129,14 @@ public class UserService extends Service {
             firstView = view;
             firstResId = resId;
         } else if (clickedNum == 2) {
+            setFrameLayoutsEnable(false);
             secondView = view;
             secondResId = resId;
             mHandler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     if (isSameResId(firstResId, secondResId)) {
-                        System.out.println("같음");
+                        //같음
                         quizButtonLevelIndex += 1;
                         firstView.setBackgroundColor(Color.parseColor("#00000000"));
                         firstView.setEnabled(false);
@@ -151,17 +150,17 @@ public class UserService extends Service {
                         if (quizButtonLevelIndex == quizButtonLevel) {
                             sendBroadcast(new Intent(BroadcastActions.BUTTON_VISIABLE));
                         }
+                        quizScore += 15;
                     } else {
-                        System.out.println("다름");
+                        //다름
                         applyRotation(0f, 90f, 180f, 0f, firstView, false);
                         applyRotation(0f, 90f, 180f, 0f, secondView, false);
                     }
-                    //setFrameLayoutsEnable(true);
-                    //setFrameLayoutsEnable(true);
+                    setFrameLayoutsEnable(true);
                 }
             }, 290);
             clickedNum = 0;
-            //setFrameLayoutsEnable(true);
+
         }
     }
 
@@ -206,13 +205,6 @@ public class UserService extends Service {
 
         @Override
         public void onAnimationStart(Animation animation) {
-            if (isFront) {
-                //setFrameLayoutsEnable(false);
-            }
-        }
-
-        @Override
-        public void onAnimationEnd(Animation animation) {
             mFrameLayout.post(new Runnable() {
                 @Override
                 public void run() {
@@ -237,6 +229,11 @@ public class UserService extends Service {
                     mFrameLayout.startAnimation(rot);
                 }
             });
+
+        }
+
+        @Override
+        public void onAnimationEnd(Animation animation) {
         }
 
         @Override

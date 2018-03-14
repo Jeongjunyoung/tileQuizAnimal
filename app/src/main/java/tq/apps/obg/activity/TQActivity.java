@@ -23,6 +23,8 @@ import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -125,7 +127,7 @@ public class TQActivity extends AppCompatActivity implements View.OnClickListene
         mBinding.contents2.setOnClickListener(this);
         mBinding.contents3.setOnClickListener(this);
         mBinding.contents4.setOnClickListener(this);
-        mBinding.startBtn.setOnClickListener(this);
+        mBinding.startBtnClick.setOnClickListener(this);
         quizReadyListener();
         registerBroadcast();
         mProgressHandler = new Handler(){
@@ -185,7 +187,7 @@ public class TQActivity extends AppCompatActivity implements View.OnClickListene
             case R.id.contents4:
                 checkAnswer(mBinding.contents4.getText().toString());
                 break;
-            case R.id.start_btn:
+            case R.id.start_btn_click:
                 setNextLevelFragment();
                 mBinding.levelFragment.setVisibility(View.VISIBLE);
                 mBinding.startBtnLayout.setVisibility(View.GONE);

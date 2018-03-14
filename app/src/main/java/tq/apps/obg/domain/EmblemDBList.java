@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import tq.apps.obg.activity.FrontActivity;
+import tq.apps.obg.activity.LoadingActivity;
 
 /**
  * Created by d1jun on 2018-02-28.
@@ -12,7 +13,7 @@ import tq.apps.obg.activity.FrontActivity;
 public class EmblemDBList {
     public List<EmblemVO> getDBPersonList() {
         List<EmblemVO> list = new ArrayList<>();
-        FrontActivity tq = ((FrontActivity)FrontActivity.mContext);
+        LoadingActivity tq = ((LoadingActivity)LoadingActivity.mContext);
         //Spain
         list.add(new EmblemVO("FC Barcelona", tq.getId("club_barca"), "spain", "FC바르셀로나"));
         list.add(new EmblemVO("Athletic Bilbao", tq.getId("club_athletic"), "spain", "아틀레틱 빌바오"));

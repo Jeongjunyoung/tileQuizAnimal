@@ -9,7 +9,6 @@ public class UserApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        System.out.println("UserApplication onCreate() 호출");
         mInstance = this;
         mInterface = new UserServiceInterface(getApplicationContext());
     }

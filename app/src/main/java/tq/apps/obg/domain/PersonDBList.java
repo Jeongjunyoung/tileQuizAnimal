@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import tq.apps.obg.activity.FrontActivity;
+import tq.apps.obg.activity.LoadingActivity;
 import tq.apps.obg.activity.TQActivity;
 
 /**
@@ -13,7 +14,7 @@ import tq.apps.obg.activity.TQActivity;
 public class PersonDBList {
     public List<PersonVO> getDBPersonList() {
         List<PersonVO> list = new ArrayList<>();
-        FrontActivity tq = ((FrontActivity)FrontActivity.mContext);
+        LoadingActivity tq = ((LoadingActivity)LoadingActivity.mContext);
         list.add(new PersonVO("Lionel Messi", tq.getId("p_messi"), "fb", "리오넬 메시"));
         list.add(new PersonVO("Philippe Coutinho", tq.getId("p_coutinho"), "fb", "필리페 쿠티뉴"));
         list.add(new PersonVO("Sergio Aguero", tq.getId("p_aguero"), "fb", "세르히오 아구에로"));

@@ -42,7 +42,7 @@ import tq.apps.obg.service.UserService;
 import tq.apps.obg.service.UserServiceInterface;
 
 public class FrontActivity extends AppCompatActivity implements View.OnClickListener{
-    ActivityFrontBinding mBinding;
+    private ActivityFrontBinding mBinding;
     public static Context mContext;
     private AnimationDrawable drawable;
     private UserServiceInterface mUserService = UserApplication.getInstance().getServiceInterface();
@@ -57,8 +57,8 @@ public class FrontActivity extends AppCompatActivity implements View.OnClickList
     }
     private void initView() {
         mContext = this;
-        dbHelper = new DBHelper(this);
-        dbHelper.open();
+        /*dbHelper = new DBHelper(this);
+        dbHelper.open();*/
         mBinding.playerQuiz.setOnClickListener(this);
         mBinding.teamQuiz.setOnClickListener(this);
         mBinding.frontLogo.setBackgroundResource(R.drawable.front_logo_anim);
@@ -89,7 +89,7 @@ public class FrontActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
-    public List<TileVO> getTileList() {
+    /*public List<TileVO> getTileList() {
         TileDBList tileDBList = new TileDBList();
         return tileDBList.getDBTileList();
     }
@@ -105,7 +105,7 @@ public class FrontActivity extends AppCompatActivity implements View.OnClickList
     }
     public int getId(String imageName) {
         return getResources().getIdentifier("tq.apps.obg:drawable/" + imageName, null, null);
-    }
+    }*/
     /*private boolean isSignedIn() {
         return GoogleSignIn.getLastSignedInAccount(this) != null;
     }

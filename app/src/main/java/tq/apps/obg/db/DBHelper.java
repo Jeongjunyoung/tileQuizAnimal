@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import tq.apps.obg.activity.FrontActivity;
+import tq.apps.obg.activity.LoadingActivity;
 import tq.apps.obg.activity.TQActivity;
 import tq.apps.obg.domain.EmblemVO;
 import tq.apps.obg.domain.PersonVO;
@@ -62,7 +63,7 @@ public class DBHelper {
             sqLiteDatabase.execSQL("create table tile_data(_id integer primary key AUTOINCREMENT, tile_name text, tile_res_id integer)");
             sqLiteDatabase.execSQL("create table person_data(_id integer primary key AUTOINCREMENT, p_name text, p_res_id integer, p_job text, p_kr_name text)");
             sqLiteDatabase.execSQL("create table emblem_data(_id integer primary key AUTOINCREMENT, e_name text, e_res_id integer, e_league text, e_kr_name text)");
-            FrontActivity tq = ((FrontActivity) FrontActivity.mContext);
+            LoadingActivity tq = ((LoadingActivity) LoadingActivity.mContext);
             insertAllData(tq.getTileList(), sqLiteDatabase);
             insertPersonData(tq.getPersonList(), sqLiteDatabase);
             insertEmblemData(tq.getEmblemList(), sqLiteDatabase);
