@@ -29,7 +29,6 @@ public class GameOverFragment extends Fragment implements View.OnClickListener{
         return mBinding.getRoot();
     }
     private void setViewData() {
-        mBinding.text3.setText("Game Over");
         mBinding.quizReStart.setOnClickListener(this);
         mBinding.quizOut.setOnClickListener(this);
     }

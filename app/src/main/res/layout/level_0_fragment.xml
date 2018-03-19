@@ -11,11 +11,7 @@
             android:layout_alignParentTop="true"
             android:gravity="center"
             android:orientation="vertical">
-            <Button
-                android:id="@+id/test_btn"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="TEST"/>
+
             <LinearLayout
                 android:id="@+id/back_quiz_image"
                 style="@style/TileLinearLayout">

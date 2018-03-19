@@ -10,4 +10,5 @@ Save this file as res/values/games-ids.xml in your project.
     <string name="package_name" translatable="false">tq.apps.obg</string>
     <!-- leaderboard Score -->
     <string name="leaderboard_score" translatable="false">CgkI6vyquL8OEAIQAQ</string>
+    <!-- Client id-->
 </resources>

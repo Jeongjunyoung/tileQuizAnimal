@@ -31,9 +31,15 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.games.Games;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,21 +68,24 @@ import tq.apps.obg.service.UserServiceInterface;
 
 public class TQActivity extends AppCompatActivity implements View.OnClickListener{
     private ActivityTqBinding mBinding;
+    private static final int RC_LEADERBOARD_UI = 9004;
     private int levelNum;
     private DBHelper dbHelper;
     private int quizLife = 3;
     private UserServiceInterface mServiceInterface;
     private boolean isPlayerQuiz;
-    private CountDownTimer mCountDown;
     private Handler mProgressHandler;
     private float quizCount;
     private RoundCornerProgressBar quizProg;
     private Fragment fragment = null;
-    private Timer timer = null;
-    private TimerTask timerTask = null;
     private long mQuizScore;
     private GoogleApiClient apiClient;
     private AnimationDrawable aDrawable;
+    private FirebaseDatabase database;
+    private DatabaseReference myRef;
+    private FirebaseAuth mAuth;
+    private FirebaseUser mUser;
+
     private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -100,6 +109,10 @@ public class TQActivity extends AppCompatActivity implements View.OnClickListene
     private void initView() {
         mServiceInterface = UserApplication.getInstance().getServiceInterface();
         apiClient = mServiceInterface.getApiClient();
+        database = FirebaseDatabase.getInstance();
+        myRef = database.getReference("saving-data/user");
+        mAuth = FirebaseAuth.getInstance();
+        mUser = mAuth.getCurrentUser();
         /*apiClient = new GoogleApiClient.Builder(this)
                 .addApi(Games.API)
                 .addScope(Games.SCOPE_GAMES)
@@ -128,6 +141,7 @@ public class TQActivity extends AppCompatActivity implements View.OnClickListene
         mBinding.contents3.setOnClickListener(this);
         mBinding.contents4.setOnClickListener(this);
         mBinding.startBtnClick.setOnClickListener(this);
+        mBinding.btnViewHint.setOnClickListener(this);
         quizReadyListener();
         registerBroadcast();
         mProgressHandler = new Handler(){
@@ -192,6 +206,8 @@ public class TQActivity extends AppCompatActivity implements View.OnClickListene
                 mBinding.levelFragment.setVisibility(View.VISIBLE);
                 mBinding.startBtnLayout.setVisibility(View.GONE);
                 break;
+            case R.id.btn_view_hint:
+                mServiceInterface.viewHindListener(null);
         }
     }
 
@@ -276,9 +292,9 @@ public class TQActivity extends AppCompatActivity implements View.OnClickListene
         setNextLevelFragment();
         mBinding.tqTopLayout.setVisibility(View.GONE);
         mBinding.tqBottomLayout.setVisibility(View.GONE);
-        Games.Leaderboards.submitScore(apiClient, getString(R.string.leaderboard_score), mQuizScore);
-        startActivityForResult(Games.Leaderboards.getLeaderboardIntent(apiClient,
-                getString(R.string.leaderboard_score)),0);
+        Games.getLeaderboardsClient(this, GoogleSignIn.getLastSignedInAccount(this)).
+                submitScore(getString(R.string.leaderboard_score), mQuizScore);
+        showLeaderboard();
     }
 
     private void quizReadyListener() {
@@ -319,5 +335,15 @@ public class TQActivity extends AppCompatActivity implements View.OnClickListene
         } else {
             aDrawable.stop();
         }
+    }
+    private void showLeaderboard() {
+        Games.getLeaderboardsClient(this, GoogleSignIn.getLastSignedInAccount(this))
+                .getLeaderboardIntent(getString(R.string.leaderboard_score))
+                .addOnSuccessListener(new OnSuccessListener<Intent>() {
+                    @Override
+                    public void onSuccess(Intent intent) {
+                        startActivityForResult(intent, RC_LEADERBOARD_UI);
+                    }
+                });
     }
 }

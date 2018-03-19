@@ -55,12 +55,6 @@ public class Level0Fragment extends Fragment implements View.OnTouchListener{
             frameLayoutList.get(i).setOnTouchListener(this);
             iv.setImageResource(list.get(i));
         }
-        mBinding.testBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                userServiceInterface.viewHindListener(frameLayoutList);
-            }
-        });
         userServiceInterface.startQuizGoneHint(frameLayoutList);
     }
 

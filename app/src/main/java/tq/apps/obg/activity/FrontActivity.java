@@ -25,8 +25,14 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.games.Games;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import tq.apps.obg.R;
 import tq.apps.obg.databinding.ActivityFrontBinding;
@@ -46,8 +52,6 @@ public class FrontActivity extends AppCompatActivity implements View.OnClickList
     public static Context mContext;
     private AnimationDrawable drawable;
     private UserServiceInterface mUserService = UserApplication.getInstance().getServiceInterface();
-    private DBHelper dbHelper;
-    //private GoogleApiClient apiClient;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,6 +67,12 @@ public class FrontActivity extends AppCompatActivity implements View.OnClickList
         mBinding.teamQuiz.setOnClickListener(this);
         mBinding.frontLogo.setBackgroundResource(R.drawable.front_logo_anim);
         drawable = (AnimationDrawable) mBinding.frontLogo.getBackground();
+        /*myRef = database.getReference("ggg/ggg");
+        Map<String, String> map = new HashMap<>();
+        //map.put("e_mail", user.getEmail());
+        map.put("ggg", mUser.getEmail());
+        myRef.child(mUser.getUid()).setValue(map);*/
+        //userRef.child(mUser.getUid()).child
     }
     @Override
     public void onClick(View view) {
@@ -88,77 +98,4 @@ public class FrontActivity extends AppCompatActivity implements View.OnClickList
             drawable.stop();
         }
     }
-
-    /*public List<TileVO> getTileList() {
-        TileDBList tileDBList = new TileDBList();
-        return tileDBList.getDBTileList();
-    }
-
-    public List<PersonVO> getPersonList() {
-        PersonDBList personDBList = new PersonDBList();
-        return personDBList.getDBPersonList();
-    }
-
-    public List<EmblemVO> getEmblemList() {
-        EmblemDBList emblemDBList = new EmblemDBList();
-        return emblemDBList.getDBPersonList();
-    }
-    public int getId(String imageName) {
-        return getResources().getIdentifier("tq.apps.obg:drawable/" + imageName, null, null);
-    }*/
-    /*private boolean isSignedIn() {
-        return GoogleSignIn.getLastSignedInAccount(this) != null;
-    }
-    private void signInSilently() {
-        GoogleSignInClient signInClient = GoogleSignIn.getClient(this,
-                GoogleSignInOptions.DEFAULT_GAMES_SIGN_IN);
-        signInClient.silentSignIn().addOnCompleteListener(this,
-                new OnCompleteListener<GoogleSignInAccount>() {
-                    @Override
-                    public void onComplete(@NonNull Task<GoogleSignInAccount> task) {
-                        if (task.isSuccessful()) {
-                            // The signed in account is stored in the task's result.
-                            GoogleSignInAccount signedInAccount = task.getResult();
-                            System.out.println("success");
-                        } else {
-                            // Player will need to sign-in explicitly using via UI
-                            startSignInIntent();
-                            System.out.println("fail");
-                        }
-                    }
-                });
-    }
-
-    @Override
-    protected void onPostResume() {
-        super.onPostResume();
-
-        System.out.println("asdfsdf");
-
-    }
-    private void startSignInIntent() {
-        GoogleSignInClient signInClient = GoogleSignIn.getClient(this,
-                GoogleSignInOptions.DEFAULT_GAMES_SIGN_IN);
-        Intent intent = signInClient.getSignInIntent();
-        startActivityForResult(intent, RC_SIGN_IN);
-    }
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == RC_SIGN_IN) {
-            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-            if (result.isSuccess()) {
-                // The signed in account is stored in the result.
-                GoogleSignInAccount signedInAccount = result.getSignInAccount();
-                System.out.println("success");
-            } else {
-                String message = result.getStatus().getStatusMessage();
-                if (message == null || message.isEmpty()) {
-                    System.out.println("error");
-                }
-                new AlertDialog.Builder(this).setMessage(message)
-                        .setNeutralButton(android.R.string.ok, null).show();
-            }
-        }
-    }*/
 }

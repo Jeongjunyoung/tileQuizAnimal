@@ -560,7 +560,7 @@ public class UserService extends Service {
     }
 
     public void viewHindListener(List<FrameLayout> frameLayouts) {
-        List<FrameLayout> list = getmFindLayout(frameLayouts);
+        List<FrameLayout> list = getmFindLayout(quizFrameLayouts);
         for (FrameLayout fl : list) {
             if (fl != null) {
                 applyRotationHint(0f, 90f, 180f, 0f, fl);
@@ -581,7 +581,7 @@ public class UserService extends Service {
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                viewHindBackListener(frameLayouts);
+                viewHindBackListener(quizFrameLayouts);
             }
         }, 700);
     }
