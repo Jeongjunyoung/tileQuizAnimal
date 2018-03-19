@@ -9,30 +9,22 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.databinding.DataBindingUtil;
-import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.AnimationDrawable;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Message;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
-import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.games.Games;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -41,20 +33,11 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import tq.apps.obg.R;
 import tq.apps.obg.databinding.ActivityTqBinding;
 import tq.apps.obg.db.DBHelper;
-import tq.apps.obg.domain.EmblemDBList;
-import tq.apps.obg.domain.EmblemVO;
-import tq.apps.obg.domain.PersonDBList;
-import tq.apps.obg.domain.PersonVO;
-import tq.apps.obg.domain.TileDBList;
-import tq.apps.obg.domain.TileVO;
 import tq.apps.obg.fragment.GameOverFragment;
 import tq.apps.obg.fragment.Level0Fragment;
 import tq.apps.obg.fragment.Level1Fragment;
@@ -79,6 +62,7 @@ public class TQActivity extends AppCompatActivity implements View.OnClickListene
     private RoundCornerProgressBar quizProg;
     private Fragment fragment = null;
     private long mQuizScore;
+    private Handler mHandler = new Handler();
     private GoogleApiClient apiClient;
     private AnimationDrawable aDrawable;
     private FirebaseDatabase database;
@@ -109,19 +93,10 @@ public class TQActivity extends AppCompatActivity implements View.OnClickListene
     private void initView() {
         mServiceInterface = UserApplication.getInstance().getServiceInterface();
         apiClient = mServiceInterface.getApiClient();
-        database = FirebaseDatabase.getInstance();
+        /*database = FirebaseDatabase.getInstance();
         myRef = database.getReference("saving-data/user");
         mAuth = FirebaseAuth.getInstance();
-        mUser = mAuth.getCurrentUser();
-        /*apiClient = new GoogleApiClient.Builder(this)
-                .addApi(Games.API)
-                .addScope(Games.SCOPE_GAMES)
-                .enableAutoManage(this, new GoogleApiClient.OnConnectionFailedListener() {
-                    @Override
-                    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-                        System.out.println("failll");
-                    }
-                }).build();*/
+        mUser = mAuth.getCurrentUser();*/
         mBinding.startBtn.setBackgroundResource(R.drawable.start_btn_anim);
         aDrawable = (AnimationDrawable) mBinding.startBtn.getBackground();
         dbHelper = DBHelper.getInstance(this);
@@ -141,6 +116,7 @@ public class TQActivity extends AppCompatActivity implements View.OnClickListene
         mBinding.contents3.setOnClickListener(this);
         mBinding.contents4.setOnClickListener(this);
         mBinding.startBtnClick.setOnClickListener(this);
+        mBinding.startBtn.setOnClickListener(this);
         mBinding.btnViewHint.setOnClickListener(this);
         quizReadyListener();
         registerBroadcast();
@@ -151,7 +127,6 @@ public class TQActivity extends AppCompatActivity implements View.OnClickListene
                     quizGameOverListener();
                 } else {
                     quizCount -= 0.5;
-                    //quizProg.incrementProgressBy(-1);
                     quizProg.setProgress(quizCount);
                     mProgressHandler.sendEmptyMessageDelayed(0, 100);
                 }
@@ -161,50 +136,66 @@ public class TQActivity extends AppCompatActivity implements View.OnClickListene
 
 
     private void setNextLevelFragment() {
-        if (levelNum != 9) {
-            startTimerThread();
-            levelNum = mServiceInterface.getQuizLevel();
-        }
-        mBinding.buttonLayout.setVisibility(View.GONE);
-        if (levelNum == 1) {
-            fragment = new Level1Fragment();
-        } else if (levelNum ==2) {
-            fragment = new Level2Fragment();
-        } else if (levelNum == 3) {
-            fragment = new Level3Fragment();
-        } else if (levelNum == 0) {
-            fragment = new Level0Fragment();
-        } else if (levelNum == 4) {
-            fragment = new Level4Fragment();
-        } else if (levelNum == 5) {
-            fragment = new Level5Fragment();
-        } else if (levelNum == 9) {
-            fragment = new GameOverFragment();
-        }
-        FragmentManager fm = getFragmentManager();
-        FragmentTransaction fragmentTransaction = fm.beginTransaction();
-        fragmentTransaction.replace(R.id.level_fragment, fragment).commit();
-        setBtnContents();
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mBinding.contents1.setBackgroundResource(R.drawable.btn_background);
+                mBinding.contents2.setBackgroundResource(R.drawable.btn_background);
+                mBinding.contents3.setBackgroundResource(R.drawable.btn_background);
+                mBinding.contents4.setBackgroundResource(R.drawable.btn_background);
+                if (levelNum != 9) {
+                    startTimerThread();
+                    levelNum = mServiceInterface.getQuizLevel();
+                }
+                mBinding.buttonLayout.setVisibility(View.GONE);
+                if (levelNum == 1) {
+                    fragment = new Level1Fragment();
+                } else if (levelNum ==2) {
+                    fragment = new Level2Fragment();
+                } else if (levelNum == 3) {
+                    fragment = new Level3Fragment();
+                } else if (levelNum == 0) {
+                    fragment = new Level0Fragment();
+                } else if (levelNum == 4) {
+                    fragment = new Level4Fragment();
+                } else if (levelNum == 5) {
+                    fragment = new Level5Fragment();
+                } else if (levelNum == 9) {
+                    mBinding.tqTopLayout.setVisibility(View.GONE);
+                    mBinding.tqBottomLayout.setVisibility(View.GONE);
+                    fragment = new GameOverFragment();
+                }
+                FragmentManager fm = getFragmentManager();
+                FragmentTransaction fragmentTransaction = fm.beginTransaction();
+                fragmentTransaction.replace(R.id.level_fragment, fragment).commit();
+                setBtnContents();
+            }
+        }, 600);
     }
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.contents1:
-                checkAnswer(mBinding.contents1.getText().toString());
+                checkAnswer(mBinding.contents1.getText().toString(), mBinding.contents1);
                 break;
             case R.id.contents2:
-                checkAnswer(mBinding.contents2.getText().toString());
+                checkAnswer(mBinding.contents2.getText().toString(), mBinding.contents2);
                 break;
             case R.id.contents3:
-                checkAnswer(mBinding.contents3.getText().toString());
+                checkAnswer(mBinding.contents3.getText().toString(), mBinding.contents3);
                 break;
             case R.id.contents4:
-                checkAnswer(mBinding.contents4.getText().toString());
+                checkAnswer(mBinding.contents4.getText().toString(), mBinding.contents4);
                 break;
             case R.id.start_btn_click:
-                setNextLevelFragment();
                 mBinding.levelFragment.setVisibility(View.VISIBLE);
                 mBinding.startBtnLayout.setVisibility(View.GONE);
+                setNextLevelFragment();
+                break;
+            case R.id.start_btn:
+                mBinding.levelFragment.setVisibility(View.VISIBLE);
+                mBinding.startBtnLayout.setVisibility(View.GONE);
+                setNextLevelFragment();
                 break;
             case R.id.btn_view_hint:
                 mServiceInterface.viewHindListener(null);
@@ -224,25 +215,29 @@ public class TQActivity extends AppCompatActivity implements View.OnClickListene
         mBinding.contents4.setText(strList.get(3).toString());
     }
 
-    public void checkAnswer(String answerStr) {
+    public void checkAnswer(String answerStr, Button button) {
         if(mServiceInterface.isAnswer(answerStr, mServiceInterface.getIsPlayerQuiz())){
-            setNextLevelFragment();
+            button.startAnimation(AnimationUtils.loadAnimation(this, R.anim.shake_btn_true));
+            button.setBackgroundResource(R.drawable.btn_background_true);
         } else {
-            Toast.makeText(getApplicationContext(), "땡!!!!!!!!!", Toast.LENGTH_SHORT).show();
+            //오답 선택시 이벤트
+            button.startAnimation(AnimationUtils.loadAnimation(this, R.anim.shake_btn_false));
+            button.setBackgroundResource(R.drawable.btn_background_false);
+            //Toast.makeText(getApplicationContext(), "땡!!!!!!!!!", Toast.LENGTH_SHORT).show();
             setQuizLife();
-
         }
         mQuizScore = (long) mServiceInterface.getQuizScore();
         mBinding.quizScoreText.setText(String.valueOf(mQuizScore));
+        setNextLevelFragment();
     }
     public void setQuizLife() {
         quizLife--;
         if (quizLife == 2) {
             mBinding.quizLife1.setVisibility(View.GONE);
-            setNextLevelFragment();
+            //setNextLevelFragment();
         } else if (quizLife == 1) {
             mBinding.quizLife2.setVisibility(View.GONE);
-            setNextLevelFragment();
+            //setNextLevelFragment();
         } else {
             mBinding.quizLife3.setVisibility(View.GONE);
             quizGameOverListener();
@@ -269,34 +264,16 @@ public class TQActivity extends AppCompatActivity implements View.OnClickListene
         mProgressHandler.sendEmptyMessage(0);
 
     }
-
-    /*private void decreaseBar() {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                quizCount = (int) quizProg.getProgress();
-                if (quizCount > 0) {
-                    quizCount-=1;
-                } else if (quizCount == 0) {
-                    timer.cancel();
-                    Thread.interrupted();
-                }
-                quizProg.setProgress(quizCount);
-            }
-        });
-    }*/
+    //Game Over 리스너
     private void quizGameOverListener() {
-        System.out.println("Game Over");
         mProgressHandler.removeMessages(0);
         levelNum = 9;
         setNextLevelFragment();
-        mBinding.tqTopLayout.setVisibility(View.GONE);
-        mBinding.tqBottomLayout.setVisibility(View.GONE);
-        Games.getLeaderboardsClient(this, GoogleSignIn.getLastSignedInAccount(this)).
+        /*Games.getLeaderboardsClient(this, GoogleSignIn.getLastSignedInAccount(this)).
                 submitScore(getString(R.string.leaderboard_score), mQuizScore);
-        showLeaderboard();
+        showLeaderboard();*/
     }
-
+    //Quiz Ready 리스너
     private void quizReadyListener() {
         levelNum = 0;
         quizCount = 150;
@@ -316,7 +293,7 @@ public class TQActivity extends AppCompatActivity implements View.OnClickListene
         if (fragment != null) {
             fragmentTransaction.remove(fragment).commit();
         }
-        //setNextLevelFragment();
+        setNextLevelFragment();
     }
     public void unregisterBroadcast(){
         unregisterReceiver(mBroadcastReceiver);
@@ -336,6 +313,7 @@ public class TQActivity extends AppCompatActivity implements View.OnClickListene
             aDrawable.stop();
         }
     }
+    //리더보드 View
     private void showLeaderboard() {
         Games.getLeaderboardsClient(this, GoogleSignIn.getLastSignedInAccount(this))
                 .getLeaderboardIntent(getString(R.string.leaderboard_score))
@@ -345,5 +323,11 @@ public class TQActivity extends AppCompatActivity implements View.OnClickListene
                         startActivityForResult(intent, RC_LEADERBOARD_UI);
                     }
                 });
+    }
+    private void answerTrueListener() {
+
+    }
+    private void answerFalseListener() {
+
     }
 }

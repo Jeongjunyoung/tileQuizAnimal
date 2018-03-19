@@ -39,7 +39,6 @@
         <item name="android:src">@drawable/icon_life</item>
     </style>
     <style name="ContentButton">
-        <item name="android:background">@drawable/btn_background</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:layout_weight">1</item>

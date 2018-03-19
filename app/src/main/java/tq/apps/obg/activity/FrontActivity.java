@@ -34,6 +34,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import cn.refactor.lib.colordialog.ColorDialog;
+import cn.refactor.lib.colordialog.PromptDialog;
 import tq.apps.obg.R;
 import tq.apps.obg.databinding.ActivityFrontBinding;
 import tq.apps.obg.db.DBHelper;
@@ -65,6 +67,7 @@ public class FrontActivity extends AppCompatActivity implements View.OnClickList
         dbHelper.open();*/
         mBinding.playerQuiz.setOnClickListener(this);
         mBinding.teamQuiz.setOnClickListener(this);
+        mBinding.addHintBtn.setOnClickListener(this);
         mBinding.frontLogo.setBackgroundResource(R.drawable.front_logo_anim);
         drawable = (AnimationDrawable) mBinding.frontLogo.getBackground();
         /*myRef = database.getReference("ggg/ggg");
@@ -85,6 +88,37 @@ public class FrontActivity extends AppCompatActivity implements View.OnClickList
             case R.id.team_quiz:
                 intent.putExtra("quizKinds", "team");
                 startActivity(intent);
+                break;
+            case R.id.add_hint_btn:
+                /*new PromptDialog(this)
+                        .setDialogType(PromptDialog.DIALOG_TYPE_SUCCESS)
+                        .setAnimationEnable(true)
+                        .setTitleText("Get Hint")
+                        .setContentText("Play a Ads. and get 10 Hints")
+                        .setPositiveListener("Cancel", new PromptDialog.OnPositiveListener() {
+                            @Override
+                            public void onClick(PromptDialog promptDialog) {
+                                promptDialog.dismiss();
+
+                            }
+                        }).show();*/
+                ColorDialog dialog = new ColorDialog(this);
+                dialog.setAnimationEnable(true);
+                dialog.setColor(R.color.hintDialog);
+                dialog.setTitle(R.string.dialog_title);
+                dialog.setContentText(R.string.dialog_content);
+                dialog.setPositiveListener("Ok", new ColorDialog.OnPositiveListener() {
+                    @Override
+                    public void onClick(ColorDialog colorDialog) {
+
+                    }
+                })
+                .setNegativeListener("Cancel", new ColorDialog.OnNegativeListener() {
+                    @Override
+                    public void onClick(ColorDialog colorDialog) {
+                        colorDialog.dismiss();
+                    }
+                }).show();
                 break;
         }
     }

@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">TileQuiz</string>
+    <string name ="dialog_title">Get Hints</string>
+    <string name="dialog_content">Play a Ads. and get 10 Hints</string>
 </resources>

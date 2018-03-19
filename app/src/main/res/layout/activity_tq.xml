@@ -77,22 +77,24 @@
                 android:orientation="horizontal"
                 android:layout_gravity="center"
                 android:layout_marginTop="5dp"
-                android:layout_weight="2">
+                android:layout_weight="1">
                 <ImageButton
                     android:id="@+id/btn_view_hint"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="8dp"
                     android:background="@android:color/transparent"
                     android:layout_weight="1"
                     android:src="@drawable/btn_hint"/>
                 <TextView
-                    android:layout_width="35dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="7dp"
+                    android:layout_marginRight="10dp"
                     android:layout_gravity="center"
                     android:gravity="center"
                     android:background="#6a8968"
                     android:textColor="#ffffff"
+                    android:layout_weight="2"
                     android:text="0"
                     android:textSize="18dp"/>
                 <!--<TextView
@@ -222,9 +224,11 @@
                 android:gravity="center">
                 <Button
                     android:id="@+id/contents1"
+                    android:background="@drawable/btn_background"
                     style="@style/ContentButton"/>
                 <Button
                     android:id="@+id/contents2"
+                    android:background="@drawable/btn_background"
                     style="@style/ContentButton"/>
             </LinearLayout>
             <LinearLayout
@@ -235,9 +239,11 @@
                 android:gravity="center">
                 <Button
                     android:id="@+id/contents3"
+                    android:background="@drawable/btn_background"
                     style="@style/ContentButton"/>
                 <Button
                     android:id="@+id/contents4"
+                    android:background="@drawable/btn_background"
                     style="@style/ContentButton"/>
             </LinearLayout>
         </LinearLayout>

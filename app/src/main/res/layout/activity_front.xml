@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     tools:context="tq.apps.obg.activity.FrontActivity"
     android:orientation="vertical"
-    android:background="#e0729169">
+    android:background="#e05d7856">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -20,6 +20,7 @@
             android:layout_marginTop="20dp"
             android:src="@drawable/btn_hint"/>
         <TextView
+            android:id="@+id/front_hint_num"
             android:layout_width="35dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="7dp"
@@ -30,17 +31,17 @@
             android:textColor="#ffffff"
             android:text="0"
             android:textSize="21dp"/>
-        <Button
-            android:id="@+id/hint_add_btn"
+        <ImageButton
+            android:id="@+id/add_hint_btn"
             android:layout_width="40dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:layout_gravity="center"
             android:gravity="center"
+            android:background="@android:color/transparent"
             android:layout_marginRight="19dp"
-            android:text="+"
-            android:textSize="20dp"
-            android:layout_marginLeft="7dp"/>
+            android:layout_marginLeft="7dp"
+            android:src="@drawable/btn_add_hint"/>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"

@@ -57,16 +57,16 @@ public class LoadingActivity extends AppCompatActivity {
         mContext = this;
         dbHelper = new DBHelper(this);
         dbHelper.open();
-        mAuth = FirebaseAuth.getInstance();
+        /*mAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
-        myRef = database.getReference("saving-data/user");
+        myRef = database.getReference("saving-data/user");*/
 
         //userRef.child(mUser.getUid()).child("user").setValue(user);
-        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_GAMES_SIGN_IN)
+        /*gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_GAMES_SIGN_IN)
                 .requestServerAuthCode(getString(R.string.default_web_client_id))
                 .build();
-        startSignInIntent();
-
+        startSignInIntent();*/
+        startLoading();
     }
 
     public void startLoading() {
@@ -156,7 +156,7 @@ public class LoadingActivity extends AppCompatActivity {
                 if (message == null || message.isEmpty()) {
                     System.out.println("error");
                 }
-                startLoading();
+                //startLoading();
             }
         }
     }
