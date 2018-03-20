@@ -93,9 +93,9 @@ public class FrontActivity extends AppCompatActivity implements View.OnClickList
                 /*new PromptDialog(this)
                         .setDialogType(PromptDialog.DIALOG_TYPE_SUCCESS)
                         .setAnimationEnable(true)
-                        .setTitleText("Get Hint")
-                        .setContentText("Play a Ads. and get 10 Hints")
-                        .setPositiveListener("Cancel", new PromptDialog.OnPositiveListener() {
+                        .setTitleText(R.string.dialog_title)
+                        .setContentText(R.string.dialog_content)
+                        .setPositiveListener("OK", new PromptDialog.OnPositiveListener() {
                             @Override
                             public void onClick(PromptDialog promptDialog) {
                                 promptDialog.dismiss();
@@ -104,9 +104,11 @@ public class FrontActivity extends AppCompatActivity implements View.OnClickList
                         }).show();*/
                 ColorDialog dialog = new ColorDialog(this);
                 dialog.setAnimationEnable(true);
-                dialog.setColor(R.color.hintDialog);
-                dialog.setTitle(R.string.dialog_title);
+                //dialog.setTitle(R.string.dialog_title);
+                dialog.setColor("#427158");
+                dialog.setContentImage(R.drawable.club_barca);
                 dialog.setContentText(R.string.dialog_content);
+                dialog.setContentTextColor("#000000");
                 dialog.setPositiveListener("Ok", new ColorDialog.OnPositiveListener() {
                     @Override
                     public void onClick(ColorDialog colorDialog) {

@@ -88,11 +88,11 @@
                     android:src="@drawable/btn_hint"/>
                 <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_marginRight="10dp"
                     android:layout_gravity="center"
                     android:gravity="center"
-                    android:background="#6a8968"
+                    android:background="@drawable/hint_text"
                     android:textColor="#ffffff"
                     android:layout_weight="2"
                     android:text="0"
