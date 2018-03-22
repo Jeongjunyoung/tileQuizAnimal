@@ -39,6 +39,8 @@ import tq.apps.obg.domain.PersonDBList;
 import tq.apps.obg.domain.PersonVO;
 import tq.apps.obg.domain.TileDBList;
 import tq.apps.obg.domain.TileVO;
+import tq.apps.obg.service.UserApplication;
+import tq.apps.obg.service.UserService;
 
 public class LoadingActivity extends AppCompatActivity {
     private ActivityLoadingBinding mBinding;
@@ -189,6 +191,7 @@ public class LoadingActivity extends AppCompatActivity {
                     Map<String, String> map = new HashMap<>();
                     map.put("hint_num", "10");
                     myRef.child(uid).setValue(map);
+                    UserApplication.getInstance().getServiceInterface().setHintNum();
                     startLoading();
                 } else {
                     startLoading();

@@ -181,9 +181,9 @@ public class UserServiceInterface {
             mService.applyRotationHint(start, mid, end, depth, frameLayout);
         }
     }*/
-    public void viewHindListener(List<FrameLayout> frameLayouts) {
+    public void viewHintListener(List<FrameLayout> frameLayouts) {
         if (mService != null) {
-            mService.viewHindListener(frameLayouts);
+            mService.viewHintListener(frameLayouts);
         }
     }
     /*public void viewHindBackListener(List<FrameLayout> frameLayouts) {
@@ -221,5 +221,17 @@ public class UserServiceInterface {
             return mService.getApiClient();
         }
         return null;
+    }
+    public void setHintNum() {
+        if (mService != null) {
+            mService.setHintNum();
+        }
+    }
+
+    public int getHintNum() {
+        if (mService != null) {
+            return mService.getHintNum();
+        }
+        return 0;
     }
 }

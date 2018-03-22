@@ -21,11 +21,12 @@
             android:src="@drawable/btn_hint"/>
         <TextView
             android:id="@+id/front_hint_num"
-            android:layout_width="35dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="7dp"
             android:layout_marginTop="10dp"
             android:layout_gravity="center"
+            android:padding="5dp"
             android:gravity="center"
             android:background="@drawable/hint_text"
             android:textColor="#ffffff"

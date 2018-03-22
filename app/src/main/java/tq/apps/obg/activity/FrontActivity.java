@@ -27,6 +27,9 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -53,6 +56,10 @@ public class FrontActivity extends AppCompatActivity implements View.OnClickList
     private ActivityFrontBinding mBinding;
     public static Context mContext;
     private AnimationDrawable drawable;
+    private FirebaseDatabase database;
+    private DatabaseReference myRef;
+    private FirebaseAuth mAuth;
+    private FirebaseUser mUser;
     private UserServiceInterface mUserService = UserApplication.getInstance().getServiceInterface();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,19 +70,18 @@ public class FrontActivity extends AppCompatActivity implements View.OnClickList
     }
     private void initView() {
         mContext = this;
-        /*dbHelper = new DBHelper(this);
-        dbHelper.open();*/
         mBinding.playerQuiz.setOnClickListener(this);
         mBinding.teamQuiz.setOnClickListener(this);
         mBinding.addHintBtn.setOnClickListener(this);
         mBinding.frontLogo.setBackgroundResource(R.drawable.front_logo_anim);
         drawable = (AnimationDrawable) mBinding.frontLogo.getBackground();
-        /*myRef = database.getReference("ggg/ggg");
-        Map<String, String> map = new HashMap<>();
-        //map.put("e_mail", user.getEmail());
-        map.put("ggg", mUser.getEmail());
-        myRef.child(mUser.getUid()).setValue(map);*/
-        //userRef.child(mUser.getUid()).child
+        database = FirebaseDatabase.getInstance();
+        mAuth = FirebaseAuth.getInstance();
+        mUser = mAuth.getCurrentUser();
+        myRef = database.getReference("saving-data/user/"+mUser.getUid());
+        int hintNum = mUserService.getHintNum();
+        mBinding.frontHintNum.setText(String.valueOf(hintNum));
+        setHintNum();
     }
     @Override
     public void onClick(View view) {
@@ -104,15 +110,13 @@ public class FrontActivity extends AppCompatActivity implements View.OnClickList
                         }).show();*/
                 ColorDialog dialog = new ColorDialog(this);
                 dialog.setAnimationEnable(true);
-                //dialog.setTitle(R.string.dialog_title);
                 dialog.setColor("#427158");
-                dialog.setContentImage(R.drawable.club_barca);
-                dialog.setContentText(R.string.dialog_content);
+                dialog.setContentImage(R.drawable.hint_image);
                 dialog.setContentTextColor("#000000");
                 dialog.setPositiveListener("Ok", new ColorDialog.OnPositiveListener() {
                     @Override
                     public void onClick(ColorDialog colorDialog) {
-
+                        //동영상 광고 재생
                     }
                 })
                 .setNegativeListener("Cancel", new ColorDialog.OnNegativeListener() {
@@ -133,5 +137,31 @@ public class FrontActivity extends AppCompatActivity implements View.OnClickList
         } else {
             drawable.stop();
         }
+    }
+    public void setHintNum() {
+        myRef.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                if (dataSnapshot.getKey().equals("hint_num")) {
+                    mBinding.frontHintNum.setText(dataSnapshot.getValue().toString());
+                }
+            }
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 }

@@ -23,6 +23,13 @@ import android.widget.LinearLayout;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.games.Games;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -65,6 +72,11 @@ public class UserService extends Service {
     private int quizButtonLevel, quizButtonLevelIndex;
     private boolean isPlayerQuiz;
     private static GoogleApiClient apiClient;
+    private int hintNum;
+    private FirebaseDatabase database;
+    private DatabaseReference myRef;
+    private FirebaseAuth mAuth;
+    private FirebaseUser mUser;
     Handler mHandler = new Handler();
 
     @Nullable
@@ -100,9 +112,14 @@ public class UserService extends Service {
         mTileImageList = dbHelper.selectTielData();
         mPersonImageList = dbHelper.selectPersonData();
         mEmblemImageList = dbHelper.selectEmblemData();
+        database = FirebaseDatabase.getInstance();
+        mAuth = FirebaseAuth.getInstance();
+        mUser = mAuth.getCurrentUser();
+        myRef = database.getReference("saving-data/user/"+mUser.getUid());
         setmTileImageList();
         setmPersonImageList();
         setmEmblemImageList();
+
     }
 
     public void updateScore(long score) {
@@ -559,13 +576,14 @@ public class UserService extends Service {
         }
     }
 
-    public void viewHindListener(List<FrameLayout> frameLayouts) {
+    public void viewHintListener(List<FrameLayout> frameLayouts) {
         List<FrameLayout> list = getmFindLayout(quizFrameLayouts);
         for (FrameLayout fl : list) {
             if (fl != null) {
                 applyRotationHint(0f, 90f, 180f, 0f, fl);
             }
         }
+        hintNum -= 1;
     }
     public void viewHindBackListener(List<FrameLayout> frameLayouts) {
         List<FrameLayout> list = getmFindLayout(frameLayouts);
@@ -600,5 +618,35 @@ public class UserService extends Service {
             EmblemVO vo = getmEmblemImageList();
             imageView.setBackgroundResource(vo.getE_res_id());
         }
+    }
+    public void setHintNum() {
+        myRef.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                if (dataSnapshot.getKey().equals("hint_num")) {
+                    hintNum = Integer.parseInt(dataSnapshot.getValue().toString());
+                }
+            }
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public int getHintNum() {
+        return hintNum;
     }
 }

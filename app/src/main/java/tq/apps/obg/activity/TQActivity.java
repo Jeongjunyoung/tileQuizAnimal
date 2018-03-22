@@ -69,6 +69,7 @@ public class TQActivity extends AppCompatActivity implements View.OnClickListene
     private DatabaseReference myRef;
     private FirebaseAuth mAuth;
     private FirebaseUser mUser;
+    private int hintNum;
 
     private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
         @Override
@@ -94,9 +95,9 @@ public class TQActivity extends AppCompatActivity implements View.OnClickListene
         mServiceInterface = UserApplication.getInstance().getServiceInterface();
         apiClient = mServiceInterface.getApiClient();
         database = FirebaseDatabase.getInstance();
-        myRef = database.getReference("saving-data/user");
         mAuth = FirebaseAuth.getInstance();
         mUser = mAuth.getCurrentUser();
+        myRef = database.getReference("saving-data/user/"+mUser.getUid());
         mBinding.startBtn.setBackgroundResource(R.drawable.start_btn_anim);
         aDrawable = (AnimationDrawable) mBinding.startBtn.getBackground();
         dbHelper = DBHelper.getInstance(this);
@@ -109,6 +110,7 @@ public class TQActivity extends AppCompatActivity implements View.OnClickListene
         }
         quizCount = 150;
         quizProg = mBinding.quizTimer;
+        hintNum = mServiceInterface.getHintNum();
         quizProg.setProgressColor(Color.parseColor("#b7e4b6"));
         quizProg.setProgressBackgroundColor(Color.parseColor("#3e483d"));
         mBinding.contents1.setOnClickListener(this);
@@ -198,7 +200,9 @@ public class TQActivity extends AppCompatActivity implements View.OnClickListene
                 setNextLevelFragment();
                 break;
             case R.id.btn_view_hint:
-                mServiceInterface.viewHindListener(null);
+                mServiceInterface.viewHintListener(null);
+                hintNum -= 1;
+                mBinding.tqHintText.setText(String.valueOf(hintNum));
         }
     }
 
@@ -323,11 +327,5 @@ public class TQActivity extends AppCompatActivity implements View.OnClickListene
                         startActivityForResult(intent, RC_LEADERBOARD_UI);
                     }
                 });
-    }
-    private void answerTrueListener() {
-
-    }
-    private void answerFalseListener() {
-
     }
 }
