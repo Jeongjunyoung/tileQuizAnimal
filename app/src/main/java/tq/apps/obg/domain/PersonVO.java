@@ -9,13 +9,11 @@ public class PersonVO {
     private String p_name;
     private int p_res_id;
     private String p_job;
-    private String p_kr_name;
     public PersonVO(){}
-    public PersonVO(String p_name, int p_res_id, String p_job, String p_kr_name) {
+    public PersonVO(String p_name, int p_res_id, String p_job) {
         this.p_name = p_name;
         this.p_res_id = p_res_id;
         this.p_job = p_job;
-        this.p_kr_name = p_kr_name;
     }
 
     public int get_id() {
@@ -48,13 +46,5 @@ public class PersonVO {
 
     public void setP_job(String p_job) {
         this.p_job = p_job;
-    }
-
-    public String getP_kr_name() {
-        return p_kr_name;
-    }
-
-    public void setP_kr_name(String p_kr_name) {
-        this.p_kr_name = p_kr_name;
     }
 }

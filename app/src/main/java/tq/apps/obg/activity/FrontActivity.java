@@ -56,10 +56,10 @@ public class FrontActivity extends AppCompatActivity implements View.OnClickList
     private ActivityFrontBinding mBinding;
     public static Context mContext;
     private AnimationDrawable drawable;
-    private FirebaseDatabase database;
+    /*private FirebaseDatabase database;
     private DatabaseReference myRef;
     private FirebaseAuth mAuth;
-    private FirebaseUser mUser;
+    private FirebaseUser mUser;*/
     private UserServiceInterface mUserService = UserApplication.getInstance().getServiceInterface();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,13 +75,12 @@ public class FrontActivity extends AppCompatActivity implements View.OnClickList
         mBinding.addHintBtn.setOnClickListener(this);
         mBinding.frontLogo.setBackgroundResource(R.drawable.front_logo_anim);
         drawable = (AnimationDrawable) mBinding.frontLogo.getBackground();
-        database = FirebaseDatabase.getInstance();
+        /*database = FirebaseDatabase.getInstance();
         mAuth = FirebaseAuth.getInstance();
         mUser = mAuth.getCurrentUser();
-        myRef = database.getReference("saving-data/user/"+mUser.getUid());
+        myRef = database.getReference("saving-data/user/"+mUser.getUid());*/
         int hintNum = mUserService.getHintNum();
         mBinding.frontHintNum.setText(String.valueOf(hintNum));
-        setHintNum();
     }
     @Override
     public void onClick(View view) {
@@ -90,24 +89,14 @@ public class FrontActivity extends AppCompatActivity implements View.OnClickList
             case R.id.player_quiz:
                 intent.putExtra("quizKinds", "player");
                 startActivity(intent);
+                finish();
                 break;
             case R.id.team_quiz:
                 intent.putExtra("quizKinds", "team");
                 startActivity(intent);
+                finish();
                 break;
             case R.id.add_hint_btn:
-                /*new PromptDialog(this)
-                        .setDialogType(PromptDialog.DIALOG_TYPE_SUCCESS)
-                        .setAnimationEnable(true)
-                        .setTitleText(R.string.dialog_title)
-                        .setContentText(R.string.dialog_content)
-                        .setPositiveListener("OK", new PromptDialog.OnPositiveListener() {
-                            @Override
-                            public void onClick(PromptDialog promptDialog) {
-                                promptDialog.dismiss();
-
-                            }
-                        }).show();*/
                 ColorDialog dialog = new ColorDialog(this);
                 dialog.setAnimationEnable(true);
                 dialog.setColor("#427158");
@@ -117,6 +106,7 @@ public class FrontActivity extends AppCompatActivity implements View.OnClickList
                     @Override
                     public void onClick(ColorDialog colorDialog) {
                         //동영상 광고 재생
+
                     }
                 })
                 .setNegativeListener("Cancel", new ColorDialog.OnNegativeListener() {
@@ -137,31 +127,5 @@ public class FrontActivity extends AppCompatActivity implements View.OnClickList
         } else {
             drawable.stop();
         }
-    }
-    public void setHintNum() {
-        myRef.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                if (dataSnapshot.getKey().equals("hint_num")) {
-                    mBinding.frontHintNum.setText(dataSnapshot.getValue().toString());
-                }
-            }
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-            }
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
     }
 }

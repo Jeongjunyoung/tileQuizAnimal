@@ -78,7 +78,7 @@ public class Level0Fragment extends Fragment implements View.OnTouchListener{
     }
 
     private void setBackQuizImages(boolean isPlayerQuiz) {
-        if (userServiceInterface.getIsPlayerQuiz()) {
+        if (isPlayerQuiz) {
             PersonVO vo = userServiceInterface.getPersonList();
             mBinding.backQuizImage.setBackgroundResource(vo.getP_res_id());
         } else {

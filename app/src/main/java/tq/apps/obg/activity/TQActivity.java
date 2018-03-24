@@ -122,6 +122,8 @@ public class TQActivity extends AppCompatActivity implements View.OnClickListene
         mBinding.btnViewHint.setOnClickListener(this);
         //quizReadyListener();
         registerBroadcast();
+        hintNum = mServiceInterface.getHintNum();
+        mBinding.tqHintText.setText(String.valueOf(hintNum));
         mProgressHandler = new Handler(){
             public void handleMessage(Message msg) {
                 super.handleMessage(msg);
@@ -138,6 +140,7 @@ public class TQActivity extends AppCompatActivity implements View.OnClickListene
 
 
     private void setNextLevelFragment() {
+        System.out.println("LEVELELEL :: : " + levelNum);
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -327,5 +330,13 @@ public class TQActivity extends AppCompatActivity implements View.OnClickListene
                         startActivityForResult(intent, RC_LEADERBOARD_UI);
                     }
                 });
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(TQActivity.this, FrontActivity.class);
+        startActivity(intent);
+        finish();
     }
 }

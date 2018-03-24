@@ -109,7 +109,6 @@ public class DBHelper {
             vo.setP_name(cursor.getString(1));
             vo.setP_res_id(cursor.getInt(2));
             vo.setP_job(cursor.getString(3));
-            vo.setP_kr_name(cursor.getString(4));
             list.add(vo);
         }
         cursor.close();
@@ -149,7 +148,6 @@ public class DBHelper {
             vo.setP_name(cursor.getString(1));
             vo.setP_res_id(cursor.getInt(2));
             vo.setP_job(cursor.getString(3));
-            vo.setP_kr_name(cursor.getString(4));
             list.add(vo);
         }
         return list;
@@ -196,7 +194,6 @@ public class DBHelper {
                 cv.put("p_name", list.get(i).getP_name());
                 cv.put("p_res_id", list.get(i).getP_res_id());
                 cv.put("p_job", list.get(i).getP_job());
-                cv.put("p_kr_name", list.get(i).getP_kr_name());
                 sDB.insert(PERSON_TABLE, null, cv);
             }
             sDB.setTransactionSuccessful();

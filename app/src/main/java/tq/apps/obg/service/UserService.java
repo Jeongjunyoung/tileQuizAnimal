@@ -30,11 +30,14 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import tq.apps.obg.R;
@@ -50,9 +53,9 @@ import tq.apps.obg.domain.TileVO;
  */
 
 public class UserService extends Service {
+    private static String mUID;
     private final IBinder mBinder = new UserServiceBinder();
     private List<FrameLayout> quizFrameLayouts;
-    private int clickedNum = 0;
     private LinearLayout firstView, secondView;
     private Bitmap firstResId, secondResId;
     private int DURATION = 100;
@@ -65,14 +68,9 @@ public class UserService extends Service {
     private List<FrameLayout> mFindLayout = new ArrayList<>();
     private PersonVO mAnswerVO;
     private EmblemVO mAnswerMVO;
-    private int quizIndex = 0;
-    private int quizLevel = 0;
-    private int quizScore = 0;
-    private int levelCount = 0;
-    private int quizButtonLevel, quizButtonLevelIndex;
+    private int quizIndex, quizLevel, quizScore, levelCount, quizButtonLevel, quizButtonLevelIndex, hintNum, clickedNum;
     private boolean isPlayerQuiz;
     private static GoogleApiClient apiClient;
-    private int hintNum;
     private FirebaseDatabase database;
     private DatabaseReference myRef;
     private FirebaseAuth mAuth;
@@ -100,22 +98,17 @@ public class UserService extends Service {
     }
 
     private void setData() {
-        /*apiClient = new GoogleApiClient.Builder(this)
-                .addApi(Games.API)
-                .addScope(Games.SCOPE_GAMES)
-                .enableAutoManage((FragmentActivity) FrontActivity.mContext, new GoogleApiClient.OnConnectionFailedListener() {
-                    @Override
-                    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-                        System.out.println("Failllllllllll");
-                    }
-                }).build();*/
         mTileImageList = dbHelper.selectTielData();
         mPersonImageList = dbHelper.selectPersonData();
         mEmblemImageList = dbHelper.selectEmblemData();
         database = FirebaseDatabase.getInstance();
         mAuth = FirebaseAuth.getInstance();
         mUser = mAuth.getCurrentUser();
-        myRef = database.getReference("saving-data/user/"+mUser.getUid());
+        if (mUser != null) {
+            myRef = database.getReference("saving-data/user/"+mUser.getUid());
+            mUID = mUser.getUid();
+            setHintNum();
+        }
         setmTileImageList();
         setmPersonImageList();
         setmEmblemImageList();
@@ -337,9 +330,13 @@ public class UserService extends Service {
     }
     //Quiz 첫 시작
     public List<Integer> getmTileImageList(int level) {
+        /*quizIndex = 0;
+        quizLevel = 0;
+        quizScore = 0;
+        levelCount = 0;
+        clickedNum = 0;*/
         quizButtonLevel = level / 2;
         mFindLayout.clear();
-        System.out.println(quizButtonLevel + "::AA:");
         quizButtonLevelIndex = 0;
         List<Integer> list = new ArrayList<>();
         for (int i = 0; i < level; i++) {
@@ -348,6 +345,8 @@ public class UserService extends Service {
         }
         Collections.shuffle(list, new Random(getSeed()));
         setmTileImageList();
+        setmPersonImageList();
+        setmEmblemImageList();
         setQuizLevel();
         return list;
     }
@@ -404,7 +403,7 @@ public class UserService extends Service {
     }
     public void setLevelCount() {
         if (quizLevel == 0) {
-            levelCount = 2;
+            levelCount = 3;
         } else if (quizLevel == 1) {
             levelCount = 3;
         } else if (quizLevel == 2) {
@@ -584,6 +583,7 @@ public class UserService extends Service {
             }
         }
         hintNum -= 1;
+        setDBHintNum(hintNum);
     }
     public void viewHindBackListener(List<FrameLayout> frameLayouts) {
         List<FrameLayout> list = getmFindLayout(frameLayouts);
@@ -648,5 +648,18 @@ public class UserService extends Service {
 
     public int getHintNum() {
         return hintNum;
+    }
+    private void setDBHintNum(@NonNull final int num) {
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                    Map<String, String> map = new HashMap<>();
+                    map.put("hint_num", String.valueOf(num));
+                    myRef.setValue(map);
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
     }
 }

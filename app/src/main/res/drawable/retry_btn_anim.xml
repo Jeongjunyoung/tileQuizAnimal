@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animation-list xmlns:android="http://schemas.android.com/apk/res/android"
+    android:oneshot="false" >
+    <item android:drawable="@drawable/retry_btn01" android:duration="60" />
+    <item android:drawable="@drawable/retry_btn02" android:duration="60" />
+    <item android:drawable="@drawable/retry_btn03" android:duration="60" />
+    <item android:drawable="@drawable/retry_btn04" android:duration="60" />
+    <item android:drawable="@drawable/retry_btn05" android:duration="60" />
+    <item android:drawable="@drawable/retry_btn06" android:duration="60" />
+    <item android:drawable="@drawable/retry_btn07" android:duration="60" />
+    <item android:drawable="@drawable/retry_btn08" android:duration="60" />
+    <item android:drawable="@drawable/retry_btn09" android:duration="60" />
+</animation-list>
