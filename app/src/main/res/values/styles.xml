@@ -25,8 +25,9 @@
     </style>
     <style name="TileLinearLayout">
         <item name="android:layout_width">320dp</item>
-        <item name="android:layout_height">370dp</item>
+        <item name="android:layout_height">340dp</item>
         <item name="android:orientation">vertical</item>
+        <item name="android:layout_marginTop">15dp</item>
     </style>
     <style name="QuizBackgroundLayout">
         <item name="android:layout_width">match_parent</item>

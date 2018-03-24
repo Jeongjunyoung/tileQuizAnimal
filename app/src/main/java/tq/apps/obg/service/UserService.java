@@ -109,10 +109,10 @@ public class UserService extends Service {
             mUID = mUser.getUid();
             setHintNum();
         }
-        setmTileImageList();
+        /*setmTileImageList();
         setmPersonImageList();
-        setmEmblemImageList();
-
+        setmEmblemImageList();*/
+        setQuizStartValue();
     }
 
     public void updateScore(long score) {
@@ -335,18 +335,18 @@ public class UserService extends Service {
         quizScore = 0;
         levelCount = 0;
         clickedNum = 0;*/
+        System.out.println("Quiz Index ::::: "+quizIndex);
+        System.out.println("Score ::::: "+quizScore);
         quizButtonLevel = level / 2;
         mFindLayout.clear();
         quizButtonLevelIndex = 0;
+        setmTileImageList();
         List<Integer> list = new ArrayList<>();
         for (int i = 0; i < level; i++) {
             list.add(mTileImageList.get(i).gettile_res_id());
             list.add(mTileImageList.get(i).gettile_res_id());
         }
         Collections.shuffle(list, new Random(getSeed()));
-        setmTileImageList();
-        setmPersonImageList();
-        setmEmblemImageList();
         setQuizLevel();
         return list;
     }
@@ -364,10 +364,19 @@ public class UserService extends Service {
         mAnswerMVO = mEmblemImageList.get(quizIndex);
     }
 
-    public PersonVO getmPersonVO() {
+    /*public PersonVO getmPersonVO() {
         return mAnswerVO;
+    }*/
+    public void setQuizStartValue() {
+        setmTileImageList();
+        setmPersonImageList();
+        setmEmblemImageList();
+        quizIndex = 0;
+        quizScore = 0;
+        clickedNum = 0;
+        quizLevel = 0;
+        levelCount = 1;
     }
-
     public PersonVO getmPersonImageList() {
         quizIndex++;
         return mAnswerVO;
@@ -378,9 +387,9 @@ public class UserService extends Service {
         return mAnswerMVO;
     }
 
-    public int getQiuzIndex() {
+    /*public int getQiuzIndex() {
         return quizIndex;
-    }
+    }*/
 
     public long getSeed() {
         return System.nanoTime();
@@ -456,8 +465,7 @@ public class UserService extends Service {
         } else {
             isPlayerQuiz = false;
         }
-        quizLevel = 0;
-        levelCount = 1;
+        setQuizStartValue();
     }
 
     public boolean getIsPlayerQuiz() {

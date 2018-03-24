@@ -67,8 +67,8 @@ public class LoadingActivity extends AppCompatActivity {
         gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_GAMES_SIGN_IN)
                 .requestServerAuthCode(getString(R.string.default_web_client_id))
                 .build();
-        startSignInIntent();
-        //startLoading();
+        //startSignInIntent();
+        startLoading();
     }
 
     public void startLoading() {

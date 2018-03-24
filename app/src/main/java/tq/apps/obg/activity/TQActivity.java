@@ -97,7 +97,7 @@ public class TQActivity extends AppCompatActivity implements View.OnClickListene
         database = FirebaseDatabase.getInstance();
         mAuth = FirebaseAuth.getInstance();
         mUser = mAuth.getCurrentUser();
-        myRef = database.getReference("saving-data/user/"+mUser.getUid());
+        //myRef = database.getReference("saving-data/user/"+mUser.getUid());
         mBinding.startBtn.setBackgroundResource(R.drawable.start_btn_anim);
         aDrawable = (AnimationDrawable) mBinding.startBtn.getBackground();
         dbHelper = DBHelper.getInstance(this);
@@ -108,6 +108,7 @@ public class TQActivity extends AppCompatActivity implements View.OnClickListene
         } else {
             isPlayerQuiz = false;
         }
+        mServiceInterface.setIsPlayerQuiz(isPlayerQuiz);
         quizCount = 150;
         quizProg = mBinding.quizTimer;
         hintNum = mServiceInterface.getHintNum();
@@ -276,9 +277,9 @@ public class TQActivity extends AppCompatActivity implements View.OnClickListene
         mProgressHandler.removeMessages(0);
         levelNum = 9;
         setNextLevelFragment();
-        Games.getLeaderboardsClient(this, GoogleSignIn.getLastSignedInAccount(this)).
+          /*Games.getLeaderboardsClient(this, GoogleSignIn.getLastSignedInAccount(this)).
                 submitScore(getString(R.string.leaderboard_score), mQuizScore);
-        showLeaderboard();
+        showLeaderboard();*/
     }
     //Quiz Ready 리스너
     private void quizReadyListener() {

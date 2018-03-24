@@ -35,6 +35,7 @@ dependencies {
     compile 'com.google.firebase:firebase-database:11.8.0'
     compile 'com.akexorcist:RoundCornerProgressBar:2.0.3'
     compile 'com.github.andyxialm:ColorDialog:1.0.0'
+    compile 'com.ssomai:android.scalablelayout:2.1.6'
 
 }
 apply plugin: 'com.google.gms.google-services'
