@@ -60,6 +60,7 @@ public class FrontActivity extends AppCompatActivity implements View.OnClickList
     private DatabaseReference myRef;
     private FirebaseAuth mAuth;
     private FirebaseUser mUser;*/
+    //Test
     private UserServiceInterface mUserService = UserApplication.getInstance().getServiceInterface();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
