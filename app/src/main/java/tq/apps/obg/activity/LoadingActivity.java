@@ -1,5 +1,6 @@
 package tq.apps.obg.activity;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
@@ -39,6 +40,7 @@ import tq.apps.obg.domain.PersonDBList;
 import tq.apps.obg.domain.PersonVO;
 import tq.apps.obg.domain.TileDBList;
 import tq.apps.obg.domain.TileVO;
+import tq.apps.obg.domain.UserVO;
 import tq.apps.obg.service.UserApplication;
 import tq.apps.obg.service.UserService;
 
@@ -67,8 +69,8 @@ public class LoadingActivity extends AppCompatActivity {
         gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_GAMES_SIGN_IN)
                 .requestServerAuthCode(getString(R.string.default_web_client_id))
                 .build();
-        //startSignInIntent();
-        startLoading();
+        startSignInIntent();
+        //startLoading();
     }
 
     public void startLoading() {
@@ -106,9 +108,11 @@ public class LoadingActivity extends AppCompatActivity {
     public int getId(String imageName) {
         return getResources().getIdentifier("tq.apps.obg:drawable/" + imageName, null, null);
     }
+    @SuppressLint("RestrictedApi")
     private boolean isSignedIn() {
         return GoogleSignIn.getLastSignedInAccount(this) != null;
     }
+    @SuppressLint("RestrictedApi")
     private void signInSilently() {
         GoogleSignInClient signInClient = GoogleSignIn.getClient(this, gso);
         signInClient.silentSignIn().addOnCompleteListener(this,
@@ -136,6 +140,7 @@ public class LoadingActivity extends AppCompatActivity {
         //signInSilently();
     }
 
+    @SuppressLint("RestrictedApi")
     private void startSignInIntent() {
         GoogleSignInClient signInClient = GoogleSignIn.getClient(this, gso);
         Intent intent = signInClient.getSignInIntent();
@@ -172,7 +177,8 @@ public class LoadingActivity extends AppCompatActivity {
                             // Sign in success, update UI with the signed-in user's information
                             System.out.println("signInWithCredential:success");
                             mUser = mAuth.getCurrentUser();
-                            getUser(mAuth.getUid());
+                            getUser(mUser.getUid());
+                            UserApplication.getInstance().getServiceInterface().setHintNum();
                         } else {
                             // If sign in fails, display a message to the user.
                             System.out.println("signInWithCredential:fail"+ task.getException());
@@ -188,9 +194,8 @@ public class LoadingActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (!dataSnapshot.hasChild(uid)) {
-                    Map<String, String> map = new HashMap<>();
-                    map.put("hint_num", "10");
-                    myRef.child(uid).setValue(map);
+                    UserVO vo = new UserVO("10", "0", "0");
+                    myRef.child(uid).setValue(vo);
                     UserApplication.getInstance().getServiceInterface().setHintNum();
                     startLoading();
                 } else {

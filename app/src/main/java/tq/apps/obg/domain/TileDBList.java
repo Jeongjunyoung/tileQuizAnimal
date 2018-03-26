@@ -17,10 +17,8 @@ public class TileDBList extends Activity{
     public List<TileVO> getDBTileList() {
         List<TileVO> list = new ArrayList<>();
         LoadingActivity tq = ((LoadingActivity) LoadingActivity.mContext);
-        list.add(new TileVO("cluber", tq.getId("tile_cluber")));
         list.add(new TileVO("flower", tq.getId("tile_flower")));
         list.add(new TileVO("panda", tq.getId("tile_panda")));
-        list.add(new TileVO("spades", tq.getId("tile_spades")));
         list.add(new TileVO("star", tq.getId("tile_star")));
         list.add(new TileVO("cherry", tq.getId("tile_cherry")));
         list.add(new TileVO("apple", tq.getId("tile_apple")));
@@ -37,6 +35,28 @@ public class TileDBList extends Activity{
         list.add(new TileVO("support", tq.getId("tile_support")));
         list.add(new TileVO("fish", tq.getId("tile_fish")));
         list.add(new TileVO("diamond", tq.getId("tile_diamond")));
+        list.add(new TileVO("beer", tq.getId("tile_beer")));
+        list.add(new TileVO("book", tq.getId("tile_book")));
+        list.add(new TileVO("castle", tq.getId("tile_castle")));
+        list.add(new TileVO("chris", tq.getId("tile_chris")));
+        list.add(new TileVO("clock", tq.getId("tile_clock")));
+        list.add(new TileVO("coffee", tq.getId("tile_coffee")));
+        list.add(new TileVO("coffee_cup", tq.getId("tile_coffee_cup")));
+        list.add(new TileVO("crap", tq.getId("tile_crap")));
+        list.add(new TileVO("drink", tq.getId("tile_drink")));
+        list.add(new TileVO("fire", tq.getId("tile_fire")));
+        list.add(new TileVO("forest", tq.getId("tile_forest")));
+        list.add(new TileVO("ice", tq.getId("tile_ice")));
+        list.add(new TileVO("rudol", tq.getId("tile_rudol")));
+        list.add(new TileVO("straw", tq.getId("tile_straw")));
+        list.add(new TileVO("summer", tq.getId("tile_summer")));
+        list.add(new TileVO("summer_am", tq.getId("tile_summer_am")));
+        list.add(new TileVO("summer_glass", tq.getId("tile_summer_glass")));
+        list.add(new TileVO("summer_sun", tq.getId("tile_summer_sun")));
+        list.add(new TileVO("sungle", tq.getId("tile_sungle")));
+        list.add(new TileVO("tree", tq.getId("tile_tree")));
+        list.add(new TileVO("watch", tq.getId("tile_watch")));
+        list.add(new TileVO("water", tq.getId("tile_water")));
         return list;
     }
 }

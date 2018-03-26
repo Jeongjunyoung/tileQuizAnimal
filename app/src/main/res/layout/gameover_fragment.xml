@@ -9,50 +9,24 @@
     android:orientation="vertical">
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="right"
-        android:baselineAligned="false">
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center">
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:src="@drawable/btn_hint"/>
-        <TextView
-            android:id="@+id/go_hint_num"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="7dp"
-            android:layout_marginTop="10dp"
-            android:layout_gravity="center"
-            android:padding="5dp"
-            android:gravity="center"
-            android:background="@drawable/hint_text"
-            android:textColor="#ffffff"
-            android:text="0"
-            android:textSize="21dp"/>
-        <ImageButton
-            android:id="@+id/go_add_hint_btn"
-            android:layout_width="40dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:background="@android:color/transparent"
-            android:layout_marginRight="19dp"
-            android:layout_marginLeft="7dp"
-            android:src="@drawable/btn_add_hint"/>
+            android:id="@+id/new_record_image"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"/>
     </LinearLayout>
-    <LinearLayout
+    <!--<LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:gravity="center">
         <ImageView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="200dp"
             android:src="@drawable/gameover_white"/>
-    </LinearLayout>
+    </LinearLayout>-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -67,7 +41,7 @@
             <ImageButton
                 android:id="@+id/quiz_re_start"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="63dp"
                 android:textAllCaps="false"
                 android:background="@android:color/transparent"/>
         </LinearLayout>
@@ -80,7 +54,7 @@
             <ImageButton
                 android:id="@+id/quiz_out"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="57dp"
                 android:textAllCaps="false"
                 android:background="@android:color/transparent"
                 android:src="@drawable/btn_exit"/>

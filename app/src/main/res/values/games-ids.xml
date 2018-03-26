@@ -8,7 +8,8 @@ Save this file as res/values/games-ids.xml in your project.
     <string name="app_id" translatable="false">498065915498</string>
     <!-- package_name -->
     <string name="package_name" translatable="false">tq.apps.obg</string>
-    <!-- leaderboard Score -->
-    <string name="leaderboard_score" translatable="false">CgkI6vyquL8OEAIQAQ</string>
-    <!-- Client id-->
+    <!-- leaderboard Emblem Score -->
+    <string name="leaderboard_emblem_score" translatable="false">CgkI6vyquL8OEAIQAQ</string>
+    <!-- leaderboard Player Score -->
+    <string name="leaderboard_player_score" translatable="false">CgkI6vyquL8OEAIQAg</string>
 </resources>

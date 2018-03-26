@@ -228,10 +228,41 @@ public class UserServiceInterface {
         }
     }
 
+    public void setmHintNum(int num) {
+        if (mService != null) {
+            mService.setmHintNum(num);
+        }
+    }
     public int getHintNum() {
         if (mService != null) {
             return mService.getHintNum();
         }
         return 0;
+    }
+
+    public int getFrontAdsCount() {
+        if (mService != null) {
+            return mService.getFrontAdsCount();
+        }
+        return 0;
+    }
+
+    public void setFrontAdsCount(int num) {
+        if (mService != null) {
+            mService.setFrontAdsCount(num);
+        }
+    }
+
+    public boolean getNewScore() {
+        if (mService != null) {
+            return mService.getNewScore();
+        }
+        return false;
+    }
+
+    public void setNewScore(boolean b) {
+        if (mService != null) {
+            mService.setNewScore(b);
+        }
     }
 }

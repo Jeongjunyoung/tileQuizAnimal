@@ -68,8 +68,8 @@ public class UserService extends Service {
     private List<FrameLayout> mFindLayout = new ArrayList<>();
     private PersonVO mAnswerVO;
     private EmblemVO mAnswerMVO;
-    private int quizIndex, quizLevel, quizScore, levelCount, quizButtonLevel, quizButtonLevelIndex, hintNum, clickedNum;
-    private boolean isPlayerQuiz;
+    private int frondAdsCount, quizIndex, quizLevel, quizScore, levelCount, quizButtonLevel, quizButtonLevelIndex, hintNum, clickedNum;
+    private boolean isPlayerQuiz, isNewScore;
     private static GoogleApiClient apiClient;
     private FirebaseDatabase database;
     private DatabaseReference myRef;
@@ -98,6 +98,7 @@ public class UserService extends Service {
     }
 
     private void setData() {
+        setFrontAdsCount(0);
         mTileImageList = dbHelper.selectTielData();
         mPersonImageList = dbHelper.selectPersonData();
         mEmblemImageList = dbHelper.selectEmblemData();
@@ -161,6 +162,7 @@ public class UserService extends Service {
                             sendBroadcast(new Intent(BroadcastActions.BUTTON_VISIABLE));
                         }
                         quizScore += 15;
+                        sendTileScoreUpdate();
                     } else {
                         //다름
                         applyRotation(0f, 90f, 180f, 0f, firstView, false);
@@ -654,20 +656,39 @@ public class UserService extends Service {
         });
     }
 
+    public void setmHintNum(int num) {
+        hintNum = num;
+    }
     public int getHintNum() {
         return hintNum;
     }
     private void setDBHintNum(@NonNull final int num) {
-        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                    Map<String, String> map = new HashMap<>();
-                    map.put("hint_num", String.valueOf(num));
-                    myRef.setValue(map);
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-            }
-        });
+        myRef.child("hint_num").setValue(num);
     }
+
+    private void sendTileScoreUpdate() {
+        Intent intent = new Intent(BroadcastActions.TILE_SCORE);
+        intent.putExtra("tileScore", "tileScore");
+        sendBroadcast(intent);
+    }
+
+    public void setFrontAdsCount(int num) {
+        if (num == 0) {
+            frondAdsCount = 0;
+        } else {
+            frondAdsCount += num;
+        }
+    }
+
+    public int getFrontAdsCount() {
+        return frondAdsCount;
+    }
+
+    public void setNewScore(boolean isNew) {
+        isNewScore = isNew;
+    }
+    public boolean getNewScore() {
+        return isNewScore;
+    }
+
 }

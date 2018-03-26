@@ -35,12 +35,14 @@ public class GameOverFragment extends Fragment implements View.OnClickListener{
     private void setViewData() {
         mBinding.quizReStart.setOnClickListener(this);
         mBinding.quizOut.setOnClickListener(this);
-        mBinding.goAddHintBtn.setOnClickListener(this);
         mBinding.quizReStart.setBackgroundResource(R.drawable.retry_btn_anim);
         drawable = (AnimationDrawable) mBinding.quizReStart.getBackground();
-        int hintNum = userServiceInterface.getHintNum();
-        mBinding.goHintNum.setText(String.valueOf(hintNum));
         drawable.start();
+        if (userServiceInterface.getNewScore()) {
+            mBinding.newRecordImage.setImageResource(R.drawable.new_record_1);
+        } else {
+            mBinding.newRecordImage.setImageResource(R.drawable.gameover_white);
+        }
     }
 
     @Override
@@ -54,27 +56,6 @@ public class GameOverFragment extends Fragment implements View.OnClickListener{
                 startActivity(intent);
                 getActivity().finish();
                 break;
-            case R.id.go_add_hint_btn:
-                ColorDialog dialog = new ColorDialog(getActivity());
-                dialog.setAnimationEnable(true);
-                dialog.setColor("#427158");
-                dialog.setContentImage(R.drawable.hint_image);
-                dialog.setContentTextColor("#000000");
-                dialog.setPositiveListener("Ok", new ColorDialog.OnPositiveListener() {
-                    @Override
-                    public void onClick(ColorDialog colorDialog) {
-                        //동영상 광고 재생
-
-                    }
-                })
-                        .setNegativeListener("Cancel", new ColorDialog.OnNegativeListener() {
-                            @Override
-                            public void onClick(ColorDialog colorDialog) {
-                                colorDialog.dismiss();
-                            }
-                        }).show();
-                break;
         }
     }
-
 }

@@ -13,7 +13,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Toast;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.reward.RewardItem;
+import com.google.android.gms.ads.reward.RewardedVideoAd;
+import com.google.android.gms.ads.reward.RewardedVideoAdListener;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -52,14 +59,15 @@ import tq.apps.obg.service.UserApplication;
 import tq.apps.obg.service.UserService;
 import tq.apps.obg.service.UserServiceInterface;
 
-public class FrontActivity extends AppCompatActivity implements View.OnClickListener{
+public class FrontActivity extends AppCompatActivity implements View.OnClickListener, RewardedVideoAdListener{
     private ActivityFrontBinding mBinding;
     public static Context mContext;
     private AnimationDrawable drawable;
-    /*private FirebaseDatabase database;
+    private FirebaseDatabase database;
     private DatabaseReference myRef;
     private FirebaseAuth mAuth;
-    private FirebaseUser mUser;*/
+    private FirebaseUser mUser;
+    private RewardedVideoAd mRewarded;
     //Test
     private UserServiceInterface mUserService = UserApplication.getInstance().getServiceInterface();
     @Override
@@ -71,17 +79,64 @@ public class FrontActivity extends AppCompatActivity implements View.OnClickList
     }
     private void initView() {
         mContext = this;
+        AdView mAdView = mBinding.frontAdview;
+        AdRequest adRequest = new AdRequest.Builder()
+                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+                .build();
+        mAdView.loadAd(adRequest);
         mBinding.playerQuiz.setOnClickListener(this);
         mBinding.teamQuiz.setOnClickListener(this);
         mBinding.addHintBtn.setOnClickListener(this);
         mBinding.frontLogo.setBackgroundResource(R.drawable.front_logo_anim);
         drawable = (AnimationDrawable) mBinding.frontLogo.getBackground();
-        /*database = FirebaseDatabase.getInstance();
+        database = FirebaseDatabase.getInstance();
         mAuth = FirebaseAuth.getInstance();
         mUser = mAuth.getCurrentUser();
-        myRef = database.getReference("saving-data/user/"+mUser.getUid());*/
-        int hintNum = mUserService.getHintNum();
+        myRef = database.getReference("saving-data/user/"+mUser.getUid());
+        final int hintNum = mUserService.getHintNum();
         mBinding.frontHintNum.setText(String.valueOf(hintNum));
+        mRewarded = MobileAds.getRewardedVideoAdInstance(this);
+        mRewarded.setRewardedVideoAdListener(this);
+        loadRewardedVideoAd();
+        /*mRewarded.setRewardedVideoAdListener(new RewardedVideoAdListener() {
+            @Override
+            public void onRewardedVideoAdLoaded() {
+            }
+
+            @Override
+            public void onRewardedVideoAdOpened() {
+            }
+
+            @Override
+            public void onRewardedVideoStarted() {
+            }
+
+            @Override
+            public void onRewardedVideoAdClosed() {
+            }
+
+            @Override
+            public void onRewarded(RewardItem rewardItem) {
+                System.out.println(rewardItem.getType());
+                int hint_num = mUserService.getHintNum() + rewardItem.getAmount();
+                mUserService.setmHintNum(hint_num);
+                myRef.child("hint_num").setValue(hint_num);
+                mBinding.frontHintNum.setText(String.valueOf(hint_num));
+            }
+
+            @Override
+            public void onRewardedVideoAdLeftApplication() {
+            }
+
+            @Override
+            public void onRewardedVideoAdFailedToLoad(int i) {
+            }
+
+            @Override
+            public void onRewardedVideoCompleted() {
+
+            }
+        });*/
     }
     @Override
     public void onClick(View view) {
@@ -107,7 +162,13 @@ public class FrontActivity extends AppCompatActivity implements View.OnClickList
                     @Override
                     public void onClick(ColorDialog colorDialog) {
                         //동영상 광고 재생
-
+                        if (mRewarded.isLoaded()) {
+                            System.out.println("showshowshow");
+                            mRewarded.show();
+                        } else {
+                            Toast.makeText(getApplicationContext(),"Ads is not Ready..",Toast.LENGTH_SHORT).show();
+                        }
+                        colorDialog.dismiss();
                     }
                 })
                 .setNegativeListener("Cancel", new ColorDialog.OnNegativeListener() {
@@ -128,5 +189,53 @@ public class FrontActivity extends AppCompatActivity implements View.OnClickList
         } else {
             drawable.stop();
         }
+    }
+    private void loadRewardedVideoAd() {
+        mRewarded.loadAd(getResources().getString(R.string.reward_ads_unit_id),
+                new AdRequest.Builder().addTestDevice(AdRequest.DEVICE_ID_EMULATOR).build());
+    }
+
+    @Override
+    public void onRewardedVideoAdLoaded() {
+
+    }
+
+    @Override
+    public void onRewardedVideoAdOpened() {
+
+    }
+
+    @Override
+    public void onRewardedVideoStarted() {
+
+    }
+
+    @Override
+    public void onRewardedVideoAdClosed() {
+
+    }
+
+    @Override
+    public void onRewarded(RewardItem rewardItem) {
+        System.out.println(rewardItem.getType());
+        int hint_num = mUserService.getHintNum() + rewardItem.getAmount();
+        mUserService.setmHintNum(hint_num);
+        myRef.child("hint_num").setValue(hint_num);
+        mBinding.frontHintNum.setText(String.valueOf(hint_num));
+    }
+
+    @Override
+    public void onRewardedVideoAdLeftApplication() {
+
+    }
+
+    @Override
+    public void onRewardedVideoAdFailedToLoad(int i) {
+
+    }
+
+    @Override
+    public void onRewardedVideoCompleted() {
+
     }
 }

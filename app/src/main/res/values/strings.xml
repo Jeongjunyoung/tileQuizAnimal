@@ -1,5 +1,7 @@
 <resources>
-    <string name="app_name">TileQuiz</string>
-    <string name ="dialog_title">Get Hints</string>
-    <string name="dialog_content">      You can get 10 Hints. \nPlay a Ads.?</string>
+    <string name="app_name">Tile Quiz</string>
+    <string name="bottom_ads_unit_id">ca-app-pub-4633730195678133/1240024470</string>
+    <string name="front_ads_unit_id">ca-app-pub-4633730195678133/1004220752</string>
+    <string name="reward_ads_unit_id">ca-app-pub-4633730195678133/6911153558</string>
+    <string name="test_ads">ca-app-pub-3940256099942544/5224354917</string>
 </resources>
