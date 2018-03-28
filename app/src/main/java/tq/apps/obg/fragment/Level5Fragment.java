@@ -39,7 +39,7 @@ public class Level5Fragment extends Fragment implements View.OnTouchListener{
         return mBinding.getRoot();
     }
     private void setViewData() {
-        List<Integer> list = UserApplication.getInstance().getServiceInterface().getTileImageList(10);
+        List<Integer> list = UserApplication.getInstance().getServiceInterface().getTileImageList(15);
         if (userServiceInterface.getIsPlayerQuiz()) {
             PersonVO vo = userServiceInterface.getPersonList();
             mBinding.backQuizImage.setBackgroundResource(vo.getP_res_id());

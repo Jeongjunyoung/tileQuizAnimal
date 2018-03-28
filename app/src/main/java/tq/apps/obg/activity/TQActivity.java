@@ -18,6 +18,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -61,10 +62,10 @@ import tq.apps.obg.service.BroadcastActions;
 import tq.apps.obg.service.UserApplication;
 import tq.apps.obg.service.UserServiceInterface;
 
-public class TQActivity extends AppCompatActivity implements View.OnClickListener{
+public class TQActivity extends AppCompatActivity implements View.OnClickListener, Animation.AnimationListener{
     private ActivityTqBinding mBinding;
     private static final int RC_LEADERBOARD_UI = 9004;
-    private int levelNum, frontAdCount, hintNum;
+    private int levelNum, hintNum;
     private DBHelper dbHelper;
     private int quizLife = 3;
     private UserServiceInterface mServiceInterface;
@@ -76,7 +77,6 @@ public class TQActivity extends AppCompatActivity implements View.OnClickListene
     private Fragment fragment = null;
     private long mQuizScore;
     private Handler mHandler = new Handler();
-    private GoogleApiClient apiClient;
     private AnimationDrawable aDrawable;
     private FirebaseDatabase database;
     private DatabaseReference myRef;
@@ -84,6 +84,9 @@ public class TQActivity extends AppCompatActivity implements View.OnClickListene
     private FirebaseUser mUser;
     private String kindStr;
     private long recordScore;
+    private Animation trueAnim;
+    private Animation falseAnim;
+    private Animation btnLayoutAnim;
 
     private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
         @Override
@@ -108,14 +111,12 @@ public class TQActivity extends AppCompatActivity implements View.OnClickListene
 
     @SuppressLint("HandlerLeak")
     private void initView() {
-        //MobileAds.initialize(getApplicationContext(), getResources().getString(R.string.test_ads));
         AdRequest adRequest = new AdRequest.Builder()
                 .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
                 .build();
         mBinding.tqAdView.loadAd(adRequest);
         setFrontAds();
         mServiceInterface = UserApplication.getInstance().getServiceInterface();
-        apiClient = mServiceInterface.getApiClient();
         database = FirebaseDatabase.getInstance();
         mAuth = FirebaseAuth.getInstance();
         mUser = mAuth.getCurrentUser();
@@ -145,22 +146,17 @@ public class TQActivity extends AppCompatActivity implements View.OnClickListene
         mBinding.startBtnClick.setOnClickListener(this);
         mBinding.startBtn.setOnClickListener(this);
         mBinding.btnViewHint.setOnClickListener(this);
+        trueAnim = AnimationUtils.loadAnimation(this, R.anim.shake_btn_true);
+        falseAnim = AnimationUtils.loadAnimation(this, R.anim.shake_btn_false);
+        btnLayoutAnim = AnimationUtils.loadAnimation(this, R.anim.btn_layout_anim);
+        btnLayoutAnim.setAnimationListener(this);
+        mBinding.pauseBtn.setOnClickListener(this);
+        mBinding.pauseCloseBtn.setOnClickListener(this);
         //quizReadyListener();
         registerBroadcast();
         hintNum = mServiceInterface.getHintNum();
         mBinding.tqHintText.setText(String.valueOf(hintNum));
-        mProgressHandler = new Handler(){
-            public void handleMessage(Message msg) {
-                super.handleMessage(msg);
-                if (quizCount <= 0) {
-                    quizGameOverListener();
-                } else {
-                    quizCount -= 0.5;
-                    quizProg.setProgress(quizCount);
-                    mProgressHandler.sendEmptyMessageDelayed(0, 100);
-                }
-            }
-        };
+        handlerProgressBar();
         setRecordTextView();
     }
 
@@ -191,7 +187,6 @@ public class TQActivity extends AppCompatActivity implements View.OnClickListene
                 } else if (levelNum == 5) {
                     fragment = new Level5Fragment();
                 } else if (levelNum == 9) {
-                    //mBinding.tqTopLayout.setVisibility(View.GONE);
                     mBinding.btnViewHint.setEnabled(false);
                     mBinding.tqBottomLayout.setVisibility(View.GONE);
                     mBinding.progressbarLayout.setVisibility(View.GONE);
@@ -231,9 +226,19 @@ public class TQActivity extends AppCompatActivity implements View.OnClickListene
                 setNextLevelFragment();
                 break;
             case R.id.btn_view_hint:
-                mServiceInterface.viewHintListener(null);
                 hintNum -= 1;
-                mBinding.tqHintText.setText(String.valueOf(hintNum));
+                if (hintNum >= 0) {
+                    mServiceInterface.viewHintListener(null);
+                    mBinding.tqHintText.setText(String.valueOf(hintNum));
+                }
+                break;
+            case R.id.pause_btn:
+                onPause();
+                break;
+            case R.id.pause_close_btn:
+                mBinding.pauseLayout.setVisibility(View.GONE);
+                mProgressHandler.sendEmptyMessage(0);
+                break;
         }
     }
 
@@ -253,32 +258,24 @@ public class TQActivity extends AppCompatActivity implements View.OnClickListene
     public void checkAnswer(String answerStr, Button button) {
         btnSetEnable(false);
         if(mServiceInterface.isAnswer(answerStr, mServiceInterface.getIsPlayerQuiz())){
-            button.startAnimation(AnimationUtils.loadAnimation(this, R.anim.shake_btn_true));
+            button.startAnimation(trueAnim);
             button.setBackgroundResource(R.drawable.btn_background_true);
         } else {
             //오답 선택시 이벤트
-            button.startAnimation(AnimationUtils.loadAnimation(this, R.anim.shake_btn_false));
+            button.startAnimation(falseAnim);
             button.setBackgroundResource(R.drawable.btn_background_false);
-            //Toast.makeText(getApplicationContext(), "땡!!!!!!!!!", Toast.LENGTH_SHORT).show();
             setQuizLife();
         }
-        /*mQuizScore = (long) mServiceInterface.getQuizScore();
-        mBinding.quizScoreText.setText(String.valueOf(mQuizScore));*/
         updateScore();
         setNextLevelFragment();
     }
     public void setQuizLife() {
         quizLife--;
         if (quizLife == 2) {
-            //mBinding.quizLife1.setVisibility(View.GONE);
             mBinding.quizLife1.setImageResource(R.drawable.life_none);
-            //setNextLevelFragment();
         } else if (quizLife == 1) {
-            //mBinding.quizLife2.setVisibility(View.GONE);
             mBinding.quizLife2.setImageResource(R.drawable.life_none);
-            //setNextLevelFragment();
         } else {
-            //mBinding.quizLife3.setVisibility(View.GONE);
             mBinding.quizLife3.setImageResource(R.drawable.life_none);
             quizGameOverListener();
         }
@@ -293,6 +290,8 @@ public class TQActivity extends AppCompatActivity implements View.OnClickListene
 
     private void buttonVisible() {
         mBinding.buttonLayout.setVisibility(View.VISIBLE);
+        mBinding.buttonLayout.startAnimation(btnLayoutAnim);
+
     }
 
     private void startTimerThread() {
@@ -330,7 +329,6 @@ public class TQActivity extends AppCompatActivity implements View.OnClickListene
         mBinding.quizLife3.setVisibility(View.VISIBLE);
         mServiceInterface.setQuizScore(0);
         mBinding.quizScoreText.setText("0");
-        //mBinding.tqTopLayout.setVisibility(View.VISIBLE);
         mBinding.btnViewHint.setEnabled(true);
         mBinding.tqBottomLayout.setVisibility(View.VISIBLE);
         mBinding.progressbarLayout.setVisibility(View.VISIBLE);
@@ -394,6 +392,12 @@ public class TQActivity extends AppCompatActivity implements View.OnClickListene
         finish();
     }
 
+    @Override
+    protected void onPause() {
+        mBinding.pauseLayout.setVisibility(View.VISIBLE);
+        mProgressHandler.removeMessages(0);
+        super.onPause();
+    }
     private void btnSetEnable(boolean isTrue) {
         mBinding.contents1.setEnabled(isTrue);
         mBinding.contents2.setEnabled(isTrue);
@@ -465,5 +469,36 @@ public class TQActivity extends AppCompatActivity implements View.OnClickListene
             mInterstitialAd.show();
             mServiceInterface.setFrontAdsCount(0);
         }
+    }
+
+    @Override
+    public void onAnimationStart(Animation animation) {
+
+    }
+
+    @Override
+    public void onAnimationEnd(Animation animation) {
+        mBinding.buttonLayout.startAnimation(falseAnim);
+    }
+
+    @Override
+    public void onAnimationRepeat(Animation animation) {
+
+    }
+
+    @SuppressLint("HandlerLeak")
+    private void handlerProgressBar() {
+        mProgressHandler = new Handler(){
+            public void handleMessage(Message msg) {
+                super.handleMessage(msg);
+                if (quizCount <= 0) {
+                    quizGameOverListener();
+                } else {
+                    quizCount -= 0.5;
+                    quizProg.setProgress(quizCount);
+                    mProgressHandler.sendEmptyMessageDelayed(0, 100);
+                }
+            }
+        };
     }
 }

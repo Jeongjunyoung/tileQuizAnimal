@@ -1,7 +1,6 @@
 package tq.apps.obg.service;
 
 import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -12,7 +11,6 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
@@ -20,9 +18,6 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.games.Games;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -30,18 +25,13 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 
-import tq.apps.obg.R;
-import tq.apps.obg.activity.FrontActivity;
 import tq.apps.obg.animation.Rotate3DAnimation;
 import tq.apps.obg.db.DBHelper;
 import tq.apps.obg.domain.EmblemVO;
@@ -70,7 +60,6 @@ public class UserService extends Service {
     private EmblemVO mAnswerMVO;
     private int frondAdsCount, quizIndex, quizLevel, quizScore, levelCount, quizButtonLevel, quizButtonLevelIndex, hintNum, clickedNum;
     private boolean isPlayerQuiz, isNewScore;
-    private static GoogleApiClient apiClient;
     private FirebaseDatabase database;
     private DatabaseReference myRef;
     private FirebaseAuth mAuth;
@@ -93,7 +82,6 @@ public class UserService extends Service {
     public void onCreate() {
         super.onCreate();
         dbHelper = DBHelper.getInstance(getApplicationContext());
-        System.out.println("UserService");
         setData();
     }
 
@@ -110,28 +98,7 @@ public class UserService extends Service {
             mUID = mUser.getUid();
             setHintNum();
         }
-        /*setmTileImageList();
-        setmPersonImageList();
-        setmEmblemImageList();*/
         setQuizStartValue();
-    }
-
-    public void updateScore(long score) {
-       // Games.Leaderboards.submitScore(apiClient, getString(R.string.leaderboard_score), score);
-    }
-
-    public void viewLeaderBoardScore() {
-        //(Games.Leaderboards.getLeaderboardIntent(apiClient, getString(R.string.leaderboard_score)));
-    }
-
-    public GoogleApiClient getApiClient() {
-        return apiClient;
-    }
-    public List<TileVO> getTileImages() {
-        List<TileVO> list = dbHelper.selectTielData();
-        long seed = System.nanoTime();
-        Collections.shuffle(list, new Random(seed));
-        return list;
     }
 
     public void checkedSameImage(LinearLayout view, Bitmap resId) {
@@ -157,7 +124,6 @@ public class UserService extends Service {
                         secondView.getChildAt(0).setVisibility(View.GONE);
                         mFindLayout.add((FrameLayout) firstView.getChildAt(0));
                         mFindLayout.add((FrameLayout) secondView.getChildAt(0));
-                        System.out.println(mFindLayout.get(0).getId() + " ::::: " + mFindLayout.get(1).getId());
                         if (quizButtonLevelIndex == quizButtonLevel) {
                             sendBroadcast(new Intent(BroadcastActions.BUTTON_VISIABLE));
                         }
@@ -221,11 +187,6 @@ public class UserService extends Service {
                 @Override
                 public void run() {
                     if (isFront) {
-                        /*clickedNum++;
-                        if (clickedNum == 2) {
-                            setFrameLayoutsEnable(false);
-                        }*/
-                        //setFrameLayoutsEnable(true);
                         checkedSameImage(mLayout, getBitMap((ImageView) mFrameLayout.getChildAt(1)));
                         mFrameLayout.setEnabled(false);
                         mFrameLayout.getChildAt(0).setVisibility(View.GONE);
@@ -332,13 +293,8 @@ public class UserService extends Service {
     }
     //Quiz 첫 시작
     public List<Integer> getmTileImageList(int level) {
-        /*quizIndex = 0;
-        quizLevel = 0;
-        quizScore = 0;
-        levelCount = 0;
-        clickedNum = 0;*/
-        System.out.println("Quiz Index ::::: "+quizIndex);
-        System.out.println("Score ::::: "+quizScore);
+        //System.out.println("Quiz Index ::::: "+quizIndex);
+        //System.out.println("Score ::::: "+quizScore);
         quizButtonLevel = level / 2;
         mFindLayout.clear();
         quizButtonLevelIndex = 0;
@@ -366,9 +322,6 @@ public class UserService extends Service {
         mAnswerMVO = mEmblemImageList.get(quizIndex);
     }
 
-    /*public PersonVO getmPersonVO() {
-        return mAnswerVO;
-    }*/
     public void setQuizStartValue() {
         setmTileImageList();
         setmPersonImageList();
@@ -389,10 +342,6 @@ public class UserService extends Service {
         return mAnswerMVO;
     }
 
-    /*public int getQiuzIndex() {
-        return quizIndex;
-    }*/
-
     public long getSeed() {
         return System.nanoTime();
     }
@@ -410,7 +359,7 @@ public class UserService extends Service {
         } else {
             levelCount--;
         }
-        System.out.println("[QuizLevel :: "+quizLevel+"], [levelCount :: "+levelCount+"]");
+        //System.out.println("[QuizLevel :: "+quizLevel+"], [levelCount :: "+levelCount+"]");
     }
     public void setLevelCount() {
         if (quizLevel == 0) {
@@ -422,7 +371,7 @@ public class UserService extends Service {
         } else if (quizLevel == 3) {
             levelCount = 5;
         } else if (quizLevel == 4) {
-            levelCount = 7;
+            levelCount = 6;
         } else if (quizLevel == 5) {
             levelCount = 8;
         }
@@ -602,10 +551,12 @@ public class UserService extends Service {
                 applyRotationHintBack(180f, 270f, 360f, 0f, fl);
             }
         }
+        setFrameLayoutsEnable(true);
     }
 
     public void startQuizGoneHint(final List<FrameLayout> frameLayouts) {
         quizFrameLayouts = frameLayouts;
+        setFrameLayoutsEnable(false);
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -619,17 +570,7 @@ public class UserService extends Service {
             fl.setEnabled(isTrue);
         }
     }
-
-    public void setBackQuizImages(ImageView imageView) {
-        if (getIsPlayerQuiz()) {
-            PersonVO vo = getmPersonImageList();
-            imageView.setBackgroundResource(vo.getP_res_id());
-        } else {
-            EmblemVO vo = getmEmblemImageList();
-            imageView.setBackgroundResource(vo.getE_res_id());
-        }
-    }
-    public void setHintNum() {
+    private void setHintNum2() {
         myRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -654,6 +595,15 @@ public class UserService extends Service {
 
             }
         });
+
+    }
+    public void setHintNum() {
+        mUser = mAuth.getCurrentUser();
+        if (mUser != null) {
+            myRef = database.getReference("saving-data/user/"+mUser.getUid());
+            mUID = mUser.getUid();
+            setHintNum2();
+        }
     }
 
     public void setmHintNum(int num) {

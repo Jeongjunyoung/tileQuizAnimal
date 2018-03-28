@@ -65,7 +65,6 @@ public class LoadingActivity extends AppCompatActivity {
         database = FirebaseDatabase.getInstance();
         myRef = database.getReference("saving-data/user");
 
-        //userRef.child(mUser.getUid()).child("user").setValue(user);
         gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_GAMES_SIGN_IN)
                 .requestServerAuthCode(getString(R.string.default_web_client_id))
                 .build();
@@ -82,7 +81,7 @@ public class LoadingActivity extends AppCompatActivity {
                 startActivity(intent);
                 finish();
             }
-        }, 1200);
+        }, 200);
     }
 
     @Override
@@ -113,25 +112,21 @@ public class LoadingActivity extends AppCompatActivity {
         return GoogleSignIn.getLastSignedInAccount(this) != null;
     }
     @SuppressLint("RestrictedApi")
-    private void signInSilently() {
+    /*private void signInSilently() {
         GoogleSignInClient signInClient = GoogleSignIn.getClient(this, gso);
         signInClient.silentSignIn().addOnCompleteListener(this,
                 new OnCompleteListener<GoogleSignInAccount>() {
                     @Override
                     public void onComplete(@NonNull Task<GoogleSignInAccount> task) {
                         if (task.isSuccessful()) {
-                            // The signed in account is stored in the task's result.
                             GoogleSignInAccount signedInAccount = task.getResult();
-                            System.out.println("InSilently success");
                             firebaseAuthWithPlayGames(signedInAccount);
                         } else {
-                            // Player will need to sign-in explicitly using via UI
-                            System.out.println("fail");
                             startSignInIntent();
                         }
                     }
                 });
-    }
+    }*/
 
 
     @Override
@@ -154,16 +149,12 @@ public class LoadingActivity extends AppCompatActivity {
             if (result.isSuccess()) {
                 // The signed in account is stored in the result.
                 GoogleSignInAccount signedInAccount = result.getSignInAccount();
-                //startLoading();
                 firebaseAuthWithPlayGames(signedInAccount);
-                System.out.println("success");
 
             } else {
                 String message = result.getStatus().getStatusMessage();
                 if (message == null || message.isEmpty()) {
-                    System.out.println("error");
                 }
-                //startLoading();
             }
         }
     }
@@ -174,17 +165,12 @@ public class LoadingActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            System.out.println("signInWithCredential:success");
                             mUser = mAuth.getCurrentUser();
                             getUser(mUser.getUid());
-                            UserApplication.getInstance().getServiceInterface().setHintNum();
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            System.out.println("signInWithCredential:fail"+ task.getException());
-                        }
 
-                        // ...
+                        } else {
+                            //System.out.println("signInWithCredential:fail"+ task.getException());
+                        }
                     }
                 });
     }
@@ -196,11 +182,11 @@ public class LoadingActivity extends AppCompatActivity {
                 if (!dataSnapshot.hasChild(uid)) {
                     UserVO vo = new UserVO("10", "0", "0");
                     myRef.child(uid).setValue(vo);
-                    UserApplication.getInstance().getServiceInterface().setHintNum();
                     startLoading();
                 } else {
                     startLoading();
                 }
+                UserApplication.getInstance().getServiceInterface().setHintNum();
             }
 
             @Override

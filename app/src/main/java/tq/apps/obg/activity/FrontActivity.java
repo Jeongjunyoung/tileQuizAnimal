@@ -98,45 +98,6 @@ public class FrontActivity extends AppCompatActivity implements View.OnClickList
         mRewarded = MobileAds.getRewardedVideoAdInstance(this);
         mRewarded.setRewardedVideoAdListener(this);
         loadRewardedVideoAd();
-        /*mRewarded.setRewardedVideoAdListener(new RewardedVideoAdListener() {
-            @Override
-            public void onRewardedVideoAdLoaded() {
-            }
-
-            @Override
-            public void onRewardedVideoAdOpened() {
-            }
-
-            @Override
-            public void onRewardedVideoStarted() {
-            }
-
-            @Override
-            public void onRewardedVideoAdClosed() {
-            }
-
-            @Override
-            public void onRewarded(RewardItem rewardItem) {
-                System.out.println(rewardItem.getType());
-                int hint_num = mUserService.getHintNum() + rewardItem.getAmount();
-                mUserService.setmHintNum(hint_num);
-                myRef.child("hint_num").setValue(hint_num);
-                mBinding.frontHintNum.setText(String.valueOf(hint_num));
-            }
-
-            @Override
-            public void onRewardedVideoAdLeftApplication() {
-            }
-
-            @Override
-            public void onRewardedVideoAdFailedToLoad(int i) {
-            }
-
-            @Override
-            public void onRewardedVideoCompleted() {
-
-            }
-        });*/
     }
     @Override
     public void onClick(View view) {
@@ -153,6 +114,7 @@ public class FrontActivity extends AppCompatActivity implements View.OnClickList
                 finish();
                 break;
             case R.id.add_hint_btn:
+                loadRewardedVideoAd();
                 ColorDialog dialog = new ColorDialog(this);
                 dialog.setAnimationEnable(true);
                 dialog.setColor("#427158");
@@ -163,10 +125,9 @@ public class FrontActivity extends AppCompatActivity implements View.OnClickList
                     public void onClick(ColorDialog colorDialog) {
                         //동영상 광고 재생
                         if (mRewarded.isLoaded()) {
-                            System.out.println("showshowshow");
                             mRewarded.show();
                         } else {
-                            Toast.makeText(getApplicationContext(),"Ads is not Ready..",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(),"Ads. is not Ready..",Toast.LENGTH_SHORT).show();
                         }
                         colorDialog.dismiss();
                     }
@@ -180,7 +141,23 @@ public class FrontActivity extends AppCompatActivity implements View.OnClickList
                 break;
         }
     }
+    @Override
+    public void onResume() {
+        mRewarded.resume(this);
+        super.onResume();
+    }
 
+    @Override
+    public void onPause() {
+        mRewarded.pause(this);
+        super.onPause();
+    }
+
+    @Override
+    public void onDestroy() {
+        mRewarded.destroy(this);
+        super.onDestroy();
+    }
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
@@ -192,7 +169,9 @@ public class FrontActivity extends AppCompatActivity implements View.OnClickList
     }
     private void loadRewardedVideoAd() {
         mRewarded.loadAd(getResources().getString(R.string.reward_ads_unit_id),
-                new AdRequest.Builder().addTestDevice(AdRequest.DEVICE_ID_EMULATOR).build());
+                new AdRequest.Builder()
+                        .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+                        .build());
     }
 
     @Override
@@ -212,12 +191,11 @@ public class FrontActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void onRewardedVideoAdClosed() {
-
+        loadRewardedVideoAd();
     }
 
     @Override
     public void onRewarded(RewardItem rewardItem) {
-        System.out.println(rewardItem.getType());
         int hint_num = mUserService.getHintNum() + rewardItem.getAmount();
         mUserService.setmHintNum(hint_num);
         myRef.child("hint_num").setValue(hint_num);

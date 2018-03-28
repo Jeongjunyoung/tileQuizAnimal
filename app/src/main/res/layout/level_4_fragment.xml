@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
-    <RelativeLayout
-        style="@style/QuizBackgroundLayout">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="vertical">
+    <RelativeLayout style="@style/QuizBackgroundLayout">
+        <LinearLayout style="@style/TilePaddingLayout">
             <LinearLayout
                 android:id="@+id/back_quiz_image"
                 style="@style/TileLinearLayout">

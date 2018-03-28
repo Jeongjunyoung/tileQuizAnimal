@@ -71,7 +71,7 @@ public class PersonDBList {
         list.add(new PersonVO("Denis Suarez", tq.getId("p_denis"), "fb"));
         list.add(new PersonVO("Paulo Dybala", tq.getId("p_dybala"), "fb"));
         list.add(new PersonVO("Fernandinho", tq.getId("p_fernandinho"), "fb"));
-        list.add(new PersonVO("Filipe Luis", tq.getId("p_luis"), "fb"));
+        list.add(new PersonVO("Filipe Luis", tq.getId("p_luiz"), "fb"));
         list.add(new PersonVO("Eden Hazard", tq.getId("p_hazard"), "fb"));
         list.add(new PersonVO("Gonzalo Higuain", tq.getId("p_higuain"), "fb"));
         list.add(new PersonVO("Gabriel Jesus", tq.getId("p_jesus"), "fb"));
@@ -93,11 +93,11 @@ public class PersonDBList {
         list.add(new PersonVO("Luka Modric", tq.getId("p_modric"), "fb"));
         list.add(new PersonVO("Martin Montoya", tq.getId("p_montoya"), "fb"));
         list.add(new PersonVO("Alvaro Morata", tq.getId("p_morata"), "fb"));
-        list.add(new PersonVO("Thiago Motta", tq.getId("p_motta"), "fb"));
-        list.add(new PersonVO("Paco Alcacer", tq.getId("p_alcacer"), "fb"));
+        list.add(new PersonVO("Thiago Motta", tq.getId("p_mota"), "fb"));
+        list.add(new PersonVO("Paco Alcacer", tq.getId("p_paco"), "fb"));
         list.add(new PersonVO("Javier Pastore", tq.getId("p_pastore"), "fb"));
         list.add(new PersonVO("Paulinho", tq.getId("p_paulinho"), "fb"));
-        list.add(new PersonVO("Pedro Rodriguez", tq.getId("p_rodriguez"), "fb"));
+        list.add(new PersonVO("Pedro Rodriguez", tq.getId("p_pedro"), "fb"));
         list.add(new PersonVO("Miralem Pjanic", tq.getId("p_pjanic"), "fb"));
         list.add(new PersonVO("Rafinha", tq.getId("p_rafinha"), "fb"));
         list.add(new PersonVO("Ivan Rakitic", tq.getId("p_rakitic"), "fb"));
@@ -107,7 +107,7 @@ public class PersonDBList {
         list.add(new PersonVO("Arjen Robben", tq.getId("p_robben"), "fb"));
         list.add(new PersonVO("Marcos Rojo", tq.getId("p_rojo"), "fb"));
         list.add(new PersonVO("Sergio Romero", tq.getId("p_romero"), "fb"));
-        list.add(new PersonVO("Wayne Rooney", tq.getId("p_Rooney"), "fb"));
+        list.add(new PersonVO("Wayne Rooney", tq.getId("p_rooney"), "fb"));
         list.add(new PersonVO("Sergi Roberto", tq.getId("p_sergi"), "fb"));
         list.add(new PersonVO("David Silva", tq.getId("p_silva"), "fb"));
         list.add(new PersonVO("Sneijder", tq.getId("p_sneijder"), "fb"));

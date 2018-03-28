@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
-    <RelativeLayout
-        style="@style/QuizBackgroundLayout">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="vertical">
+    <RelativeLayout style="@style/QuizBackgroundLayout">
+        <LinearLayout style="@style/TilePaddingLayout">
 
             <LinearLayout
                 android:id="@+id/back_quiz_image"
@@ -31,6 +26,9 @@
                             <ImageView
                                 android:id="@+id/image_front_11"
                                 style="@style/TileFrontImageView" />
+                            <ImageView
+                                android:id="@+id/image_back_11"
+                                style="@style/TileBackImageView"/>
                         </FrameLayout>
                     </LinearLayout>
                     <LinearLayout
@@ -137,10 +135,6 @@
                             <ImageView
                                 android:id="@+id/image_back_21"
                                 style="@style/TileBackImageView"/>
-
-                            <ImageView
-                                android:id="@+id/image_back_11"
-                                style="@style/TileBackImageView" />
                         </FrameLayout>
                     </LinearLayout>
                     <LinearLayout
@@ -535,6 +529,9 @@
                             <ImageView
                                 android:id="@+id/image_front_55"
                                 style="@style/TileFrontImageView" />
+                            <ImageView
+                                android:id="@+id/image_back_55"
+                                style="@style/TileBackImageView" />
                         </FrameLayout>
                     </LinearLayout>
                 </LinearLayout>
@@ -637,6 +634,9 @@
                             <ImageView
                                 android:id="@+id/image_front_65"
                                 style="@style/TileFrontImageView" />
+                            <ImageView
+                                android:id="@+id/image_back_65"
+                                style="@style/TileBackImageView" />
                         </FrameLayout>
                     </LinearLayout>
                 </LinearLayout>

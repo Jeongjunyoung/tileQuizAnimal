@@ -216,12 +216,6 @@ public class UserServiceInterface {
         }
     }*/
 
-    public GoogleApiClient getApiClient() {
-        if (mService != null) {
-            return mService.getApiClient();
-        }
-        return null;
-    }
     public void setHintNum() {
         if (mService != null) {
             mService.setHintNum();

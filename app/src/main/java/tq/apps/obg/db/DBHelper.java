@@ -183,7 +183,7 @@ public class DBHelper {
             sDB.setTransactionSuccessful();
         }finally {
             sDB.endTransaction();
-            System.out.println("DB Insert Success~");
+            //System.out.println("DB Insert Success~");
         }
     }
     private void insertPersonData(List<PersonVO> list, SQLiteDatabase sDB) {
@@ -199,7 +199,7 @@ public class DBHelper {
             sDB.setTransactionSuccessful();
         }finally {
             sDB.endTransaction();
-            System.out.println("DB Person Insert Success~");
+            //System.out.println("DB Person Insert Success~");
         }
     }
     private void insertEmblemData(List<EmblemVO> list, SQLiteDatabase sDB) {
@@ -216,7 +216,7 @@ public class DBHelper {
             sDB.setTransactionSuccessful();
         }finally {
             sDB.endTransaction();
-            System.out.println("DB Emblem Insert Success~");
+            //System.out.println("DB Emblem Insert Success~");
         }
     }
 }
