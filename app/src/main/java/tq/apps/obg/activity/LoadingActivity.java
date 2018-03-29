@@ -64,7 +64,6 @@ public class LoadingActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
         myRef = database.getReference("saving-data/user");
-
         gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_GAMES_SIGN_IN)
                 .requestServerAuthCode(getString(R.string.default_web_client_id))
                 .build();
@@ -112,7 +111,7 @@ public class LoadingActivity extends AppCompatActivity {
         return GoogleSignIn.getLastSignedInAccount(this) != null;
     }
     @SuppressLint("RestrictedApi")
-    /*private void signInSilently() {
+    private void signInSilently() {
         GoogleSignInClient signInClient = GoogleSignIn.getClient(this, gso);
         signInClient.silentSignIn().addOnCompleteListener(this,
                 new OnCompleteListener<GoogleSignInAccount>() {
@@ -126,7 +125,7 @@ public class LoadingActivity extends AppCompatActivity {
                         }
                     }
                 });
-    }*/
+    }
 
 
     @Override
@@ -154,6 +153,7 @@ public class LoadingActivity extends AppCompatActivity {
             } else {
                 String message = result.getStatus().getStatusMessage();
                 if (message == null || message.isEmpty()) {
+                    //startLoading();
                 }
             }
         }

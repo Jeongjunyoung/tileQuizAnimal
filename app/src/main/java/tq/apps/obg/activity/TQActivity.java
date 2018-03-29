@@ -87,6 +87,7 @@ public class TQActivity extends AppCompatActivity implements View.OnClickListene
     private Animation trueAnim;
     private Animation falseAnim;
     private Animation btnLayoutAnim;
+    private boolean isGameOver;
 
     private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
         @Override
@@ -112,7 +113,7 @@ public class TQActivity extends AppCompatActivity implements View.OnClickListene
     @SuppressLint("HandlerLeak")
     private void initView() {
         AdRequest adRequest = new AdRequest.Builder()
-                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+                //.addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
                 .build();
         mBinding.tqAdView.loadAd(adRequest);
         setFrontAds();
@@ -150,8 +151,8 @@ public class TQActivity extends AppCompatActivity implements View.OnClickListene
         falseAnim = AnimationUtils.loadAnimation(this, R.anim.shake_btn_false);
         btnLayoutAnim = AnimationUtils.loadAnimation(this, R.anim.btn_layout_anim);
         btnLayoutAnim.setAnimationListener(this);
-        mBinding.pauseBtn.setOnClickListener(this);
-        mBinding.pauseCloseBtn.setOnClickListener(this);
+        //mBinding.pauseBtn.setOnClickListener(this);
+        //mBinding.pauseCloseBtn.setOnClickListener(this);
         //quizReadyListener();
         registerBroadcast();
         hintNum = mServiceInterface.getHintNum();
@@ -162,6 +163,7 @@ public class TQActivity extends AppCompatActivity implements View.OnClickListene
 
 
     private void setNextLevelFragment() {
+        isGameOver = false;
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -232,13 +234,15 @@ public class TQActivity extends AppCompatActivity implements View.OnClickListene
                     mBinding.tqHintText.setText(String.valueOf(hintNum));
                 }
                 break;
-            case R.id.pause_btn:
-                onPause();
+            /*case R.id.pause_btn:
+                //onPause();
                 break;
             case R.id.pause_close_btn:
                 mBinding.pauseLayout.setVisibility(View.GONE);
-                mProgressHandler.sendEmptyMessage(0);
-                break;
+                if(!isGameOver) {
+                    mProgressHandler.sendEmptyMessage(0);
+                }
+                break;*/
         }
     }
 
@@ -304,6 +308,7 @@ public class TQActivity extends AppCompatActivity implements View.OnClickListene
     //Game Over 리스너
     @SuppressLint("RestrictedApi")
     private void quizGameOverListener() {
+        isGameOver = true;
         mProgressHandler.removeMessages(0);
         levelNum = 9;
         if (isPlayerQuiz) {
@@ -394,10 +399,18 @@ public class TQActivity extends AppCompatActivity implements View.OnClickListene
 
     @Override
     protected void onPause() {
-        mBinding.pauseLayout.setVisibility(View.VISIBLE);
         mProgressHandler.removeMessages(0);
         super.onPause();
     }
+
+    @Override
+    protected void onPostResume() {
+        if (!isGameOver) {
+            mProgressHandler.sendEmptyMessage(0);
+        }
+        super.onPostResume();
+    }
+
     private void btnSetEnable(boolean isTrue) {
         mBinding.contents1.setEnabled(isTrue);
         mBinding.contents2.setEnabled(isTrue);
@@ -449,7 +462,7 @@ public class TQActivity extends AppCompatActivity implements View.OnClickListene
         mInterstitialAd = new InterstitialAd(this);
         mInterstitialAd.setAdUnitId(getResources().getString(R.string.front_ads_unit_id));
         final AdRequest adRequest = new AdRequest.Builder()
-                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+                //.addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
                 .build();
         mInterstitialAd.loadAd(adRequest);
         mInterstitialAd.setAdListener(new AdListener(){
@@ -488,10 +501,12 @@ public class TQActivity extends AppCompatActivity implements View.OnClickListene
 
     @SuppressLint("HandlerLeak")
     private void handlerProgressBar() {
-        mProgressHandler = new Handler(){
+        mProgressHandler = new Handler() {
             public void handleMessage(Message msg) {
+//                isGameOver = true;
                 super.handleMessage(msg);
                 if (quizCount <= 0) {
+                    //isGameOver = true;
                     quizGameOverListener();
                 } else {
                     quizCount -= 0.5;
