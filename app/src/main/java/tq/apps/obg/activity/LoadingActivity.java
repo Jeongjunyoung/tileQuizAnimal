@@ -67,7 +67,7 @@ public class LoadingActivity extends AppCompatActivity {
         gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_GAMES_SIGN_IN)
                 .requestServerAuthCode(getString(R.string.default_web_client_id))
                 .build();
-        startSignInIntent();
+        //startSignInIntent();
         //startLoading();
     }
 
@@ -131,7 +131,7 @@ public class LoadingActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        //signInSilently();
+        signInSilently();
     }
 
     @SuppressLint("RestrictedApi")

@@ -329,9 +329,9 @@ public class TQActivity extends AppCompatActivity implements View.OnClickListene
         quizCount = 150;
         quizLife = 3;
         quizProg.setProgress(quizCount);
-        mBinding.quizLife1.setVisibility(View.VISIBLE);
-        mBinding.quizLife2.setVisibility(View.VISIBLE);
-        mBinding.quizLife3.setVisibility(View.VISIBLE);
+        mBinding.quizLife1.setBackgroundResource(R.drawable.icon_life);
+        mBinding.quizLife2.setBackgroundResource(R.drawable.icon_life);
+        mBinding.quizLife3.setBackgroundResource(R.drawable.icon_life);
         mServiceInterface.setQuizScore(0);
         mBinding.quizScoreText.setText("0");
         mBinding.btnViewHint.setEnabled(true);
@@ -397,20 +397,20 @@ public class TQActivity extends AppCompatActivity implements View.OnClickListene
         finish();
     }
 
-    @Override
+    /*@Override
     protected void onPause() {
-        mProgressHandler.removeMessages(0);
+        //mProgressHandler.removeMessages(0);
         super.onPause();
     }
 
     @Override
     protected void onPostResume() {
         if (!isGameOver) {
-            mProgressHandler.sendEmptyMessage(0);
+            //mProgressHandler.sendEmptyMessage(0);
         }
         super.onPostResume();
     }
-
+*/
     private void btnSetEnable(boolean isTrue) {
         mBinding.contents1.setEnabled(isTrue);
         mBinding.contents2.setEnabled(isTrue);
@@ -506,7 +506,7 @@ public class TQActivity extends AppCompatActivity implements View.OnClickListene
 //                isGameOver = true;
                 super.handleMessage(msg);
                 if (quizCount <= 0) {
-                    //isGameOver = true;
+                    isGameOver = true;
                     quizGameOverListener();
                 } else {
                     quizCount -= 0.5;
