@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#454545"
-    tools:context="tq.apps.obg.activity.LoadingActivity">
+    tools:context="tqani.apps.obg.activity.LoadingActivity">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
